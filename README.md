@@ -1,6 +1,6 @@
 # SETUPPC
 
-- [] set keymap and umlaute
+## set keymap and umlaute
 
   sudo nvim /usr/share/X11/xkb/symbols/gb-umlauts
 
@@ -26,7 +26,7 @@
 
   reload hyperland
 
-## conf keybindings
+## ✔ ✅ conf keybindings
 
   add to .config/hypr/bindings.conf
 
@@ -45,7 +45,7 @@
     #bindd = SUPER, F, File manager, exec, uwsm app -- nautilus --new-window
     unbind = SUPER, W 
 
-## conf monitor
+## ✔ ✅ conf monitor
 
   nvim .config/hypr/monitors.conf
 
