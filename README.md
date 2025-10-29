@@ -1,4 +1,4 @@
-# SETUPPC
+# SETUPPC - TODO
 
 ## set keymap and umlaute
 
@@ -52,7 +52,7 @@
     env = GDK_SCALE,1
     monitor=,preferred,auto,1.666667
 
-## conf hyperland
+## ✅ conf hyperland
 
   nvim .config/hypr/looknfeel.conf
 
