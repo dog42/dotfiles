@@ -1,0 +1,28 @@
+#!/bin/bash
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
+pkg="arandr bat btop cmake curl fzf git neofetch pip python3 sshfs tmux udiskie zsh"
+
+arch_pkg="foo bar"
+deb_pkg="1337 0815"
+
+{{ if eq .chezmoi.osRelease.id "arch" -}}
+
+echo ">>>ARCH BTW"
+sudo pacman -Sy
+for app in $pkg $arch_pkg; do
+  (sudo pacman -S --noconfirm --needed $app >/dev/null && echo -e "${GREEN}DONE${NC} install $app") || echo -e "${RED}ERROR${NC} install $app"
+done
+
+{{ else if eq .chezmoi.osRelease.id "debian" -}}
+
+echo ">>>DEBIAN"
+sudo apt update
+for app in $pkg $deb_pkg; do
+  (sudo apt-get install -y $prog >/dev/null && echo -e "${GREEN}DONE${NC} install $prog") || echo -e "${RED}ERROR${NC} install $prog"
+done
+
+{{ end -}}
