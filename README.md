@@ -126,8 +126,8 @@
 
   echo -e '\nshell /usr/bin/zsh\n' >> ~/.config/kitty/kitty.conf
 
-## install yazi as filemanager
-  
+## ✅ install yazi as filemanager
+
   sudo pacman -S yazi
 
   ya pkg add ficd0/ashen:ashen
