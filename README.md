@@ -26,7 +26,7 @@
 
   reload hyperland
 
-## ✔ ✅ conf keybindings
+## ✅ conf keybindings
 
   add to .config/hypr/bindings.conf
 
@@ -45,7 +45,7 @@
     #bindd = SUPER, F, File manager, exec, uwsm app -- nautilus --new-window
     unbind = SUPER, W 
 
-## ✔ ✅ conf monitor
+## ✅ conf monitor
 
   nvim .config/hypr/monitors.conf
 
@@ -134,7 +134,7 @@
 
   echo -e '[flavor]\ndark = "ashen"' > ~/.config/yazi/theme.toml
 
-## install nvim conf
+## ✅ install nvim conf
 
   mv ~/.config/nvim/ ~/.config/nvim.bak/
 
