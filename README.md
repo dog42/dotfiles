@@ -58,7 +58,7 @@
 
   omarchy-theme-install <https://github.com/bjarneo/omarchy-nes-theme>
 
-## conf waybar
+## ✅ conf waybar
 
   nvim .config/waybar/config.jsonc
   
