@@ -1,6 +1,6 @@
 # SETUPPC - TODO
 
-## ❌ set keymap and umlaute
+## ✅ set keymap and umlaute
 
   sudo nvim /usr/share/X11/xkb/symbols/gb-umlauts
 
@@ -19,7 +19,7 @@
         key <AD03> { [ e, E, EuroSign, cent ] };         // E key
     };
 
- ❌ nvim .config/hypr/input.conf
+ ✅ nvim .config/hypr/input.conf
   
     kb_layout = gb-umlauts
     kb_variant = custom_uml
