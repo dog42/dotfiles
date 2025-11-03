@@ -4,6 +4,10 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m' # No Color
 
+prompt() {
+  echo -e "\n$RED>>>$NC $*"
+}
+
 pkg="arandr bat btop cmake curl fzf git npm nvim python3 sshfs tmux udiskie yazi zsh"
 
 arch_pkg=""
@@ -11,7 +15,7 @@ deb_pkg="1337 0815"
 
 {{ if eq .chezmoi.osRelease.id "arch" -}}
 
-echo ">>>ARCH BTW"
+prompt "ARCH BTW"
 sudo pacman -Sy
 for app in $pkg $arch_pkg; do
   (sudo pacman -S --noconfirm --needed $app >/dev/null && echo -e "${GREEN}DONE${NC} install $app") || echo -e "${RED}ERROR${NC} install $app"
@@ -19,7 +23,7 @@ done
 
 {{ else if eq .chezmoi.osRelease.id "debian" -}}
 
-echo ">>>DEBIAN"
+prompt "DEBIAN"
 sudo apt update
 for app in $pkg $deb_pkg; do
   (sudo apt-get install -y $prog >/dev/null && echo -e "${GREEN}DONE${NC} install $prog") || echo -e "${RED}ERROR${NC} install $prog"
@@ -27,5 +31,10 @@ done
 
 {{ end -}}
 
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+if [ -d "$HOME/.oh-my-zsh" ]; then
+    prompt "Oh-My-Zsh is already installed"
+else
+    prompt "install Oh-My-Zsh"
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+fi
 # chsh -s /usr/bin/zsh
