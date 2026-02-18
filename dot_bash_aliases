@@ -1,0 +1,28 @@
+# allgemein nuetzliche aliase
+
+alias reboot='echo "Better Shutdown and Restart!"'
+alias i='fastfetch'
+
+alias sudo='sudo -E '
+
+# listen
+alias ls='ls --color=auto --group-directories-first'
+alias lla='ls -la'
+alias ll='ls -l'
+alias la='ls -a'
+alias l='ls -CF'
+
+# taegliche nutzung
+alias v='nvim'
+alias n='nvim'
+alias vim='nvim'
+alias nano='nvim'
+alias y='yazi'
+alias cat='bat'
+alias htop='btop'
+alias top='btop'
+alias ..='cd .. ; ls -l'
+alias aus='sudo shutdown -h now'
+alias mountimg='sudo kpartx -a'
+alias umountimg='sudo kpartx -d'
+#ntmux='tmux attach-session -t CLI 2> /dev/null || (tmux new-session -d -s CLI && tmux split-window -h -t CLI && tmux attach-session -t CLI)'
