@@ -84,10 +84,10 @@ progress_error = { fg = "#C53030", bg = "#323232" }
 
 # Permissions
 perm_sep = { fg = "#949494", bold = true }
-perm_type = { fg = "#c53030" }
+perm_type = { fg = "#B14242" }
 perm_read = { fg = "#d5d5d5", bold = true }
 perm_write = { fg = "#C4693D", bold = true }
-perm_exec = { fg = "#c53030", bold = true }
+perm_exec = { fg = "#B14242", bold = true }
 
 # : }}}
 
@@ -105,7 +105,7 @@ inactive = {}
 # : Input {{{
 
 [input]
-border = { fg = "#c53030" }
+border = { fg = "#B14242" }
 title = {}
 value = {}
 selected = { reversed = true }
@@ -116,7 +116,7 @@ selected = { reversed = true }
 # : Completion {{{
 
 [cmp]
-border = { fg = "#c53030" }
+border = { fg = "#B14242" }
 
 # : }}}
 
@@ -140,7 +140,7 @@ rest = { fg = "#b4b4b4" }
 # desc = { fg = "#DF6464", bold = true }
 desc = { fg = "#DF6464" }
 separator = "  "
-separator_style = { fg = "#c53030" }
+separator_style = { fg = "#B14242" }
 
 # : }}}
 
@@ -213,34 +213,11 @@ rules = [
 
   # Fallback
   { url = "*", fg = "#d5d5d5" },
-  { url = "*/", fg = "#c53030" },
+  { url = "*/", fg = "#B14242" },
 
   # TODO: remove (changed in 26.1.4)
   { name = "*", fg = "#d5d5d5" },
-  { name = "*/", fg = "#c53030" },
+  { name = "*/", fg = "#B14242" },
 ]
 
 # : }}}
-
-[icon]
-dirs  = [
-	{ name = ".config", text = "", fg = "#c53030" },
-	{ name = ".git", text = "", fg = "#c53030" },
-	{ name = ".github", text = "", fg = "#c53030" },
-	{ name = ".npm", text = "", fg = "#c53030" },
-	{ name = "Desktop", text = "", fg = "#c53030" },
-	{ name = "Development", text = "", fg = "#c53030" },
-	{ name = "Documents", text = "", fg = "#c53030" },
-	{ name = "Downloads", text = "", fg = "#c53030" },
-	{ name = "Library", text = "", fg = "#c53030" },
-	{ name = "Movies", text = "", fg = "#c53030" },
-	{ name = "Music", text = "", fg = "#c53030" },
-	{ name = "Pictures", text = "", fg = "#c53030" },
-	{ name = "Public", text = "", fg = "#c53030" },
-	{ name = "Videos", text = "", fg = "#c53030" },
-]
-conds = [
-  { if = "dir", text = "", fg = "#c53030" },
-  { if = "exec", text = "" },
-  { if = "!dir", text = "" },
-]
