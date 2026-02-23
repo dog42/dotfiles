@@ -1,5 +1,18 @@
 # SETUPPC - TODO
 
+## ❌ install zsh and ohmyzsh
+
+  ❌ first install, then move '.oh-my-zsh'-folder
+  
+  sudo pacman -S zsh
+
+  sh -c "$(curl -fsSL <https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh>)" "" --unattended
+
+  chsh -s /usr/bin/zsh
+
+  echo -e '\nshell /usr/bin/zsh\n' >> ~/.config/kitty/kitty.conf
+
+
 ## ✅ set keymap and umlaute
 
   sudo nvim /usr/share/X11/xkb/symbols/gb-umlauts
@@ -116,15 +129,6 @@
 
   kitten themes
 
-## ✅ install zsh and ohmyzsh
-  
-  sudo pacman -S zsh
-
-  sh -c "$(curl -fsSL <https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh>)" "" --unattended
-
-  chsh -s /usr/bin/zsh
-
-  echo -e '\nshell /usr/bin/zsh\n' >> ~/.config/kitty/kitty.conf
 
 ## ✅ install yazi as filemanager
 
