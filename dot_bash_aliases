@@ -17,7 +17,7 @@ alias v='nvim'
 alias n='nvim'
 alias vim='nvim'
 alias nano='nvim'
-alias y='yazi'
+#alias y='yazi'
 alias cat='bat'
 alias htop='btop'
 alias top='btop'
@@ -26,3 +26,12 @@ alias aus='sudo shutdown -h now'
 alias mountimg='sudo kpartx -a'
 alias umountimg='sudo kpartx -d'
 #ntmux='tmux attach-session -t CLI 2> /dev/null || (tmux new-session -d -s CLI && tmux split-window -h -t CLI && tmux attach-session -t CLI)'
+
+# yazi
+function y() {
+  local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+  command yazi "$@" --cwd-file="$tmp"
+  IFS= read -r -d '' cwd <"$tmp"
+  [ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
+  rm -f -- "$tmp"
+}
