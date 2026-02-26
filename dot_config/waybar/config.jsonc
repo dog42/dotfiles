@@ -12,7 +12,9 @@
     "network",
     "pulseaudio",
     "cpu",
-    "battery"
+    "battery#0",
+    "battery#1"
+
   ],
   // "hyprland/workspaces": {
   //   "on-click": "activate",
@@ -72,25 +74,70 @@
     "spacing": 1,
     "on-click": "$TERMINAL -e impala"
   },
-  "battery": {
-    "format": "{capacity}% {icon}",
-    "format-discharging": "{icon}",
-    "format-charging": "{icon}",
-    "format-plugged": "",
-    "format-icons": {
-      "charging": ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"],
-      "default": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
-    },
-    "format-full": "󰂅",
-    "tooltip-format-discharging": "{power:>1.0f}W↓ {capacity}%",
-    "tooltip-format-charging": "{power:>1.0f}W↑ {capacity}%",
-    "interval": 5,
-    "on-click": "omarchy-menu power",
-    "states": {
-      "warning": 20,
-      "critical": 10
-    }
+ 
+  // "battery": {
+  //   "format": "{capacity}% {icon}",
+  //   "format-discharging": "{icon}",
+  //   "format-charging": "{icon}",
+  //   "format-plugged": "",
+  //   "format-icons": {
+  //     "charging": ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"],
+  //     "default": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+  //   },
+  //   "format-full": "󰂅",
+  //   "tooltip-format-discharging": "{power:>1.0f}W↓ {capacity}%",
+  //   "tooltip-format-charging": "{power:>1.0f}W↑ {capacity}%",
+  //   "interval": 5,
+  //   "on-click": "omarchy-menu power",
+  //   "states": {
+  //     "warning": 20,
+  //     "critical": 10
+  //   }
+  // },
+
+"battery#0": {
+  "bat": "BAT0",
+  "format": "{icon}",
+  "format-discharging": "{icon}",
+  "format-charging": "{icon}",
+  "format-plugged": "",
+  "format-icons": {
+    "charging": ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"],
+    "default": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
   },
+  "format-full": "󰂅",
+  "tooltip-format": "INT {capacity}%",
+  "tooltip-format-discharging": "INT {power:>1.0f}W↓ {capacity}%",
+  "tooltip-format-charging": "INT {power:>1.0f}W↑ {capacity}%",
+  "interval": 5,
+  "on-click": "$TERMINAL -e battop",
+  "states": {
+    "warning": 20,
+    "critical": 10
+  }
+},
+"battery#1": {
+  "bat": "BAT1",
+  "format": "{icon}",
+  "format-discharging": "{icon}",
+  "format-charging": "{icon}",
+  "format-plugged": "",
+  "format-icons": {
+    "charging": ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"],
+    "default": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+  },
+  "format-full": "󰂅",
+  "tooltip-format": "EXT {capacity}%",
+  "tooltip-format-discharging": "EXT {power:>1.0f}W↓ {capacity}%",
+  "tooltip-format-charging": "EXT {power:>1.0f}W↑ {capacity}%",
+  "interval": 5,
+  "on-click": "$TERMINAL -e battop",
+  "states": {
+    "warning": 20,
+    "critical": 10
+  }
+},
+
   "bluetooth": {
     "format": "",
     "format-disabled": "󰂲",
