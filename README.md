@@ -1,5 +1,13 @@
 # SETUPPC - TODO
 
+
+## ❌ allow "localsend" in firewall
+
+
+sudo ufw allow 53317/tcp
+sudo ufw allow 53317/udp   
+
+
 ## ❌ install zsh and ohmyzsh
 
   ❌ first install, then move '.oh-my-zsh'-folder
