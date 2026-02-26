@@ -4,12 +4,14 @@
 It's a good idea to configure Git to use SSH for pushing (uploading) and HTTPS for pulling (downloading), use Git's insteadOf and pushInsteadOf configuration options.
 
 ```git config --global url."https://github.com/".insteadOf git@github.com:```
+
 ```git config --global url."git@github.com:".pushInsteadOf https://github.com/```   
 
 ## ❌ allow "localsend" in firewall
 
 
 ```sudo ufw allow 53317/tcp```
+
 ```sudo ufw allow 53317/udp```   
 
 
@@ -17,18 +19,18 @@ It's a good idea to configure Git to use SSH for pushing (uploading) and HTTPS f
 
   ❌ first install, then move '.oh-my-zsh'-folder
   
-  sudo pacman -S zsh
+  ```sudo pacman -S zsh```
 
-  sh -c "$(curl -fsSL <https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh>)" "" --unattended
+  ```sh -c "$(curl -fsSL <https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh>)" "" --unattended```
 
-  chsh -s /usr/bin/zsh
+  ```chsh -s /usr/bin/zsh```
 
-  echo -e '\nshell /usr/bin/zsh\n' >> ~/.config/kitty/kitty.conf
+  ```echo -e '\nshell /usr/bin/zsh\n' >> ~/.config/kitty/kitty.conf```
 
 
 ## ✅ set keymap and umlaute
 
-  sudo nvim /usr/share/X11/xkb/symbols/gb-umlauts
+  ```sudo nvim /usr/share/X11/xkb/symbols/gb-umlauts```
 
     artial alphanumeric_keys
     xkb_symbols "custom_uml" {
@@ -45,48 +47,16 @@ It's a good idea to configure Git to use SSH for pushing (uploading) and HTTPS f
         key <AD03> { [ e, E, EuroSign, cent ] };         // E key
     };
 
- ✅ nvim .config/hypr/input.conf
+ ```nvim .config/hypr/input.conf```
   
     kb_layout = gb-umlauts
     kb_variant = custom_uml
 
   reload hyperland
 
-## ✅ conf keybindings
-
-  add to .config/hypr/bindings.conf
-
-    bind=SUPER CTRL,left,resizeactive,-10 0
-    bind=SUPER CTRL,right,resizeactive,10 0
-    bind=SUPER CTRL,up,resizeactive,0 -10
-    bind=SUPER CTRL,down,resizeactive,0 10
-    
-    unbind = SUPER SHIFT, C
-    bind = SUPER SHIFT, C, killactive
-    unbind = SUPER, F
-    bindd = SUPER, F, File manager, exec, $terminal -e yazi
-
-  remove
-
-    #bindd = SUPER, F, File manager, exec, uwsm app -- nautilus --new-window
-    unbind = SUPER, W 
-
-## ✅ conf monitor
-
-  nvim .config/hypr/monitors.conf
-
-    env = GDK_SCALE,1
-    monitor=,preferred,auto,1.666667
-
-## ✅ conf hyperland
-
-  nvim .config/hypr/looknfeel.conf
-
-  omarchy-theme-install <https://github.com/bjarneo/omarchy-nes-theme>
-
 ## ✅ conf waybar
 
-  nvim .config/waybar/config.jsonc
+  ```nvim .config/waybar/config.jsonc```
   
     "battery#0","battery#1"
 
@@ -133,28 +103,3 @@ It's a good idea to configure Git to use SSH for pushing (uploading) and HTTPS f
         "critical": 10
       }
     },
-
-  omarchy-restart-waybar
-
-## ✅ install kitty as treminal
-
-  omarchy-install-terminal kitty
-
-  kitten themes
-
-
-## ✅ install yazi as filemanager
-
-  sudo pacman -S yazi
-
-  ya pkg add ficd0/ashen:ashen
-
-  echo -e '[flavor]\ndark = "ashen"' > ~/.config/yazi/theme.toml
-
-## ✅ install nvim conf
-
-  mv ~/.config/nvim/ ~/.config/nvim.bak/
-
-  git clone <https://gitlab.com/dog42/lazyvim.git> ~/.config/nvim
-
-  (maybe install npm if pyright cant be installed)
