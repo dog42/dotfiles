@@ -43,9 +43,9 @@
 
   "custom/update": {
     "format": "",
-    "exec": "omarchy-update-available",
-    "on-click": "omarchy-launch-floating-terminal-with-presentation omarchy-update",
-    "tooltip-format": "Omarchy update available",
+    "exec": "chezmoi_update_available",
+    "on-click": "",
+    "tooltip-format": "chezmoi update available",
     "signal": 7,
     "interval": 3600
   },
@@ -59,7 +59,7 @@
     "format": "{:L%A %H:%M}",
     "format-alt": "{:L%d %B W%V %Y}",
     "tooltip": false,
-    "on-click-right": "omarchy-cmd-tzupdate"
+    "on-click-right": ""
   },
   "network": {
     "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
