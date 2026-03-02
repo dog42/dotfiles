@@ -1,10 +1,9 @@
 #!/bin/bash
 
-read -p "run chezmoi update? " -n 1 -r
+read -p "run chezmoi update? [Yy]" -n 1 -r
 echo
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-    chezmoi update
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+  chezmoi update
 fi
 
 pkill -RTMIN+7 waybar
