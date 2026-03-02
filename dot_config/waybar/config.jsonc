@@ -44,7 +44,7 @@
   "custom/update": {
     "format": "",
     "exec": "chezmoi_update_available",
-    "on-click": "",
+    "on-click": "chezmoi_do_update",
     "tooltip-format": "chezmoi update available",
     "signal": 7,
     "interval": 3600
