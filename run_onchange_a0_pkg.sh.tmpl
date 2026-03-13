@@ -10,9 +10,9 @@ prompt() {
 
 prompt "LET'S GO..."
 
-pkg="arandr bat brave btop cmake curl dunst fzf git localsend network-manager-applet nextcloud npm nvim python3 sshfs tmux udiskie yazi zsh"
+pkg="arandr bat brave btop cmake curl dunst fzf git localsend nextcloud npm nvim python3 sshfs tmux udiskie yazi zsh"
 
-arch_pkg="yay hyprland hyprpaper xdg-desktop-portal-hyprland hyprlock hypridle nwg-displays waybar walker elephant elephant-providerlist elephant-desktopapplications wiremix bluetui impala battop"
+arch_pkg="yay hyprland hyprpaper xdg-desktop-portal-hyprland hyprlock hypridle nwg-displays waybar walker elephant elephant-providerlist elephant-desktopapplications elephant-files elephant-runner elephant-websearch elephant-calc elephant-clipboard elephant-symbols wiremix bluetui impala battop"
 deb_pkg=""
 
 {{ if eq .chezmoi.osRelease.id "arch" "cachyos" -}}
