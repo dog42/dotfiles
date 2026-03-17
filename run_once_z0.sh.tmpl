@@ -1,0 +1,19 @@
+#!/bin/bash
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
+prompt() {
+  echo -e "\n$RED>>>$NC $*"
+}
+
+prompt "symlink kb-layout 'gb_umlauts'"
+sudo ln -s $HOME/.config/xkb/gb_umlauts /usr/share/X11/xkb/symbols/gb_umlauts
+
+prompt "set iwd as wifi backend"
+sudo pacman -S --noconfirm --needed linux-firmware iwd
+sudo systemctl disable wpa_supplicant
+sudo systemctl enable --now iwd
+echo -e "[device]\nwifi.backend=iwd" | sudo tee /etc/NetworkManager/conf.d/wifi_backend.conf
+sudo systemctl restart NetworkManager
