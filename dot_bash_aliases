@@ -5,6 +5,8 @@ alias i='fastfetch'
 
 alias sudo='sudo -E '
 
+alias qr='qrencode -t utf8 <<<'
+
 # listen
 alias ls='ls --color=auto --group-directories-first'
 alias lla='ls -la'
@@ -34,4 +36,74 @@ function y() {
   IFS= read -r -d '' cwd <"$tmp"
   [ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
   rm -f -- "$tmp"
+}
+
+# tailscale funnel + QR-Code
+function tsqr() {
+  local port="${1:-8080}"
+  local tmp_file="/tmp/ts_output"
+  clear
+  # 1. Checks
+  if ! systemctl is-active --quiet tailscaled; then
+    echo -e "\033[31m[!] tailscaled läuft nicht.\033[0m"
+    # Bash-kompatibler Read
+    echo -n "Soll der Dienst gestartet werden? (j/n): "
+    read start_daemon
+    [[ "$start_daemon" =~ ^[JjYy] ]] && sudo systemctl start tailscaled || return 1
+  fi
+
+  if ! tailscale status --peers=false >/dev/null 2>&1; then
+    echo -e "\033[31m[!] Tailscale ist offline.\033[0m"
+    echo -n "Soll 'tailscale up' ausgeführt werden? (j/n): "
+    read do_up
+    [[ "$do_up" =~ ^[JjYy] ]] && sudo tailscale up || return 1
+  fi
+
+  echo "[✔] Starte Funnel auf Port $port..."
+
+  # Der "Universal-Trick" für die Bash:
+  # Wir starten den Prozess in einer Subshell und leiten den Output komplett um.
+  # 'disown' nach dem Start verhindert die Job-Meldung beim Beenden.
+  sudo tailscale funnel "$port" >"$tmp_file" 2>&1 &
+  local ts_pid=$!
+  disown $ts_pid 2>/dev/null
+
+  cleanup() {
+    trap - INT
+    # Wir unterdrücken die Fehlermeldung, falls der Prozess schon weg ist
+    sudo kill "$ts_pid" 2>/dev/null
+
+    sleep 0.2
+    rm -f "$tmp_file"
+    clear
+    echo -e "\033[32m[✔] Tunnel deaktiviert\033[0m"
+    echo -n "Tailscale wieder deaktivieren (tailscale down)? (j/n): "
+    read do_down
+    if [[ "$do_down" =~ ^[JjYy] ]]; then
+      sudo tailscale down
+      echo "\n\033[1;32m[✔] Tailscale ist jetzt offline.\033[0m"
+    fi
+    return 0
+  }
+
+  trap cleanup INT
+
+  # Warten auf URL
+  while ! grep -q "https://" "$tmp_file" 2>/dev/null; do
+    sleep 0.5
+    if ! kill -0 $ts_pid 2>/dev/null; then
+      echo -e "\033[31m[!] Fehler beim Starten des Funnels.\033[0m"
+      sudo cat "$tmp_file"
+      return 1
+    fi
+  done
+
+  local url=$(grep -o "https://[a-zA-Z0-9.-]*" "$tmp_file" | head -1)
+
+  clear
+  qrencode -t ansiutf8 "$url"
+  echo -e "\n\033[1;32m[✔] Tunnel aktiv: $url\033[0m"
+  echo "Drücke STRG+C zum Beenden."
+
+  tail -f "$tmp_file" 2>/dev/null
 }
