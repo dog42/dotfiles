@@ -15,9 +15,9 @@ It's a good idea to configure Git to use SSH for pushing (uploading) and HTTPS f
 ```sudo ufw allow 53317/udp```   
 
 
-## ❌ install zsh and ohmyzsh
+## ❓ install zsh and ohmyzsh
 
-  ❌ first install, then move '.oh-my-zsh'-folder
+  ❓ first install, then move '.oh-my-zsh'-folder
   
   ```sudo pacman -S zsh```
 
