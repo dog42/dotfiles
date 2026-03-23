@@ -1,21 +1,26 @@
 #!/bin/bash
 
+repo="/home/$USER/.local/share/chezmoi"
+
 # Get remote tag
-latest_tag=$(git -C "/home/$USER/.local/share/chezmoi" ls-remote origin main | grep -v "{}" | awk '{print $1}' | sed 's#refs/heads/main##')
+latest_tag=$(git -C $repo ls-remote origin main | grep -v "{}" | awk '{print $1}' | sed 's#refs/heads/main##')
 if [[ -z $latest_tag ]]; then
   echo "Error: Could not retrieve latest tag."
   exit 1
 fi
 
 # Get local tag
-current_tag=$(git -C "/home/$USER/.local/share/chezmoi" rev-parse HEAD)
+current_tag=$(git -C $repo rev-parse HEAD)
 if [[ -z $current_tag ]]; then
   echo "Error: Could not retrieve current tag."
   exit 1
 fi
 
 if [[ $current_tag != $latest_tag ]]; then
-  echo "chezmoi update available ($latest_tag)"
+
+  echo -e "chezmoi update available ($latest_tag)\n"
+  git -C $repo fetch
+  git -C $repo --no-pager log --left-right --graph --oneline origin/main...HEAD
   exit 0
 else
   echo "chezmoi is up to date ($current_tag)"

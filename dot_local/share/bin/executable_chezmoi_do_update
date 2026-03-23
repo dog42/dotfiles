@@ -1,5 +1,13 @@
 #!/bin/bash
 
+repo="/home/$USER/.local/share/chezmoi"
+
+echo -e "chezmoi update available:\n"
+
+git -C $repo fetch
+git -C $repo --no-pager log --left-right --graph --oneline origin/main...HEAD
+
+echo ""
 read -p "run chezmoi update? [Yy]" -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
