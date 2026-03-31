@@ -65,6 +65,11 @@ return {
 
       -- 3. Automatisches Öffnen des Viewers nach dem ersten Kompilieren
       vim.g.vimtex_view_forward_search_on_start = true
+      -- 4. ignore some warnings
+      vim.g.vimtex_quickfix_ignore_filters = {
+        "Overfull",
+        "Underfull",
+      }
     end,
   },
 }
