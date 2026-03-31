@@ -1,8 +1,8 @@
 partial alphanumeric_keys
 xkb_symbols "basic" {
 
-    include "gb"
-    name[Group1]= "UK with Umlauts";
+    include "us"
+    name[Group1]= "US with Umlauts";
 
     include "level3(ralt_switch)"
 

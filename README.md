@@ -1,19 +1,18 @@
 # SETUPPC - TODO
+
 ## Info
 
 It's a good idea to configure Git to use SSH for pushing (uploading) and HTTPS for pulling (downloading), use Git's insteadOf and pushInsteadOf configuration options.
 
 ```git config --global url."https://github.com/".insteadOf git@github.com:```
 
-```git config --global url."git@github.com:".pushInsteadOf https://github.com/```   
+```git config --global url."git@github.com:".pushInsteadOf https://github.com/```
 
 ## ❌ allow "localsend" in firewall
 
-
 ```sudo ufw allow 53317/tcp```
 
-```sudo ufw allow 53317/udp```   
-
+```sudo ufw allow 53317/udp```
 
 ## ❓ install zsh and ohmyzsh
 
@@ -27,27 +26,26 @@ It's a good idea to configure Git to use SSH for pushing (uploading) and HTTPS f
 
   ```echo -e '\nshell /usr/bin/zsh\n' >> ~/.config/kitty/kitty.conf```
 
-
 ## ✅ set keymap and umlaute
 
   ```sudo nvim /usr/share/X11/xkb/symbols/gb-umlauts```
 
-    artial alphanumeric_keys
-    xkb_symbols "custom_uml" {
+    partial alphanumeric_keys
+    xkb_symbols "basic" {
 
-        include "gb(basic)"
-    
+        include "gb"
         name[Group1]= "UK with Umlauts";
-    
-        key <AC01> { [ a, A, adiaeresis, Adiaeresis ] }; // A key
-        key <AD09> { [ o, O, odiaeresis, Odiaeresis ] }; // O key
-        key <AD07> { [ u, U, udiaeresis, Udiaeresis ] }; // U key
-        key <AC02> { [ s, S, ssharp, section ] };        // S key
-    
-        key <AD03> { [ e, E, EuroSign, cent ] };         // E key
+
+        include "level3(ralt_switch)"
+
+        key <AC01> { [ a, A, adiaeresis, Adiaeresis ] };
+        key <AD09> { [ o, O, odiaeresis, Odiaeresis ] };
+        key <AD07> { [ u, U, udiaeresis, Udiaeresis ] };
+        key <AC02> { [ s, S, ssharp,     section    ] };
+        key <AD03> { [ e, E, EuroSign,   cent       ] };
     };
 
- ```nvim .config/hypr/input.conf```
+```nvim .config/hypr/input.conf```
   
     kb_layout = gb-umlauts
     kb_variant = custom_uml
