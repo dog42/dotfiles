@@ -7,5 +7,5 @@ vim.keymap.set("n", "<leader>mu", ":w<CR>:copen<CR><ESC>:AsyncRun make upload<CR
 vim.keymap.set("n", "<leader>mc", ":copen<CR><ESC>:PIOMonitor<CR>", { desc = "run PIOMonitor" })
 vim.keymap.set("n", "<S-Left>", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
 vim.keymap.set("n", "<S-Right>", "<cmd>bnext<cr>", { desc = "Next Buffer" })
-vim.keymap.set("n", "<cr>", "za", { desc = "toggle fold" })
+-- vim.keymap.set("n", "<cr>", "za", { desc = "toggle fold" })
 vim.keymap.set("n", "<leader>h", Snacks.dashboard.open, { desc = "Dashboard/Open mini starter" })

@@ -43,4 +43,28 @@ return {
       },
     },
   },
+  {
+    "lervag/vimtex",
+    lazy = false, -- VimTeX muss beim Start für .tex Dateien geladen sein
+    init = function()
+      -- 1. PDF-Viewer auf Zathura setzen
+      vim.g.vimtex_view_method = "zathura"
+
+      -- 2. Compiler auf LuaLaTeX umstellen
+      vim.g.vimtex_compiler_method = "latexmk"
+      vim.g.vimtex_compiler_latexmk = {
+        options = {
+          "-shell-escape",
+          "-verbose",
+          "-file-line-error",
+          "-synctex=1",
+          "-interaction=nonstopmode",
+          "-lualatex", -- Hier erzwingen wir LuaLaTeX
+        },
+      }
+
+      -- 3. Automatisches Öffnen des Viewers nach dem ersten Kompilieren
+      vim.g.vimtex_view_forward_search_on_start = true
+    end,
+  },
 }
