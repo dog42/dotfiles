@@ -10,6 +10,7 @@
     "group/tray-expander",
     "bluetooth",
     "network",
+    "custom/tailscale",
     "pulseaudio",
     "cpu",
     "battery#0",
@@ -48,6 +49,21 @@
     "tooltip-format": "chezmoi update available",
     "signal": 7,
     "interval": 3600
+  },
+
+  "custom/tailscale" : {
+    "exec": "~/.config/waybar/waybar-tailscale/waybar-tailscale.sh --status 'ipv4'",
+    "on-click": "exec ~/.config/waybar/waybar-tailscale/waybar-tailscale.sh --toggle",
+    "on-click-right": "exec ~/.config/waybar/waybar-tailscale/waybar-tailscale.sh --select-exit-node",
+    "exec-on-event": true,
+    "format": " {icon} ",
+    "format-icons": {
+        "connected": "󱠾 󰕥",
+        "stopped": "󱠾  "
+    },
+    "tooltip": true,
+    "return-type": "json",
+    "interval": 0,
   },
 
   "cpu": {
