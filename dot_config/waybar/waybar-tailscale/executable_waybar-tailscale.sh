@@ -18,7 +18,7 @@ toggle_status() {
 
 select_exit_node() {
   if ! tailscale_status; then
-    notify-send "Tailscale" "VPN is not running"
+    notify-send -a "Tailscale" "VPN is not running"
     return 1
   fi
 
@@ -39,10 +39,10 @@ select_exit_node() {
 
   if [[ "$selected" == "None"* ]]; then
     tailscale set --exit-node=
-    notify-send "Tailscale" "Exit node disabled"
+    notify-send -a "Tailscale" "Exit node disabled"
   else
     tailscale set --exit-node="$selected"
-    notify-send "Tailscale" "Exit node set to: $selected"
+    notify-send -a "Tailscale" "Exit node set to: $selected"
   fi
 }
 
@@ -86,17 +86,21 @@ case $1 in
                     "<span color=\"" + (if .Online then $T else $F end) + "\">" + 
                     (.DNSName | split(".")[0]) + ": (" + .TailscaleIPs[$Index|tonumber] + ")</span>"
                 ' <<<"$status_json")
+      self=$(jq -r ' "<span>" + (.Self.DNSName | split(".")[0]) + ": ("+ .Self.TailscaleIPs[0] + ")</span>"
+                ' <<<"$status_json")
     else
       peers=$(jq -r --arg T "$T" --arg F "$F" '
                     .Peer[]? | 
                     "<span color=\"" + (if .Online then $T else $F end) + "\">" +
                     (.DNSName | split(".")[0]) + "</span>"
                 ' <<<"$status_json")
+      self=$(jq -r ' "<span>" + (.Self.DNSName | split(".")[0]) + "</span>"
+                ' <<<"$status_json")
     fi
 
     exitnode=$(jq -r '.Peer[]? | select(.ExitNode == true).DNSName | split(".")[0]' <<<"$status_json")
 
-    jq -nc --arg txt " exit-node: ${exitnode:-none}" --arg tip "$peers" \
+    jq -nc --arg txt " exit-node: ${exitnode:-none}" --arg tip "$self"$'\n'"$peers" \
       '{"text": $txt, "class": "connected", "alt": "connected", "tooltip": $tip}'
   else
     echo "{\"text\":\"\",\"class\":\"stopped\",\"alt\":\"stopped\", \"tooltip\": \"The VPN is not active.\"}"
