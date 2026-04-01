@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-MENU_CMD="wofi --dmenu --prompt 'Select Exit Node'" # Change to rofi/fuzzel/dmenu as needed
+# MENU_CMD="wofi --dmenu --prompt 'Select Exit Node'" # Change to rofi/fuzzel/dmenu as needed
+MENU_CMD="walker --dmenu 'Select Exit Node'" # Change to rofi/fuzzel/dmenu as needed
 
 tailscale_status() {
   tailscale status --json | jq -e '.BackendState == "Running"' >/dev/null
@@ -12,7 +13,7 @@ toggle_status() {
   else
     tailscale up
   fi
-  sleep 5
+  sleep 3
 }
 
 select_exit_node() {
