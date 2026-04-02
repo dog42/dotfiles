@@ -57,9 +57,10 @@
     "on-click-right": "exec ~/.config/waybar/waybar-tailscale/waybar-tailscale.sh --select-exit-node",
     "exec-on-event": true,
     "format": "         ",
-    "return-type": "json",
+    // uncomment if you want icons, don't use with tailscale.css
+    //"format": " VPN {icon}"
     // "format-icons": {
-    //     "connected": "󱠾 󰕥",
+    //     "connected": "󱠾 󰕥 ",
     //     "stopped": "󱠾  "
     // },
     "tooltip": true,
