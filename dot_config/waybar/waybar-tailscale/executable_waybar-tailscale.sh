@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# MENU_CMD="wofi --dmenu --prompt 'Select Exit Node'" # Change to rofi/fuzzel/dmenu as needed
-MENU_CMD="walker --dmenu 'Select Exit Node'" # Change to rofi/fuzzel/dmenu as needed
+# MENU_CMD="wofi --dmenu --prompt 'Menue'" # Change to rofi/fuzzel/dmenu as needed
+MENU_CMD="walker --dmenu 'Menue'" # Change to rofi/fuzzel/dmenu as needed
 
 tailscale_status() {
   tailscale status --json | jq -e '.BackendState == "Running"' >/dev/null
@@ -10,8 +10,10 @@ tailscale_status() {
 toggle_status() {
   if tailscale_status; then
     tailscale down
+    notify-send -a "Tailscale" "disabled"
   else
     tailscale up
+    notify-send -a "Tailscale" "enabled"
   fi
   sleep 3
 }
@@ -46,6 +48,37 @@ select_exit_node() {
   fi
 }
 
+switch_tailnet() {
+  local tailnets
+  local active
+  tailnets=$(tailscale switch --list --json | jq -r '
+    .[].tailnet')
+  active=$(tailscale switch --list --json | jq -r '
+    .[] | select(.selected == true) | .tailnet')
+
+  tailnets="keep $active (active)"$'\n'"$tailnets"
+
+  local selected
+  selected=$(echo "$tailnets" | $MENU_CMD)
+
+  [ -z "$selected" ] && return 0 # User cancelled
+
+  if [[ "$selected" == "keep"* ]]; then
+    notify-send -a "Tailscale" "keep Tailnet: $active"
+  else
+    tailscale switch $selected
+    notify-send -a "Tailscale" "switch to Tailnet: $selected"
+  fi
+}
+
+menue() {
+
+  local selected
+  selected=$(declare -F | sed 's/declare -f //' | sed '/menue/d' | sed '/tailscale_status/d' | $MENU_CMD)
+  echo $selected
+  $selected
+}
+
 case $1 in
 --status)
   if tailscale_status; then
@@ -74,6 +107,9 @@ case $1 in
 
     status_json=$(tailscale status --json)
 
+    tailnet=$(tailscale switch --list --json | jq -r '
+    .[] | select(.selected == true) | .tailnet')
+
     case "$I" in
     ipv4) ip_index="0" ;;
     ipv6) ip_index="-1" ;;
@@ -100,7 +136,7 @@ case $1 in
 
     exitnode=$(jq -r '.Peer[]? | select(.ExitNode == true).DNSName | split(".")[0]' <<<"$status_json")
 
-    jq -nc --arg txt " exit-node: ${exitnode:-none}" --arg tip "$self"$'\n'"$peers" \
+    jq -nc --arg txt " exit-node: ${exitnode:-none}" --arg tip "Tailnet: ""$tailnet"$'\n\n'"$self"$'\n'"$peers" \
       '{"text": $txt, "class": "connected", "alt": "connected", "tooltip": $tip}'
   else
     echo "{\"text\":\"\",\"class\":\"stopped\",\"alt\":\"stopped\", \"tooltip\": \"The VPN is not active.\"}"
@@ -111,5 +147,11 @@ case $1 in
   ;;
 --select-exit-node)
   select_exit_node
+  ;;
+--switch-tailnet)
+  switch_tailnet
+  ;;
+--menue)
+  menue
   ;;
 esac
