@@ -9,14 +9,18 @@ open = [
   { run = "kde-open \"$@\"", desc = "open" },
 ]
 xournalpp = [
-  { run = "xournalpp \"$@\"", desc = "xournal++" },
+  { run = "xournalpp \"$@\"", orphan = true, desc = "xournal++" },
 ]
 browser = [
   { run = "brave \"$@\"", desc = "browser" },
+]
+firefox = [
+  { run = "firefox \"$@\"", orphan = true, desc = "firefox" },
 ]
 
 [open]
 prepend_rules = [
   { url = "*.html", use = [ "browser", "edit" ] },
-  { url = "*.pdf", use = [ "xournalpp", "browser" ] },
+  { url = "*.pdf", use = [ "firefox","xournalpp", "browser" ] },
+  { url = "*.tex", use = [ "edit" ] },
 ]
