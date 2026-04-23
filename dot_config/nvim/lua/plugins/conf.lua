@@ -11,8 +11,8 @@ end
 return {
 
   -- older vim-Platformio-Plugin, old but good; https://github.com/normen/vim-pio
-  { "normen/vim-pio" },
-  { "skywind3000/asyncrun.vim" }, -- async compile/make for platformio
+  -- { "normen/vim-pio" },
+  -- { "skywind3000/asyncrun.vim" }, -- async compile/make for platformio
 
   -- newer nvim-Platformio-Plugin, but with some bugs; https://github.com/anurag3301/nvim-platformio.lua
   --{
