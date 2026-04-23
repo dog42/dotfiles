@@ -33,10 +33,3 @@ done
 
 {{ end -}}
 
-if [ -d "$HOME/.oh-my-zsh" ]; then
-    prompt "Oh-My-Zsh is already installed"
-else
-    prompt "install Oh-My-Zsh"
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-fi
-# chsh -s /usr/bin/zsh
