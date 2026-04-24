@@ -16,7 +16,7 @@ install TexLive
 
 install TexLive "Full"
 
-`sudo pacman -S texlive-basic texlive-latexextra texlive-fontsrecommended texlive-fontsextra texlive-langgerman texlive-luatex texlive-bibtexextra texlive-pictures`
+`sudo pacman -S texlive-basic texlive-latexextra texlive-fontsrecommended texlive-fontsextra texlive-langgerman texlive-luatex texlive-bibtexextra texlive-pictures biber`
 
 install zathura for pdf preview ()
 

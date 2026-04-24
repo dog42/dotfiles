@@ -53,6 +53,7 @@ return {
       -- 2. Compiler auf LuaLaTeX umstellen
       vim.g.vimtex_compiler_method = "latexmk"
       vim.g.vimtex_compiler_latexmk = {
+        executable = "latexmk",
         options = {
           "-shell-escape",
           "-verbose",
@@ -62,6 +63,11 @@ return {
           "-lualatex", -- Hier erzwingen wir LuaLaTeX
         },
       }
+
+      -- Setzt den PDF-Modus auf 4 (LuaLaTeX)
+      vim.g.vimtex_compiler_latexmk = vim.tbl_extend("force", vim.g.vimtex_compiler_latexmk, {
+        pdf_mode = 4, -- 4 entspricht LuaLaTeX
+      })
 
       -- 3. Automatisches Öffnen des Viewers nach dem ersten Kompilieren
       vim.g.vimtex_view_forward_search_on_start = true
