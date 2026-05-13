@@ -1,3 +1,5 @@
+"$schema" = "https://yazi-rs.github.io/schemas/theme.json"
+
 # vim:fileencoding=utf-8:foldmethod=marker
 
 # : Manager {{{
@@ -30,12 +32,14 @@ border_style = { fg = "#a7a7a7" }
 
 # : }}}
 
+
 # : Indicator {{{
 
 [indicator]
 padding = { open = "", close = "" }
 
 # : }}}
+
 
 # : Tabs {{{
 
@@ -48,6 +52,7 @@ sep_inner = { open = "", close = "" }
 sep_outer = { open = "", close = "" }
 
 # : }}}
+
 
 # : Mode {{{
 
@@ -64,6 +69,7 @@ unset_main = { fg = "#121212", bg = "#D87C4A", bold = true }
 unset_alt = { fg = "#D87C4A", bg = "#212121" }
 
 # : }}}
+
 
 # : Status bar {{{
 
@@ -85,6 +91,7 @@ perm_exec = { fg = "#c53030", bold = true }
 
 # : }}}
 
+
 # : Pick {{{
 
 [pick]
@@ -93,6 +100,7 @@ active = { fg = "#DF6464", bold = true }
 inactive = {}
 
 # : }}}
+
 
 # : Input {{{
 
@@ -104,12 +112,14 @@ selected = { reversed = true }
 
 # : }}}
 
+
 # : Completion {{{
 
 [cmp]
 border = { fg = "#c53030" }
 
 # : }}}
+
 
 # : Tasks {{{
 
@@ -119,6 +129,7 @@ title = {}
 hovered = { fg = "#d5d5d5", underline = true }
 
 # : }}}
+
 
 # : Which {{{
 
@@ -133,6 +144,7 @@ separator_style = { fg = "#c53030" }
 
 # : }}}
 
+
 # : Help {{{
 
 [help]
@@ -144,6 +156,7 @@ footer = { fg = "#e5e5e5", bg = "#121212" }
 
 # : }}}
 
+
 # : Notify {{{
 
 [notify]
@@ -153,34 +166,38 @@ title_error = { fg = "#C53030" }
 
 # : }}}
 
+
 # : Spotter {{{
 
 [spot]
 border = { fg = "#C4693D" }
-title = {}
+title  = {}
 
 # Table
 tbl_cell = { fg = "#d5d5d5", reversed = true }
-tbl_col = {}
+tbl_col  = {}
 
 # : }}}
+
 
 # : Confirmation {{{
 
 [confirm]
-border = { fg = "#C4693D" }
-title = {}
+border     = { fg = "#C4693D" }
+title      = {}
 
-list = {}
-btn_yes = { reversed = true }
-btn_no = {}
-btn_labels = [" [Y]es  ", "  (N)o  "]
+list       = {}
+btn_yes    = { reversed = true }
+btn_no     = {}
+btn_labels = [ " [Y]es  ", "  (N)o  " ]
 
 # : }}}
+
 
 # : File-specific styles {{{
 
 [filetype]
+
 rules = [
   # Images
   { mime = "image/*", fg = "#E49A44" },
@@ -197,9 +214,14 @@ rules = [
   # Fallback
   { url = "*", fg = "#d5d5d5" },
   { url = "*/", fg = "#c53030" },
+
+  # TODO: remove (changed in 26.1.4)
+  { name = "*", fg = "#d5d5d5" },
+  { name = "*/", fg = "#c53030" },
 ]
 
 # : }}}
+
 [icon]
 dirs  = [
 	{ name = ".config", text = "", fg = "#c53030" },
