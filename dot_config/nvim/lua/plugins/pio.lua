@@ -10,18 +10,19 @@ return {
       clangd_source = "ccls", -- value: ccls | compiledb, For detailed explation check :help platformio-clangd_source
       menu_key = "\\", -- replace this menu key  to your convenience
       debug = false, -- enable debug messages
+      menu_name = "RUN",
       menu_bindings = {
         {
           node = "menu",
-          desc = "[M]ain",
+          desc = "Main PlatformIO",
           shortcut = "m",
           items = {
-            { node = "item", desc = "[M]ake", shortcut = "m", command = "Piocmdf run" },
-            { node = "item", desc = "[U]pload", shortcut = "u", command = "Piocmdf run -t upload" },
-            { node = "item", desc = "[P]rompt", shortcut = "p", command = "Piocmdh run -t monitor" },
-            { node = "item", desc = "[C]lean", shortcut = "c", command = "Piocmdf run -t clean" },
-            { node = "item", desc = "[F]ull clean", shortcut = "f", command = "Piocmdf run -t fullclean" },
-            { node = "item", desc = "[D]evice list", shortcut = "d", command = "Piocmdf device list" },
+            { node = "item", desc = "Make", shortcut = "m", command = "Piocmdf run" },
+            { node = "item", desc = "Upload", shortcut = "u", command = "Piocmdf run -t upload" },
+            { node = "item", desc = "Prompt", shortcut = "p", command = "Piocmdh run -t monitor" },
+            { node = "item", desc = "Clean", shortcut = "c", command = "Piocmdf run -t clean" },
+            { node = "item", desc = "Full clean", shortcut = "f", command = "Piocmdf run -t fullclean" },
+            { node = "item", desc = "Device list", shortcut = "d", command = "Piocmdf device list" },
           },
         },
       },
