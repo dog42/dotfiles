@@ -15,8 +15,8 @@
     "cpu",
     "battery#0",
     "battery#1"
-
   ],
+
   // "hyprland/workspaces": {
   //   "on-click": "activate",
   //   "format": "{icon}{name}{icon}",
@@ -42,6 +42,13 @@
   //   // }
   // },
 
+  "clock": {
+    "format": "{:L%A %H:%M}",
+    "format-alt": "{:L%d %B W%V %Y}",
+    "tooltip": false,
+    "on-click-right": ""
+  },
+
   "custom/update": {
     "format": "",
     "exec": "chezmoi_update_available",
@@ -51,34 +58,33 @@
     "interval": 3600
   },
 
-  "custom/tailscale" : {
-    "exec": "~/.config/waybar/waybar-tailscale/waybar-tailscale.sh --status ipv4",
-    "on-click": "exec ~/.config/waybar/waybar-tailscale/waybar-tailscale.sh --toggle",
-    "on-click-right": "exec ~/.config/waybar/waybar-tailscale/waybar-tailscale.sh --menue",
-    "exec-on-event": true,
-    "format": " ",
-    // uncomment if you want icons, don't use with tailscale.css
-    //"format": " VPN {icon}"
-    // "format-icons": {
-    //     "connected": "󱠾 󰕥 ",
-    //     "stopped": "󱠾  "
-    // },
-    "tooltip": true,
-    "return-type": "json",
-    "interval": 1,
+  "group/tray-expander": {
+    "orientation": "inherit",
+    "drawer": {
+      "transition-duration": 600,
+      "children-class": "tray-group-item"
+    },
+    "modules": ["custom/expand-icon", "tray"]
   },
 
-  "cpu": {
-    "interval": 5,
-    "format": "󰍛",
-    "on-click": "$TERMINAL -e btop"
+  "custom/expand-icon": {
+    "format": " ",
+    "tooltip": false
   },
-  "clock": {
-    "format": "{:L%A %H:%M}",
-    "format-alt": "{:L%d %B W%V %Y}",
-    "tooltip": false,
-    "on-click-right": ""
+
+  "tray": {
+    "icon-size": 12,
+    "spacing": 12
   },
+
+  "bluetooth": {
+    "format": "",
+    "format-disabled": "󰂲",
+    "format-connected": "",
+    "tooltip-format": "Devices connected: {num_connections}",
+    "on-click": "$TERMINAL -e bluetui"
+  },
+
   "network": {
     "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
     "format": "{icon}",
@@ -92,77 +98,24 @@
     "spacing": 1,
     "on-click": "$TERMINAL -e impala"
   },
- 
-  // "battery": {
-  //   "format": "{capacity}% {icon}",
-  //   "format-discharging": "{icon}",
-  //   "format-charging": "{icon}",
-  //   "format-plugged": "",
-  //   "format-icons": {
-  //     "charging": ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"],
-  //     "default": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
-  //   },
-  //   "format-full": "󰂅",
-  //   "tooltip-format-discharging": "{power:>1.0f}W↓ {capacity}%",
-  //   "tooltip-format-charging": "{power:>1.0f}W↑ {capacity}%",
-  //   "interval": 5,
-  //   "on-click": "omarchy-menu power",
-  //   "states": {
-  //     "warning": 20,
-  //     "critical": 10
-  //   }
-  // },
 
-"battery#0": {
-  "bat": "BAT0",
-  "format": "{icon}",
-  "format-discharging": "{icon}",
-  "format-charging": "{icon}",
-  "format-plugged": "",
-  "format-icons": {
-    "charging": ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"],
-    "default": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+  "custom/tailscale": {
+    "exec": "~/.config/waybar/waybar-tailscale/waybar-tailscale.sh --status ipv4",
+    "on-click": "exec ~/.config/waybar/waybar-tailscale/waybar-tailscale.sh --toggle",
+    "on-click-right": "exec ~/.config/waybar/waybar-tailscale/waybar-tailscale.sh --menue",
+    "exec-on-event": true,
+    "format": " ",
+    // uncomment if you want icons, don't use with tailscale.css
+    //"format": " VPN {icon}"
+    // "format-icons": {
+    //     "connected": "󱠾 󰕥 ",
+    //     "stopped": "󱠾  "
+    // },
+    "tooltip": true,
+    "return-type": "json",
+    "interval": 1
   },
-  "format-full": "󰂅",
-  "tooltip-format": "INT {capacity}%",
-  "tooltip-format-discharging": "INT {power:>1.0f}W↓ {capacity}%",
-  "tooltip-format-charging": "INT {power:>1.0f}W↑ {capacity}%",
-  "interval": 5,
-  "on-click": "$TERMINAL -e battop",
-  "states": {
-    "warning": 20,
-    "critical": 10
-  }
-},
-"battery#1": {
-  "bat": "BAT1",
-  "format": "{icon}",
-  "format-discharging": "{icon}",
-  "format-charging": "{icon}",
-  "format-plugged": "",
-  "format-icons": {
-    "charging": ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"],
-    "default": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
-  },
-  "format-full": "󰂅",
-  "tooltip-format": "EXT {capacity}%",
-  "tooltip-format-discharging": "EXT {power:>1.0f}W↓ {capacity}%",
-  "tooltip-format-charging": "EXT {power:>1.0f}W↑ {capacity}%",
-  "interval": 5,
-  "on-click": "$TERMINAL -e battop",
-  "states": {
-    "warning": 20,
-    "critical": 10
-  }
-},
 
-  "bluetooth": {
-    "format": "",
-    "format-disabled": "󰂲",
-    "format-connected": "",
-    "tooltip-format": "Devices connected: {num_connections}",
-    "on-click": "$TERMINAL -e bluetui"
-  },
   "pulseaudio": {
     "format": "{icon}",
     "on-click": "$TERMINAL --class=Wiremix -e wiremix",
@@ -174,20 +127,54 @@
       "default": ["", "", ""]
     }
   },
-  "group/tray-expander": {
-    "orientation": "inherit",
-    "drawer": {
-      "transition-duration": 600,
-      "children-class": "tray-group-item"
+
+  "cpu": {
+    "interval": 5,
+    "format": "󰍛",
+    "on-click": "$TERMINAL -e btop"
+  },
+
+  "battery#0": {
+    "bat": "BAT0",
+    "format": "{icon}",
+    "format-discharging": "{icon}",
+    "format-charging": "{icon}",
+    "format-plugged": "",
+    "format-icons": {
+      "charging": ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"],
+      "default": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
     },
-    "modules": ["custom/expand-icon", "tray"]
+    "format-full": "󰂅",
+    "tooltip-format": "INT {capacity}%",
+    "tooltip-format-discharging": "INT {power:>1.0f}W↓ {capacity}%",
+    "tooltip-format-charging": "INT {power:>1.0f}W↑ {capacity}%",
+    "interval": 5,
+    "on-click": "$TERMINAL -e battop",
+    "states": {
+      "warning": 20,
+      "critical": 10
+    }
   },
-  "custom/expand-icon": {
-    "format": " ",
-    "tooltip": false
-  },
-  "tray": {
-    "icon-size": 12,
-    "spacing": 12
+
+  "battery#1": {
+    "bat": "BAT1",
+    "format": "{icon}",
+    "format-discharging": "{icon}",
+    "format-charging": "{icon}",
+    "format-plugged": "",
+    "format-icons": {
+      "charging": ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"],
+      "default": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+    },
+    "format-full": "󰂅",
+    "tooltip-format": "EXT {capacity}%",
+    "tooltip-format-discharging": "EXT {power:>1.0f}W↓ {capacity}%",
+    "tooltip-format-charging": "EXT {power:>1.0f}W↑ {capacity}%",
+    "interval": 5,
+    "on-click": "$TERMINAL -e battop",
+    "states": {
+      "warning": 20,
+      "critical": 10
+    }
   }
 }
