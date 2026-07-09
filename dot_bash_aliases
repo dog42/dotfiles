@@ -1,7 +1,7 @@
 # allgemein nuetzliche aliase
 
 alias reboot='echo "Better Shutdown and Restart!"'
-alias i='fastfetch'
+alias i='fastfetch --logo ~/.config/logo.txt --logo-color-1 red --color red'
 
 alias sudo='sudo -E '
 
