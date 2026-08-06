@@ -7,20 +7,30 @@
 -- and leave the markers.
 -- <<<<< TUI AUTO START
 hl.monitor({
-    output = "desc:Dell Inc. DELL U2412M 0FFXD38H118S",
-    mode = "1920x1200@59.95000",
-    position = "0x0",
+    output = "desc:AU Optronics 0x683D",
+    mode = "1920x1080@60.04900",
+    position = "3840x1440",
+    scale = "1.50000000",
+    transform = 0,
+    vrr = 0
+})
+
+hl.monitor({
+    output = "desc:Lenovo Group Limited P27q-20 V90CXKKK",
+    mode = "2560x1440@59.95100",
+    position = "3840x0",
     scale = "1.00000000",
     transform = 0,
     vrr = 0
 })
 
 hl.monitor({
-    output = "desc:GIGA-BYTE TECHNOLOGY CO. LTD. M27Q 20400B002445",
-    mode = "2560x1440@59.94000",
-    position = "1920x0",
+    output = "desc:Lenovo Group Limited P27q-20 V90CXKKL",
+    mode = "2560x1440@59.95100",
+    position = "1280x0",
     scale = "1.00000000",
     transform = 0,
     vrr = 0
 })
+
 -- <<<<< TUI AUTO END
