@@ -25,6 +25,7 @@ alias htop='btop'
 alias top='btop'
 alias ..='cd .. ; ls -l'
 alias aus='sudo shutdown -h now'
+[ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
 alias mountimg='sudo kpartx -a'
 alias umountimg='sudo kpartx -d'
 #ntmux='tmux attach-session -t CLI 2> /dev/null || (tmux new-session -d -s CLI && tmux split-window -h -t CLI && tmux attach-session -t CLI)'
