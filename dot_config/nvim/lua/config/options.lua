@@ -3,3 +3,8 @@
 -- Add any additional options here
 vim.g.root_spec = { "cwd" }
 vim.opt.clipboard = "unnamedplus"
+
+-- Rechtschreibprüfung für Deutsch und Englisch aktivieren
+vim.opt.spelllang = { "de", "en" }
+vim.opt.spell = true
+

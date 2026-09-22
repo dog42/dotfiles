@@ -24,3 +24,27 @@ vim.keymap.set("n", "<Leader>wl", "<C-w>l", { desc = "Fenster rechts" })
 
 -- Das generische Wechseln mit Space + w + w
 vim.keymap.set("n", "<Leader>ww", "<C-w>w", { desc = "Nächstes Fenster" })
+
+-- Rechtschreibprüfung Korrekturvorschläge auf 'zz' legen (Nutzt vim.ui.select Popup-Menü von LazyVim)
+vim.keymap.set("n", "zz", function()
+  local badword = vim.fn.spellbadword()[1]
+  local word = badword ~= "" and badword or vim.fn.expand("<cword>")
+  if word == "" then
+    return
+  end
+  local suggestions = vim.fn.spellsuggest(word)
+  if #suggestions == 0 then
+    vim.notify("Keine Vorschläge für '" .. word .. "'", vim.log.levels.INFO)
+    return
+  end
+  vim.ui.select(suggestions, {
+    prompt = "Korrekturvorschläge für '" .. word .. "':",
+  }, function(selected, idx)
+    if selected and idx then
+      vim.cmd("normal! " .. idx .. "z=")
+    end
+  end)
+end, { desc = "Rechtschreibprüfung Vorschläge (Popup)" })
+
+
+
