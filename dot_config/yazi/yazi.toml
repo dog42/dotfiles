@@ -1,24 +1,24 @@
 [opener]
 edit = [
-  { run = 'nvim "%s"', block = true, for = "unix" },
+  { run = 'nvim %s', block = true, for = "unix" },
 ]
 play = [
-  { run = 'mpv "%s1"', orphan = true, for = "unix" },
+  { run = 'mpv %s', orphan = true, for = "unix" },
 ]
 open = [
-  { run = 'xdg-open "%s1"', desc = "open" },
+  { run = 'xdg-open %s1', desc = "open" },
 ]
 okular = [
-  { run = 'okular "%s1"', orphan = true, desc = "okular" },
+  { run = 'okular %s1', orphan = true, desc = "okular" },
 ]
 xournalpp = [
-  { run = 'xournalpp "%s1"', orphan = true, desc = "xournal++" },
+  { run = 'xournalpp %s1', orphan = true, desc = "xournal++" },
 ]
 browser = [
-  { run = 'brave "%s1"', desc = "browser" },
+  { run = 'brave %s1', desc = "browser" },
 ]
 firefox = [
-  { run = 'firefox "%s1"', orphan = true, desc = "firefox" },
+  { run = 'firefox %s1', orphan = true, desc = "firefox" },
 ]
 
 [open]
