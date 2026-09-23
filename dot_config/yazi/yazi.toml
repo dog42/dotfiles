@@ -24,6 +24,6 @@ firefox = [
 [open]
 prepend_rules = [
   { url = "*.html", use = [ "browser", "edit" ] },
-  { url = "*.pdf", use = [ "okular", "firefox", "xournalpp", "browser" ] },
+  { url = "*.pdf", use = [ "firefox", "xournalpp", "browser" ] },
   { url = "*.tex", use = [ "edit" ] },
 ]
