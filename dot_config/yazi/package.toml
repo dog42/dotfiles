@@ -1,7 +1,7 @@
 [[plugin.deps]]
-use = "XYenon/clipboard"
-rev = "0ac0320"
-hash = "f80172438b4b5c31e94d6c891f734445"
+use = "ENEmyr/wayclip"
+rev = "5310642"
+hash = "9e2e54ffcb6a79e86b3bd8f14e0f3478"
 
 [[flavor.deps]]
 use = "ficd0/ashen:ashen"

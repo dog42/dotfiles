@@ -1,9 +1,18 @@
-# Copy yanked files to the system clipboard
-[[mgr.prepend_keymap]]
-on  = "y"
-run = [ "yank", 'plugin clipboard -- --action=copy' ]
 
-# Paste files from the system clipboard into the current directory
+# ── wayclip ──────────────────────────────────────────────
+
+# ── wayclip ──────────────────────────────────────────────
 [[mgr.prepend_keymap]]
-on  = "p"
-run = [ 'plugin clipboard -- --action=paste' ]
+on   = "y"
+run  = [ "yank", "plugin wayclip" ]
+desc = "Yank selected files (also to system clipboard)"
+
+[[mgr.prepend_keymap]]
+on   = "x"
+run  = [ "yank --cut", "plugin wayclip" ]
+desc = "Cut selected files (also to system clipboard)"
+
+[[mgr.prepend_keymap]]
+on   = "<C-p>"
+run  = "plugin wayclip paste"
+desc = "Paste files from system clipboard"

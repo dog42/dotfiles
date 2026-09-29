@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+YAZI_CONFIG="${YAZI_CONFIG_HOME:-$HOME/.config/yazi}"
+KEYMAP="$YAZI_CONFIG/keymap.toml"
+PLUGINS_DIR="$YAZI_CONFIG/plugins"
+
+# ─── 1. wl-clipboard prüfen ───────────────────────────────────────────────────
+if ! command -v wl-copy &>/dev/null || ! command -v wl-paste &>/dev/null; then
+  echo "✘ wl-clipboard nicht gefunden."
+  echo "  Arch:   sudo pacman -S wl-clipboard"
+  echo "  Debian: sudo apt install wl-clipboard"
+  exit 1
+fi
+echo "✔ wl-clipboard vorhanden."
+
+# ─── 2. Altes Plugin entfernen (package.toml + Ordner) ───────────────────────
+echo "→ Entferne XYenon/clipboard …"
+ya pkg delete XYenon/clipboard 2>/dev/null || true
+rm -rf "$PLUGINS_DIR/clipboard.yazi"
+echo "  → Ordner $PLUGINS_DIR/clipboard.yazi entfernt (falls vorhanden)."
+
+# ─── 3. Alte Clipboard-Keybindings aus keymap.toml entfernen ─────────────────
+if [[ -f "$KEYMAP" ]] && grep -q 'clipboard' "$KEYMAP"; then
+  awk '
+    /^\[\[mgr\.prepend_keymap\]\]/ {
+        if (in_block && !has_wayclip && has_clipboard) {
+            in_block=0; buf=""
+        }
+        in_block=1; has_clipboard=0; has_wayclip=0; buf=""
+    }
+    in_block {
+        buf = buf $0 "\n"
+        if ($0 ~ /clipboard/) has_clipboard=1
+        if ($0 ~ /wayclip/)   has_wayclip=1
+    }
+    !in_block { print }
+    END {
+        if (in_block && !(has_wayclip && has_clipboard)) print buf
+    }
+    ' "$KEYMAP" >"${KEYMAP}.tmp" && mv "${KEYMAP}.tmp" "$KEYMAP"
+  echo "→ Alte Clipboard-Keybindings entfernt."
+else
+  echo "→ Keine alten Clipboard-Keybindings gefunden."
+fi
+
+# ─── 4. wayclip installieren ─────────────────────────────────────────────────
+echo "→ Installiere ENEmyr/wayclip …"
+ya pkg add ENEmyr/wayclip 2>/dev/null || echo "  (bereits installiert)"
+
+# ─── 5. Keybindings anhängen (idempotent) ────────────────────────────────────
+mkdir -p "$YAZI_CONFIG"
+touch "$KEYMAP"
+
+if ! grep -q "plugin wayclip" "$KEYMAP"; then
+  cat >>"$KEYMAP" <<'EOF'
+
+# ── wayclip ──────────────────────────────────────────────
+[[mgr.prepend_keymap]]
+on   = "y"
+run  = [ "yank", "plugin wayclip" ]
+desc = "Yank selected files (also to system clipboard)"
+
+[[mgr.prepend_keymap]]
+on   = "x"
+run  = [ "yank --cut", "plugin wayclip" ]
+desc = "Cut selected files (also to system clipboard)"
+
+[[mgr.prepend_keymap]]
+on   = "<C-p>"
+run  = "plugin wayclip paste"
+desc = "Paste files from system clipboard"
+EOF
+  echo "→ Keybindings nach $KEYMAP geschrieben."
+else
+  echo "→ Keybindings bereits vorhanden, übersprungen."
+fi
+
+echo ""
+echo "✔ Yazi-Clipboard-Migration fertig. Yazi neu starten."
