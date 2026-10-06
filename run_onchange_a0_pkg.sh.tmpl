@@ -12,23 +12,19 @@ prompt "LET'S GO..."
 
 pkg="arandr bat brave btop cmake curl dunst fzf git localsend npm nvim python3 sshfs tmux udiskie yazi zsh"
 
-arch_pkg="yay downgrade hyprland hyprpaper xdg-desktop-portal-hyprland hyprshutdown hyprlock hypridle hyprshot waybar walker elephant elephant-providerlist elephant-desktopapplications elephant-files elephant-runner elephant-websearch elephant-calc elephant-clipboard elephant-symbols wiremix bluetui impala battop qrencode hyprdynamicmonitors-bin"
-deb_pkg=""
+arch_pkg="yay downgrade hyprland hyprpaper xdg-desktop-portal-hyprland hyprshutdown hyprlock hypridle hyprshot waybar walker elephant elephant-providerlist elephant-desktopapplications elephant-files elephant-runner elephant-websearch elephant-calc elephant-clipboard elephant-symbols wiremix bluetui impala battop qrencode hyprmoncfg-bin"
+
+rm_pkg="hyprdynamicmonitors-bin"
 
 {{ if eq .chezmoi.osRelease.id "arch" "cachyos" -}}
 
 prompt "ARCH BTW"
 sudo pacman -Sy
 for app in $arch_pkg $pkg; do
-  (sudo pacman -S --noconfirm --needed $app >/dev/null && echo -e "${GREEN}DONE PACMAN${NC} install $app") || (yay -S --noconfirm --needed $app >/dev/null && echo -e "${GREEN}DONE YAY${NC} install $app") || aecho -e "${RED}ERROR${NC} install $app"
+  (sudo pacman -S --noconfirm --needed $app >/dev/null && echo -e "${GREEN}INSTALL DONE PACMAN${NC} install $app") || (yay -S --noconfirm --needed $app >/dev/null && echo -e "${GREEN}INSTALL DONE YAY${NC} install $app") || echo -e "${RED}ERROR${NC} install $app"
 done
-
-{{ else if eq .chezmoi.osRelease.id "debian" -}}
-
-prompt "DEBIAN"
-sudo apt update
-for app in $deb_pkg $pkg; do
-  (sudo apt-get install -y $prog >/dev/null && echo -e "${GREEN}DONE${NC} install $prog") || echo -e "${RED}ERROR${NC} install $prog"
+for app in $rm_pkg; do
+  (sudo pacman -Rns --noconfirm --needed $app >/dev/null && echo -e "${GREEN}REMOVE DONE PACMAN${NC} remove $app") || (yay -Rns --noconfirm --needed $app >/dev/null && echo -e "${GREEN}REMOVE DONE YAY${NC} remove $app") || echo -e "${RED}ERROR${NC} $app not installed"
 done
 
 {{ end -}}

@@ -78,3 +78,7 @@ fi
 
 echo ""
 echo "✔ Yazi-Clipboard-Migration fertig. Yazi neu starten."
+
+echo ""
+echo "### remove hyprdynamicmonitors folder"
+rm -rf $HOME/.config/hyprdynamicmonitors/
