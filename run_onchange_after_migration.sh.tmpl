@@ -64,10 +64,10 @@ ya pkg add ENEmyr/wayclip 2>/dev/null || echo "  (bereits installiert)"
 mkdir -p "$YAZI_CONFIG"
 touch "$KEYMAP"
 
+# ── wayclip ──────────────────────────────────────────────
 if ! grep -q "plugin wayclip" "$KEYMAP"; then
   cat >>"$KEYMAP" <<'EOF'
 
-# ── wayclip ──────────────────────────────────────────────
 [[mgr.prepend_keymap]]
 on   = "y"
 run  = [ "yank", "plugin wayclip" ]
