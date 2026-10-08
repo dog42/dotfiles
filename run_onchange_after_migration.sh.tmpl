@@ -1,5 +1,17 @@
 #!/usr/bin/env bash
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
+prompt() {
+  echo -e "\n$RED>>>$NC $*"
+}
+
+prompt "check YAZI clipboard
+
 set -euo pipefail
+
 
 YAZI_CONFIG="${YAZI_CONFIG_HOME:-$HOME/.config/yazi}"
 KEYMAP="$YAZI_CONFIG/keymap.toml"
@@ -79,6 +91,9 @@ fi
 echo ""
 echo "✔ Yazi-Clipboard-Migration fertig. Yazi neu starten."
 
-echo "#####################################"
+prompt "rm hyprdynamicmonitors folder"
 echo "### remove hyprdynamicmonitors folder"
-rm -rf $HOME/.config/hyprdynamicmonitors/
+rm -rf $HOME/.config/hyprdynamicmonitors
+
+prompt "ALL DONE !"
+read -p "Press [Enter] to continue or Ctrl+C to abort ;P "
