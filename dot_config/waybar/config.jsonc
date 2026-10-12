@@ -4,7 +4,7 @@
   "position": "top",
   "spacing": 0,
   "height": 26,
-  "modules-left": ["hyprland/workspaces"],
+  "modules-left": ["ext/workspaces"],
   "modules-center": ["clock", "custom/update"],
   "modules-right": [
     "group/tray-expander",
@@ -17,30 +17,10 @@
     "battery#1"
   ],
 
-  // "hyprland/workspaces": {
-  //   "on-click": "activate",
-  //   "format": "{icon}{name}{icon}",
-  //   "format-icons": {
-  //     "default": "",
-  //   //   "1": "1",
-  //   //   "2": "2",
-  //   //   "3": "3",
-  //   //   "4": "4",
-  //   //   "5": "5",
-  //   //   "6": "6",
-  //   //   "7": "7",
-  //   //   "8": "8",
-  //   //   "9": "9",
-  //     "active": "<span color='#ff0000'>|</span>"
-  //   },
-  //   // "persistent-workspaces": {
-  //   //   "1": [],
-  //   //   "2": [],
-  //   //   "3": [],
-  //   //   "4": [],
-  //   //   "5": []
-  //   // }
-  // },
+  // temp. Switches from hyprland/workspaces to ext/workspaces to bypass the IPC dispatch issue caused by Hyprland's Lua configuration in the stable Waybar release.
+  "ext/workspaces": {
+    "on-click": "activate",
+  },
 
   "clock": {
     "format": "{:L%A %H:%M}",
