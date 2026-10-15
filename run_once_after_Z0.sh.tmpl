@@ -13,13 +13,33 @@ prompt "symlink kb-layout 'gb_umlauts'"
 sudo ln -s $HOME/.config/xkb/gb_umlauts /usr/share/X11/xkb/symbols/gb_umlauts
 sudo ln -s $HOME/.config/xkb/us_umlauts /usr/share/X11/xkb/symbols/us_umlauts
 
-# IWD as wifi_backend
-prompt "set iwd as wifi backend"
-sudo pacman -S --noconfirm --needed linux-firmware iwd
+# IWD standalone (WLAN unabhängig von NetworkManager)
+prompt "set up standalone iwd"
+sudo pacman -S --noconfirm --needed linux-firmware iwd impala
 sudo systemctl disable wpa_supplicant
+
+# 1. Alte NM-Backend-Konfigurationen entfernen
+sudo rm -f /etc/NetworkManager/conf.d/wifi_backend.conf /etc/NetworkManager/conf.d/iwd.conf
+
+# 2. NetworkManager anweisen, WLAN-Geräte komplett zu ignorieren
+sudo mkdir -p /etc/NetworkManager/conf.d
+echo -e "[keyfile]\nunmanaged-devices=type:wifi" | sudo tee /etc/NetworkManager/conf.d/99-unmanaged-wifi.conf
+
+# 3. iwd für eigenständiges DHCP & DNS (via systemd-resolved) konfigurieren
+sudo mkdir -p /etc/iwd
+sudo rm -rf /etc/systemd/system/iwd.service.d
+sudo tee /etc/iwd/main.conf << 'EOF'
+[General]
+EnableNetworkConfiguration=true
+
+[Network]
+NameResolvingService=systemd
+EOF
+
+# 4. Dienste aktivieren und neu starten
+sudo systemctl daemon-reload
 sudo systemctl enable --now iwd
-echo -e "[device]\nwifi.backend=iwd" | sudo tee /etc/NetworkManager/conf.d/wifi_backend.conf
-sudo systemctl restart NetworkManager
+sudo systemctl restart NetworkManager iwd
 
 # install platformio
 prompt "install platformio"
