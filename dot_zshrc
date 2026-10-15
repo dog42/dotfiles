@@ -108,3 +108,5 @@ fi
 if [ -f ~/.bashfunc ]; then
     . ~/.bashfunc
 fi
+
+eval "$(zoxide init zsh)"
