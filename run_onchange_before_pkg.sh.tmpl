@@ -12,17 +12,19 @@ prompt "LET'S GO..."
 
 pkg="arandr bat brave btop cmake curl dunst fzf git localsend npm nvim python3 sshfs tmux udiskie yazi zsh zoxide"
 
-arch_pkg="yay downgrade hyprland hyprpaper xdg-desktop-portal-hyprland hyprshutdown hyprlock hypridle hyprshot waybar walker elephant elephant-providerlist elephant-desktopapplications elephant-files elephant-runner elephant-websearch elephant-calc elephant-clipboard elephant-symbols wiremix bluetui impala battop qrencode hyprmoncfg-bin"
+arch_pkg="yay downgrade hyprland hyprpaper xdg-desktop-portal-hyprland hyprshutdown hyprlock hypridle hyprshot waybar walker elephant elephant-providerlist elephant-desktopapplications elephant-files elephant-runner elephant-websearch elephant-calc elephant-clipboard elephant-symbols wiremix bluetui impala battop qrencode hyprmoncfg-bin seafile-client"
 
 rm_pkg="hyprdynamicmonitors-bin"
 
 {{ if eq .chezmoi.osRelease.id "arch" "cachyos" -}}
 
-prompt "ARCH BTW"
+prompt "INSTALL NEW PKGs"
 sudo pacman -Sy
 for app in $arch_pkg $pkg; do
   (sudo pacman -S --noconfirm --needed $app >/dev/null && echo -e "${GREEN}INSTALL DONE PACMAN${NC} install $app") || (yay -S --noconfirm --needed $app >/dev/null && echo -e "${GREEN}INSTALL DONE YAY${NC} install $app") || echo -e "${RED}ERROR${NC} install $app"
 done
+
+prompt "REMOVE OLD PKGs"
 for app in $rm_pkg; do
   (sudo pacman -Rns --noconfirm $app >/dev/null && echo -e "${GREEN}REMOVE DONE PACMAN${NC} remove $app") || (yay -Rns --noconfirm $app >/dev/null && echo -e "${GREEN}REMOVE DONE YAY${NC} remove $app") || echo -e "${RED}ERROR${NC} $app not installed"
 done
