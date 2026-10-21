@@ -43,5 +43,6 @@ Instead, perform **complete Analytical Reverse Engineering** by extracting exact
 2. **`<name>.step`:** Export via `final_solid.exportStep(...)`.
 3. **`<name>_fixed.stl`:** Export a clean mesh from the analytical solid via `MeshPart.meshFromShape(Shape=final_solid, LinearDeflection=0.03, AngularDeflection=0.08)`.
 
-## Reference Implementation
-See [/home/dock/stl_zu_freecad_workflow.md](file:///home/dock/stl_zu_freecad_workflow.md) for reusable helper functions (`make_plane_halfspace`, `make_rounded_poly_wire`, `fit_circle_2d`).
+## Reference Files & Helpers
+* Reusable helper functions (`make_plane_halfspace`, `make_rounded_poly_wire`, `fit_circle_2d`): [workflow_helpers.md](./references/workflow_helpers.md)
+* Complete working example script: [build_analytical_cad.py](./examples/build_analytical_cad.py)
