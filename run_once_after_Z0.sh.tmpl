@@ -36,10 +36,14 @@ EnableNetworkConfiguration=true
 NameResolvingService=systemd
 EOF
 
+# linking resolve of NetworkManager and systemd-resolved (magic DNS) 
+sudo ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
+
 # 4. Dienste aktivieren und neu starten
 sudo systemctl daemon-reload
 sudo systemctl enable --now iwd
-sudo systemctl restart NetworkManager iwd
+sudo systemctl restart NetworkManager iwd systemd-resolved
+sudo systemctl restart tailscaled
 
 # install platformio
 prompt "install platformio"
