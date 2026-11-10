@@ -23,6 +23,7 @@ return {
             { node = "item", desc = "Clean", shortcut = "c", command = "Piocmdh run -t clean" },
             { node = "item", desc = "Full clean", shortcut = "f", command = "Piocmdh run -t fullclean" },
             { node = "item", desc = "Device list", shortcut = "d", command = "Piocmdh device list" },
+            { node = "item", desc = "Init", shortcut = "i", command = "Pioinit" },
           },
         },
       },
