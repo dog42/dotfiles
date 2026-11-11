@@ -15,6 +15,10 @@ return {
         merge_override = {
           CursorLineNr = { "red_ember", "g_9" },
           LineNr = { "g_7", "background" },
+          Added = { "green_light", nil }, -- Neovim Standard Diff
+          ["@diff.plus"] = { "green_light", nil }, -- Treesitter Diff
+          DiffAdd = { "green_light", "g_9" }, -- Klassisches VimDiff
+          GitSignsAdd = { "green_light", nil }, -- Gitsigns (+ Symbol)
         },
       },
     },
