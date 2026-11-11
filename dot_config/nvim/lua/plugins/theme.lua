@@ -1,3 +1,5 @@
+local colors = require("config.colors")
+
 return {
   -- load colorscheme
   -- { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
@@ -6,10 +8,9 @@ return {
     "ficcdaf/ashen.nvim",
     opts = {
       colors = {
-        background = "#000000",
-        -- standard red colors
-        red_glowing = "#991111", -- Slightly deeper glowing red "#DF6464"
-        red_ember = "#cc1111", -- Deep, smoldering ember red "#B14242"
+        background = colors.background,
+        red_glowing = colors.red_glowing,
+        red_ember = colors.red_ember,
       },
       hl = {
         merge_override = {

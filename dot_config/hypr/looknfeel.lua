@@ -1,3 +1,5 @@
+local colors = require("colors")
+
 -- https://wiki.hypr.land/Configuring/Variables/#general
 hl.config({
     general = {
@@ -6,8 +8,8 @@ hl.config({
         border_size = 2,
         
         col = {
-            active_border = "rgba(ff0000ff)",
-            inactive_border = "rgba(595959aa)",
+            active_border = colors.active_border,
+            inactive_border = colors.inactive_border,
         },
         
         -- Set to true enable resizing windows by clicking and dragging on borders and gaps
@@ -32,7 +34,7 @@ hl.config({
             enabled = true,
             range = 4,
             render_power = 3,
-            color = "rgba(1a1a1aee)",
+            color = colors.shadow,
         },
         
         -- https://wiki.hypr.land/Configuring/Variables/#blur

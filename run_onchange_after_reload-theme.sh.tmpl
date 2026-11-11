@@ -1,0 +1,23 @@
+#!/bin/bash
+# Automatically reload desktop components when theme colors change
+# theme-colors.toml hash: {{ include ".chezmoidata/theme-colors.toml" | sha256sum }}
+
+# 1. Reload Hyprland configuration (updates borders and window shadows live)
+if command -v hyprctl >/dev/null 2>&1 && pidof Hyprland >/dev/null 2>&1; then
+    hyprctl reload >/dev/null 2>&1 || true
+fi
+
+# 2. Reload Dunst notifications (updates background and frame colors)
+if command -v dunstctl >/dev/null 2>&1 && pidof dunst >/dev/null 2>&1; then
+    dunstctl reload >/dev/null 2>&1 || true
+fi
+
+# 3. Reload Kitty terminal instances (SIGUSR1 triggers live config reload)
+if command -v killall >/dev/null 2>&1 && pidof kitty >/dev/null 2>&1; then
+    killall -SIGUSR1 kitty >/dev/null 2>&1 || true
+fi
+
+# 4. Restart Walker service so it immediately picks up new stylesheet
+if command -v pkill >/dev/null 2>&1 && pgrep walker >/dev/null 2>&1; then
+    pkill walker >/dev/null 2>&1 || true
+fi
