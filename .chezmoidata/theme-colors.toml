@@ -6,47 +6,47 @@ name = "ashen-dark"
 
 [colors]
 # Base Backgrounds (OLED Black concept)
-bg              = "#000000"  # Pure black (Terminal, Neovim, Xournal++)
-bg_surface      = "#161616"  # Cards, popovers, launcher, notifications (Dunst, Walker, Waybar tooltips)
-bg_alt          = "#212121"  # Module backgrounds, tabs, panels
-bg_subtle       = "#2c2c2c"  # Hover, selection, subtle highlights
+bg              = "#000000"  # Reines Tiefschwarz (Terminal-Hintergrund, Neovim, Xournal++)
+bg_surface      = "#161616"  # Anthrazit / Dunkelgrau für Karten, Benachrichtigungen (Dunst), Walker-Launcher, Waybar-Tooltips, Hyprlock-Feld
+bg_alt          = "#212121"  # Modul-Hintergründe, inaktive Reiter, Waybar-Leiste
+bg_subtle       = "#2c2c2c"  # Hover-Effekte, Selektionen im Terminal
 
 # Foregrounds & Text
-fg              = "#e5e5e5"  # Primary text (crisp ash white)
-fg_muted        = "#a7a7a7"  # Secondary text, subtext, captions
-fg_dim          = "#686868"  # Keybindings hints, disabled items
+fg              = "#e5e5e5"  # Aschweiß – Primärtext, Terminal-Vordergrund, Kitty-Cursor
+fg_muted        = "#a7a7a7"  # Gedämpftes Mittelgrau – Hyprlock-Text/Passwortpunkte, Sekundärtexte, Untertitel
+fg_dim          = "#686868"  # Dunkelgrau – Tastenkürzel-Hinweise, deaktivierte Elemente
 
 # Harmonious Ember Red Accents
-accent          = "#cc1111"  # Primary ember red (active window border, active workspace, cursor)
-accent_glow     = "#df6464"  # Glowing red (focus highlights, cursor glow, hover)
-accent_dim      = "#991111"  # Deep smoldering red (shadows, subtle accents)
-accent_bright   = "#ff2a2a"  # Alert / critical notifications
+accent          = "#cc1111"  # Primäres Glutrot – aktiver Fensterrahmen (Hyprland), aktive Workspaces, Yazi-Ordner-Icons, Tab-Hervorhebungen
+accent_glow     = "#e54228"  # Leuchtendes Scharlachrot / warmes Glutrot – Klickbare Terminal-Links (Kitty URL), Fokus-Effekte
+accent_dim      = "#991111"  # Dunkleres Glimmrot – dezente Schatten und Schattierungen
+accent_bright   = "#ff2a2a"  # Signalkräftiges Alarmrot – kritische Benachrichtigungen (Dunst urgency=critical)
 
 # Window Borders
-border_active   = "#cc1111"  # Focused window border
-border_inactive = "#3a3a3a"  # Unfocused window border
+border_active   = "#cc1111"  # Aktiver Hyprland-Fensterrahmen & aktiver Kitty-Rahmen (Glutrot)
+border_inactive = "#3a3a3a"  # Inaktive Fensterrahmen (dezentes Graphitgrau)
 
 # Status / Secondary accents (Harmonized with Ashen)
-success         = "#629c7d"  # Muted moss green (Git clean, Connected status)
-warning         = "#e49a44"  # Amber / warm yellow (Battery warning, pending updates)
-error           = "#c53030"  # Error red
-info            = "#4a8b8b"  # Muted teal / cyan (Hyprlock check, Git changes)
+success         = "#629c7d"  # Moosgrün – Git-Status clean / fehlerfreie Verbindungen
+warning         = "#e49a44"  # Bernstein / Warmes Gelborange – Warnungen, Akkuwarnung
+error           = "#c53030"  # Karminrot – Fehlermeldungen
+info            = "#54799e"  # Schieferblau – Hyprlock-Check, Git-Änderungen
 
-# 16-Color Terminal ANSI Palette (Kitty, Zsh Prompt & CLI tools)
+# 16-Color Terminal ANSI Palette (Kitty, Zsh Prompt & CLI tools wie agy)
 [colors.ansi]
-black           = "#161616"
-red             = "#cc1111"
-green           = "#629c7d"
-yellow          = "#e49a44"
-blue            = "#4a8b8b"
-magenta         = "#bd4c4c"
-cyan            = "#5b9e9e"
-white           = "#d5d5d5"
-bright_black    = "#3a3a3a"
-bright_red      = "#df6464"
-bright_green    = "#78b895"
-bright_yellow   = "#f0af5e"
-bright_blue     = "#63a8a8"
-bright_magenta  = "#d66565"
-bright_cyan     = "#75b8b8"
-bright_white    = "#ffffff"
+black           = "#161616"  # ANSI  0: Anthrazit-Schwarz (Hintergrundnahe CLI-Elemente)
+red             = "#cc1111"  # ANSI  1: Dunkles Glutrot (Git dirty, Fehler, Zsh-Prompt Rahmen/Prefix)
+green           = "#629c7d"  # ANSI  2: Moosgrün (Git clean, Erfolgsmeldungen)
+yellow          = "#e49a44"  # ANSI  3: Bernstein (Warnungen, Zahlen, CLI-Hinweise)
+blue            = "#e54228"  # ANSI  4: Warmes Glutrot/Scharlach (Klickbare Links in CLI-Tools wie agy/rich, Markdown-Hyperlinks)
+magenta         = "#bd4c4c"  # ANSI  5: Rubinrot gedämpft (Spezielle CLI-Identifier, Symbole)
+cyan            = "#e54228"  # ANSI  6: Warmes Glutrot/Scharlach (Pfade, Dateiverweise, alternative Link-Farbe)
+white           = "#d5d5d5"  # ANSI  7: Helles Aschgrau (Standard-Terminaltext normal)
+bright_black    = "#3a3a3a"  # ANSI  8: Graphitgrau (Kommentare, inaktiver Text)
+bright_red      = "#e54228"  # ANSI  9: Leuchtendes Glutrot (Zsh git-ahead/behind, hervorgehobene Warnungen)
+bright_green    = "#78b895"  # ANSI 10: Helles Frühlingsgrün (Git Clean Häkchen '✔', diff add)
+bright_yellow   = "#f0af5e"  # ANSI 11: Helles Bernstein/Gold (Hervorgehobene Parameter/Flags)
+bright_blue     = "#ff5e45"  # ANSI 12: Helles Scharlachrot (Aktive/fokussierte Links in CLIs)
+bright_magenta  = "#d66565"  # ANSI 13: Korallenrot (Konstanten, Regex-Treffer)
+bright_cyan     = "#ff5e45"  # ANSI 14: Helles Scharlachrot (Klickbare URLs & Markdown-Links)
+bright_white    = "#ffffff"  # ANSI 15: Reines Weiß (Fetter/hervorgehobener Text, Git-Branch-Name)

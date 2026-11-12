@@ -1,6 +1,6 @@
 #!/bin/bash
 
-repo="/home/$USER/.local/share/chezmoi"
+repo="${XDG_DATA_HOME:-$HOME/.local/share}/chezmoi"
 
 echo -e "chezmoi update available:\n"
 
