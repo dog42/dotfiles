@@ -8,8 +8,8 @@ play = [
 open = [
   { run = 'xdg-open %s1', desc = "open" },
 ]
-okular = [
-  { run = 'okular %s1', orphan = true, desc = "okular" },
+zathura = [
+  { run = 'zathura-tabbed %s1', orphan = true, desc = "zathura" },
 ]
 xournalpp = [
   { run = 'xournalpp %s1', orphan = true, desc = "xournal++" },
@@ -24,6 +24,6 @@ firefox = [
 [open]
 prepend_rules = [
   { url = "*.html", use = [ "browser", "edit" ] },
-  { url = "*.pdf", use = [ "firefox", "xournalpp", "browser" ] },
+  { url = "*.pdf", use = [  "zathura", "xournalpp", "firefox", "browser" ] },
   { url = "*.tex", use = [ "edit" ] },
 ]

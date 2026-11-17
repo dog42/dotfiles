@@ -37,6 +37,14 @@ hl.window_rule({
 	match = { class = "hyprland-run" },
 })
 
+-- Group Zathura PDF windows together into tabs
+-- HINWEIS: Zum Deaktivieren der automatischen Tab-Gruppierung einfach die nachfolgende
+-- hl.window_rule Regel auskommentieren (-- davor setzen). Manuelles Gruppieren mit SUPER + W bleibt möglich.
+hl.window_rule({
+	group = "set",
+	match = { class = "org\\.pwmt\\.zathura" },
+})
+
 hl.config({
 	input = {
 		touchdevice = {
@@ -54,4 +62,4 @@ hl.config({
 })
 
 -- Added by hyprmoncfg: its generated monitor rules load last, so nothing before this can override the applied layout.
-do local path = (os.getenv("XDG_CONFIG_HOME") or os.getenv("HOME") .. "/.config") .. "/hypr/hyprmoncfg-monitors.lua"; local file = io.open(path, "r"); if file then file:close(); dofile(path) end end
+do local path = os.getenv("HOME") .. "/.config/hypr/hyprmoncfg-monitors.lua"; local file = io.open(path, "r"); if file then file:close(); dofile(path) end end

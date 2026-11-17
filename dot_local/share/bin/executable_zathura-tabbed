@@ -1,0 +1,15 @@
+#!/bin/bash
+# Focus existing Zathura window on active workspace (if any)
+# so Hyprland's window rule automatically tabs the new PDF into it.
+hyprctl eval "
+local ws = hl.get_active_workspace()
+local wins = hl.get_windows()
+for _, w in ipairs(wins) do
+    if w.class == 'org.pwmt.zathura' and w.workspace and w.workspace.id == ws.id then
+        hl.dispatch(hl.dsp.focus({ window = 'address:' .. tostring(w.address) }))
+        break
+    end
+end
+" >/dev/null 2>&1 || true
+
+exec /usr/bin/zathura "$@"

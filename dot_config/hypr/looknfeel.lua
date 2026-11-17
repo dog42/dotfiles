@@ -65,7 +65,28 @@ hl.config({
     misc = {
         force_default_wallpaper = -1, -- Set to 0 or 1 to disable the anime mascot wallpapers
         disable_hyprland_logo = false, -- If true disables the random hyprland logo / anime girl background. :(
-    }
+    },
+
+    -- https://wiki.hypr.land/Configuring/Variables/#group
+    group = {
+        insert_after_current = true,
+        col = {
+            border_active = colors.active_border,
+            border_inactive = colors.inactive_border,
+        },
+        groupbar = {
+            enabled = true,
+            font_size = 10,
+            gradients = true,
+            render_titles = true,
+            height = 20,
+            col = {
+                active = colors.active_border,
+                inactive = colors.inactive_border,
+            },
+            text_color = "rgba(ffffffff)",
+        },
+    },
 })
 
 -- Curves

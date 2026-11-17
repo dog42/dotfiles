@@ -1,0 +1,15 @@
+# Zathura Configuration
+
+# Clean window title showing only filename (essential for tidy Hyprland tabbar titles)
+set window-title-basename true
+
+# Streamline UI for tiling / window manager tabs
+set guioptions "s"
+
+# System clipboard integration
+set selection-clipboard clipboard
+
+# Page layout & smooth scrolling
+set adjust-open "best-fit"
+set pages-per-row 1
+set scroll-step 50

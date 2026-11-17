@@ -32,6 +32,24 @@ hl.bind(
 	{ description = "gemeni/antigravity-cli" }
 )
 
+-- Window Groups / Tabs
+hl.bind("SUPER + W", hl.dsp.group.toggle(), { description = "toggle window group" })
+hl.bind("SUPER + tab", hl.dsp.group.next(), { description = "next tab in group" })
+hl.bind("SUPER + SHIFT + tab", hl.dsp.group.prev(), { description = "previous tab in group" })
+hl.bind("SUPER + SHIFT + W", hl.dsp.window.move({ out_of_group = true }), { description = "move window out of group" })
+
+-- Move window into group (or create group with neighbor)
+hl.bind("SUPER + ALT + left", hl.dsp.window.move({ into_or_create_group = "left" }), { description = "move window into group left" })
+hl.bind("SUPER + ALT + right", hl.dsp.window.move({ into_or_create_group = "right" }), { description = "move window into group right" })
+hl.bind("SUPER + ALT + up", hl.dsp.window.move({ into_or_create_group = "up" }), { description = "move window into group up" })
+hl.bind("SUPER + ALT + down", hl.dsp.window.move({ into_or_create_group = "down" }), { description = "move window into group down" })
+
+-- Move tab within groupbar (reorder tabs)
+hl.bind("SUPER + CTRL + tab", hl.dsp.group.move_window("r"), { description = "move tab right in group" })
+hl.bind("SUPER + CTRL + SHIFT + tab", hl.dsp.group.move_window("l"), { description = "move tab left in group" })
+hl.bind("SUPER + comma", hl.dsp.group.move_window("l"), { description = "move tab left in group" })
+hl.bind("SUPER + period", hl.dsp.group.move_window("r"), { description = "move tab right in group" })
+
 -- Screenshot
 hl.bind(
 	"SHIFT + PRINT",
