@@ -26,4 +26,6 @@ prepend_rules = [
   { url = "*.html", use = [ "browser", "edit" ] },
   { url = "*.pdf", use = [  "zathura", "xournalpp", "firefox", "browser" ] },
   { url = "*.tex", use = [ "edit" ] },
+  { url = "*.lua", use = [ "edit" ] },
+  { url = "*.toml", use = [ "edit" ] },
 ]
