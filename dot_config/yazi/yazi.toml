@@ -9,7 +9,7 @@ open = [
   { run = 'xdg-open %s1', desc = "open" },
 ]
 zathura = [
-  { run = 'zathura-tabbed %s1', orphan = true, desc = "zathura" },
+  { run = 'zathura %s1', orphan = true, desc = "zathura" },
 ]
 xournalpp = [
   { run = 'xournalpp %s1', orphan = true, desc = "xournal++" },
