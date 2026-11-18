@@ -76,6 +76,7 @@ hl.config({
         },
         groupbar = {
             enabled = true,
+            font_family = "JetBrainsMono Nerd Font",
             font_size = 10,
             gradients = true,
             render_titles = true,

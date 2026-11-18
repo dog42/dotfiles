@@ -12,12 +12,19 @@ if command -v dunstctl >/dev/null 2>&1 && pidof dunst >/dev/null 2>&1; then
     dunstctl reload >/dev/null 2>&1 || true
 fi
 
-# 3. Reload Kitty terminal instances (SIGUSR1 triggers live config reload)
-if command -v killall >/dev/null 2>&1 && pidof kitty >/dev/null 2>&1; then
-    killall -SIGUSR1 kitty >/dev/null 2>&1 || true
-fi
+# 3. Reload Kitty terminal instances (optional: disabled to prevent interrupting active agent session)
+# if command -v killall >/dev/null 2>&1 && pidof kitty >/dev/null 2>&1; then
+#     killall -SIGUSR1 kitty >/dev/null 2>&1 || true
+# fi
 
 # 4. Restart Walker service so it immediately picks up new stylesheet
 if command -v pkill >/dev/null 2>&1 && pgrep walker >/dev/null 2>&1; then
     pkill walker >/dev/null 2>&1 || true
+fi
+
+# 5. Synchronize GSettings / Desktop Portal interface fonts
+if command -v gsettings >/dev/null 2>&1; then
+    gsettings set org.gnome.desktop.interface font-name 'JetBrainsMono Nerd Font 10'
+    gsettings set org.gnome.desktop.interface document-font-name 'JetBrainsMono Nerd Font 10'
+    gsettings set org.gnome.desktop.interface monospace-font-name 'JetBrainsMono Nerd Font 10'
 fi
