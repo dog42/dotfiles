@@ -51,8 +51,8 @@ window#waybar {
 #custom-group-tabs {
   background-color: @surface;
   color: @foreground;
-  padding: 0 10px;
-  margin: 2px 6px;
+  padding: 0 7px;
+  margin: 2px 2px 2px 3px;
   border-radius: 4px;
   border: 1px solid @border_inactive;
   font-size: 11px;
@@ -60,6 +60,7 @@ window#waybar {
 
 #custom-group-tabs:hover {
   border-color: @accent;
+  color: #ffffff;
 }
 
 #custom-update,

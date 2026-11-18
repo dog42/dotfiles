@@ -4,8 +4,8 @@
   "position": "top",
   "spacing": 0,
   "height": 26,
-  "modules-left": ["ext/workspaces"],
-  "modules-center": ["custom/group-tabs", "clock", "custom/update"],
+  "modules-left": ["ext/workspaces", "custom/group-tabs"],
+  "modules-center": ["clock", "custom/update"],
   "modules-right": [
     "group/tray-expander",
     "bluetooth",

@@ -80,6 +80,9 @@ hl.config({
             gradients = true,
             render_titles = true,
             height = 20,
+            rounding = 3,
+            indicator_gap = 2,
+            gaps_in = 2,
             col = {
                 active = colors.active_border,
                 inactive = colors.inactive_border,
