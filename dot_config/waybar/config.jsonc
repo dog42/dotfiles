@@ -22,9 +22,9 @@
     "return-type": "json",
     "restart-interval": 2,
     "on-click": "/home/dock/.local/share/bin/waybar-group-tabs menu",
-    "on-click-right": "hyprctl dispatch changegroupactive f",
-    "on-scroll-up": "hyprctl dispatch changegroupactive f",
-    "on-scroll-down": "hyprctl dispatch changegroupactive b",
+    "on-click-right": "/home/dock/.local/share/bin/waybar-group-tabs next",
+    "on-scroll-up": "/home/dock/.local/share/bin/waybar-group-tabs next",
+    "on-scroll-down": "/home/dock/.local/share/bin/waybar-group-tabs prev",
     "tooltip": true
   },
 
