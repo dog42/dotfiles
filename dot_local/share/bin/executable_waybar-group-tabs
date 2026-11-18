@@ -2,7 +2,8 @@
 """
 waybar-group-tabs: Touch-friendly Hyprland group tab manager for Waybar.
 Provides:
-  - status: Waybar custom module JSON output with active tab title, index, and tooltip
+  - status: Single-shot JSON output for Waybar
+  - listen: Event-driven continuous stream via Hyprland socket2 for instant updates
   - menu: Dropdown menu (via wofi or walker) to switch tabs with a single tap
   - next / prev: Cycle through group tabs
 """
@@ -13,6 +14,7 @@ import json
 import re
 import subprocess
 import shutil
+import time
 
 def run_cmd(cmd):
     try:
@@ -21,21 +23,49 @@ def run_cmd(cmd):
     except Exception:
         return ""
 
-def get_hypr_data():
-    active_str = run_cmd(["hyprctl", "activewindow", "-j"])
-    if not active_str:
-        return None, {}
-    try:
-        active = json.loads(active_str)
-    except Exception:
-        return None, {}
+def get_current_workspace_id():
+    output_name = os.environ.get("WAYBAR_OUTPUT_NAME")
+    monitors_str = run_cmd(["hyprctl", "monitors", "-j"])
+    if monitors_str:
+        try:
+            monitors = json.loads(monitors_str)
+            if isinstance(monitors, list):
+                if output_name:
+                    for m in monitors:
+                        if m.get("name") == output_name:
+                            return m.get("activeWorkspace", {}).get("id")
+                for m in monitors:
+                    if m.get("focused"):
+                        return m.get("activeWorkspace", {}).get("id")
+                if monitors:
+                    return monitors[0].get("activeWorkspace", {}).get("id")
+        except Exception:
+            pass
 
-    grouped = active.get("grouped", [])
-    if not isinstance(grouped, list) or len(grouped) < 2:
-        return active, {}
+    ws_str = run_cmd(["hyprctl", "activeworkspace", "-j"])
+    if ws_str:
+        try:
+            ws = json.loads(ws_str)
+            return ws.get("id")
+        except Exception:
+            pass
+    return None
+
+def get_group_for_workspace(current_ws_id):
+    if current_ws_id is None:
+        return None, None, {}
+
+    active_str = run_cmd(["hyprctl", "activewindow", "-j"])
+    active = None
+    if active_str:
+        try:
+            active = json.loads(active_str)
+        except Exception:
+            active = None
 
     clients_str = run_cmd(["hyprctl", "clients", "-j"])
     clients_by_addr = {}
+    workspace_clients = []
     if clients_str:
         try:
             clients_list = json.loads(clients_str)
@@ -43,18 +73,32 @@ def get_hypr_data():
                 addr = c.get("address")
                 if addr:
                     clients_by_addr[addr] = c
+                if c.get("workspace", {}).get("id") == current_ws_id:
+                    workspace_clients.append(c)
         except Exception:
             pass
 
-    return active, clients_by_addr
+    # Priority 1: Active window is on current workspace and is grouped
+    if active:
+        active_ws = active.get("workspace", {}).get("id")
+        grouped = active.get("grouped", [])
+        if active_ws == current_ws_id and isinstance(grouped, list) and len(grouped) >= 2:
+            return active, grouped, clients_by_addr
+
+    # Priority 2: Check if any window on current workspace has a group
+    for c in workspace_clients:
+        grouped = c.get("grouped", [])
+        if isinstance(grouped, list) and len(grouped) >= 2:
+            return c, grouped, clients_by_addr
+
+    # No group on this workspace
+    return None, None, clients_by_addr
 
 def clean_title(title, win_class=""):
     if not title:
         return win_class or "Fenster"
-    # If title is a file path, extract basename
     if "/" in title:
         title = os.path.basename(title)
-    # Strip common browser / app suffixes
     for suffix in [
         " — Mozilla Firefox",
         " - Google Chrome",
@@ -80,16 +124,12 @@ def get_icon_for_class(win_class):
         return "󰉋"
     return "󰓩"
 
-def cmd_status():
-    active, clients = get_hypr_data()
-    if not active:
-        print(json.dumps({"text": "", "alt": "empty", "class": "empty"}))
-        return
+def get_status_json():
+    current_ws = get_current_workspace_id()
+    active, grouped, clients = get_group_for_workspace(current_ws)
 
-    grouped = active.get("grouped", [])
-    if not isinstance(grouped, list) or len(grouped) < 2:
-        print(json.dumps({"text": "", "alt": "empty", "class": "empty"}))
-        return
+    if not active or not grouped or len(grouped) < 2:
+        return json.dumps({"text": "", "alt": "empty", "class": "empty"})
 
     active_addr = active.get("address", "")
     total = len(grouped)
@@ -103,10 +143,8 @@ def cmd_status():
     max_title_len = 22
     short_title = curr_title[:max_title_len - 1] + "…" if len(curr_title) > max_title_len else curr_title
 
-    # Waybar text label
     text = f"󰓩 {idx}/{total} {short_title} ▾"
 
-    # Multiline tooltip with pango markup
     tooltip_lines = [
         f"<b>󰓩 Fenster-Gruppe ({total} Tabs)</b>",
         "────────────────────────────"
@@ -130,10 +168,68 @@ def cmd_status():
         "tooltip": "\n".join(tooltip_lines),
         "class": "grouped"
     }
-    print(json.dumps(out))
+    return json.dumps(out)
+
+def cmd_status():
+    print(get_status_json())
+    sys.stdout.flush()
+
+def cmd_listen():
+    print(get_status_json())
+    sys.stdout.flush()
+
+    signature = os.environ.get("HYPRLAND_INSTANCE_SIGNATURE")
+    xdg_runtime = os.environ.get("XDG_RUNTIME_DIR", f"/run/user/{os.getuid()}")
+    sock_path = f"{xdg_runtime}/hypr/{signature}/.socket2.sock" if signature else ""
+
+    if not sock_path or not os.path.exists(sock_path):
+        last_out = None
+        while True:
+            cur = get_status_json()
+            if cur != last_out:
+                print(cur)
+                sys.stdout.flush()
+                last_out = cur
+            time.sleep(1)
+
+    import socket
+    while True:
+        try:
+            s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+            s.connect(sock_path)
+            last_out = None
+            buf = ""
+            while True:
+                data = s.recv(4096)
+                if not data:
+                    break
+                buf += data.decode("utf-8", errors="ignore")
+                lines = buf.split("\n")
+                buf = lines[-1]
+                events = lines[:-1]
+
+                relevant = False
+                for ev in events:
+                    if any(ev.startswith(p) for p in (
+                        "workspace>>", "workspacev2>>", "activewindow>>",
+                        "focusedmon>>", "openwindow>>", "closewindow>>",
+                        "movewindow>>", "changegroupactive>>", "urgent>>"
+                    )):
+                        relevant = True
+                        break
+
+                if relevant:
+                    cur = get_status_json()
+                    if cur != last_out:
+                        print(cur)
+                        sys.stdout.flush()
+                        last_out = cur
+        except Exception:
+            time.sleep(1)
+            print(get_status_json())
+            sys.stdout.flush()
 
 def cmd_menu():
-    # If wofi is already running, toggle it off
     try:
         res = subprocess.run(["pgrep", "-x", "wofi"], stdout=subprocess.DEVNULL)
         if res.returncode == 0:
@@ -142,11 +238,9 @@ def cmd_menu():
     except Exception:
         pass
 
-    active, clients = get_hypr_data()
-    if not active:
-        return
-    grouped = active.get("grouped", [])
-    if not isinstance(grouped, list) or len(grouped) < 2:
+    current_ws = get_current_workspace_id()
+    active, grouped, clients = get_group_for_workspace(current_ws)
+    if not active or not grouped or len(grouped) < 2:
         return
 
     active_addr = active.get("address", "")
@@ -186,7 +280,6 @@ def cmd_menu():
         except Exception:
             selected = None
     elif shutil.which("walker"):
-        # Walker fallback
         cmd = ["walker", "--dmenu", "-n", "-p", "Tabs in Gruppe:"]
         try:
             proc = subprocess.run(cmd, input=menu_input, text=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
@@ -196,7 +289,6 @@ def cmd_menu():
             selected = None
 
     if selected:
-        # Match leading index "1.", "2.", etc.
         m = re.match(r"^(\d+)\.", selected)
         if m:
             chosen_idx = int(m.group(1))
@@ -211,8 +303,10 @@ def cmd_prev():
     subprocess.run(["hyprctl", "dispatch", "changegroupactive", "b"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 def main():
-    arg = sys.argv[1] if len(sys.argv) > 1 else "status"
-    if arg == "status":
+    arg = sys.argv[1] if len(sys.argv) > 1 else "listen"
+    if arg == "listen":
+        cmd_listen()
+    elif arg == "status":
         cmd_status()
     elif arg == "menu":
         cmd_menu()
