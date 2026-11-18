@@ -4,8 +4,8 @@
 hl.config({
 	input = {
 		-- Use multiple keyboard layouts and switch between them with Left Alt + Right Alt
-		-- kb_layout = "gb_umlauts, de",
-		kb_layout = "us_umlauts, de",
+		kb_layout = "gb_umlauts, de",
+		-- kb_layout = "us_umlauts, de",
 
 		-- Change speed of keyboard repeat
 		repeat_rate = 40,
