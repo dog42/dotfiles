@@ -3,7 +3,9 @@
 
 window#waybar {
   background-color: @background;
-  border-bottom: 1px solid @border_inactive;
+  /* Testweise entfernt: grauer Trennstreifen unten */
+  /* border-bottom: 1px solid @border_inactive; */
+  border-bottom: none;
 }
 
 * {
@@ -56,6 +58,14 @@ window#waybar {
   border-radius: 4px;
   border: 1px solid @border_inactive;
   font-size: 11px;
+}
+
+#custom-group-tabs.empty {
+  display: none;
+  margin: 0;
+  padding: 0;
+  border: none;
+  min-width: 0;
 }
 
 #custom-group-tabs:hover {
