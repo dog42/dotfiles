@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 """
 waybar-group-tabs: Touch-friendly Hyprland group tab manager for Waybar.
-Provides:
-  - status: Single-shot JSON output for Waybar
-  - listen: Event-driven continuous stream via Hyprland socket2 for instant updates
-  - menu: Dropdown menu (via wofi or walker) to switch tabs with a single tap
-  - next / prev: Cycle through group tabs
+Supports:
+  - Single and multiple window groups per workspace (e.g. split left/right)
+  - Dropdown menu with grouped sections and reliable tab switching
+  - Event-driven live updates via Hyprland socket2
 """
 
 import sys
@@ -51,49 +50,6 @@ def get_current_workspace_id():
             pass
     return None
 
-def get_group_for_workspace(current_ws_id):
-    if current_ws_id is None:
-        return None, None, {}
-
-    active_str = run_cmd(["hyprctl", "activewindow", "-j"])
-    active = None
-    if active_str:
-        try:
-            active = json.loads(active_str)
-        except Exception:
-            active = None
-
-    clients_str = run_cmd(["hyprctl", "clients", "-j"])
-    clients_by_addr = {}
-    workspace_clients = []
-    if clients_str:
-        try:
-            clients_list = json.loads(clients_str)
-            for c in clients_list:
-                addr = c.get("address")
-                if addr:
-                    clients_by_addr[addr] = c
-                if c.get("workspace", {}).get("id") == current_ws_id:
-                    workspace_clients.append(c)
-        except Exception:
-            pass
-
-    # Priority 1: Active window is on current workspace and is grouped
-    if active:
-        active_ws = active.get("workspace", {}).get("id")
-        grouped = active.get("grouped", [])
-        if active_ws == current_ws_id and isinstance(grouped, list) and len(grouped) >= 2:
-            return active, grouped, clients_by_addr
-
-    # Priority 2: Check if any window on current workspace has a group
-    for c in workspace_clients:
-        grouped = c.get("grouped", [])
-        if isinstance(grouped, list) and len(grouped) >= 2:
-            return c, grouped, clients_by_addr
-
-    # No group on this workspace
-    return None, None, clients_by_addr
-
 def clean_title(title, win_class=""):
     if not title:
         return win_class or "Fenster"
@@ -124,40 +80,142 @@ def get_icon_for_class(win_class):
         return "󰉋"
     return "󰓩"
 
+def get_steps(current_idx, target_idx, total):
+    if current_idx == target_idx or total <= 1:
+        return []
+    forward_steps = (target_idx - current_idx) % total
+    backward_steps = (current_idx - target_idx) % total
+    if forward_steps <= backward_steps:
+        return ["f"] * forward_steps
+    else:
+        return ["b"] * backward_steps
+
+def get_workspace_groups(current_ws_id):
+    if current_ws_id is None:
+        return [], None, {}
+
+    active_str = run_cmd(["hyprctl", "activewindow", "-j"])
+    active_addr = None
+    if active_str:
+        try:
+            active_data = json.loads(active_str)
+            if active_data.get("workspace", {}).get("id") == current_ws_id:
+                active_addr = active_data.get("address")
+        except Exception:
+            pass
+
+    clients_str = run_cmd(["hyprctl", "clients", "-j"])
+    clients_by_addr = {}
+    ws_clients = []
+    if clients_str:
+        try:
+            for c in json.loads(clients_str):
+                addr = c.get("address")
+                if addr:
+                    clients_by_addr[addr] = c
+                if c.get("workspace", {}).get("id") == current_ws_id:
+                    ws_clients.append(c)
+        except Exception:
+            pass
+
+    # Find distinct groups on this workspace
+    groups = []
+    seen = set()
+    for c in ws_clients:
+        grouped = c.get("grouped", [])
+        if isinstance(grouped, list) and len(grouped) >= 2:
+            sort_key = tuple(sorted(grouped))
+            if sort_key not in seen:
+                seen.add(sort_key)
+
+                # Determine active window in this group
+                active_win = None
+                if active_addr in grouped:
+                    active_win = active_addr
+                else:
+                    for a in grouped:
+                        cl = clients_by_addr.get(a, {})
+                        if not cl.get("hidden", False):
+                            active_win = a
+                            break
+                    if not active_win and grouped:
+                        active_win = grouped[0]
+
+                tab_idx = grouped.index(active_win) + 1 if active_win in grouped else 1
+                is_focused = (active_addr in grouped)
+
+                # Find min x coordinate for spatial sorting (left-to-right)
+                min_x = 0
+                for a in grouped:
+                    cl = clients_by_addr.get(a, {})
+                    at = cl.get("at", [0, 0])
+                    if isinstance(at, list) and len(at) > 0:
+                        min_x = at[0]
+                        break
+
+                groups.append({
+                    "grouped": grouped,
+                    "active_addr": active_win,
+                    "active_tab_idx": tab_idx,
+                    "is_focused": is_focused,
+                    "total": len(grouped),
+                    "pos_x": min_x
+                })
+
+    # Sort groups from left to right based on window position
+    groups.sort(key=lambda g: g["pos_x"])
+
+    return groups, active_addr, clients_by_addr
+
 def get_status_json():
     current_ws = get_current_workspace_id()
-    active, grouped, clients = get_group_for_workspace(current_ws)
+    groups, active_addr, clients = get_workspace_groups(current_ws)
 
-    if not active or not grouped or len(grouped) < 2:
+    if not groups:
         return json.dumps({"text": "", "alt": "empty", "class": "empty"})
 
-    active_addr = active.get("address", "")
-    total = len(grouped)
-    try:
-        idx = grouped.index(active_addr) + 1
-    except ValueError:
-        idx = 1
+    group_count = len(groups)
+    if group_count == 1:
+        g = groups[0]
+        text = f"󰓩 {g['active_tab_idx']}/{g['total']}"
+    else:
+        parts = []
+        for g in groups:
+            if g["is_focused"]:
+                parts.append(f"[{g['active_tab_idx']}/{g['total']}]")
+            else:
+                parts.append(f"{g['active_tab_idx']}/{g['total']}")
+        text = "󰓩 " + " │ ".join(parts)
 
-    active_client = clients.get(active_addr, active)
-    curr_title = clean_title(active_client.get("title", ""), active_client.get("class", ""))
-    max_title_len = 22
-    short_title = curr_title[:max_title_len - 1] + "…" if len(curr_title) > max_title_len else curr_title
-
-    text = f"󰓩 {idx}/{total}"
-
-    tooltip_lines = [
-        f"<b>󰓩 Fenster-Gruppe ({total} Tabs)</b>",
-        "────────────────────────────"
-    ]
-    for i, addr in enumerate(grouped, 1):
-        c = clients.get(addr, {})
-        t = clean_title(c.get("title", ""), c.get("class", ""))
-        cls = c.get("class", "")
-        icon = get_icon_for_class(cls)
-        if addr == active_addr:
-            tooltip_lines.append(f"• <b>Tab {i}:</b> {icon} {t} <i>(aktiv)</i>")
-        else:
-            tooltip_lines.append(f"• <b>Tab {i}:</b> {icon} {t}")
+    tooltip_lines = []
+    if group_count == 1:
+        g = groups[0]
+        tooltip_lines.append(f"<b>󰓩 Fenster-Gruppe ({g['total']} Tabs)</b>")
+        tooltip_lines.append("────────────────────────────")
+        for i, addr in enumerate(g["grouped"], 1):
+            c = clients.get(addr, {})
+            t = clean_title(c.get("title", ""), c.get("class", ""))
+            cls = c.get("class", "")
+            icon = get_icon_for_class(cls)
+            if addr == g["active_addr"]:
+                tooltip_lines.append(f"• <b>Tab {i}:</b> {icon} {t} <i>(aktiv)</i>")
+            else:
+                tooltip_lines.append(f"• <b>Tab {i}:</b> {icon} {t}")
+    else:
+        tooltip_lines.append(f"<b>󰓩 Workspace (Mehrere Gruppen)</b>")
+        tooltip_lines.append("────────────────────────────")
+        for g_idx, g in enumerate(groups, 1):
+            focus_tag = " <i>(im Fokus)</i>" if g["is_focused"] else ""
+            tooltip_lines.append(f"\n<b>Gruppe {g_idx} ({g['total']} Tabs){focus_tag}</b>")
+            for i, addr in enumerate(g["grouped"], 1):
+                c = clients.get(addr, {})
+                t = clean_title(c.get("title", ""), c.get("class", ""))
+                cls = c.get("class", "")
+                icon = get_icon_for_class(cls)
+                if addr == g["active_addr"]:
+                    tooltip_lines.append(f"• <b>Tab {i}:</b> {icon} {t} <i>(aktiv)</i>")
+                else:
+                    tooltip_lines.append(f"• <b>Tab {i}:</b> {icon} {t}")
 
     tooltip_lines.append("\n<i>👆 Tippen: Dropdown-Menü öffnen</i>")
     tooltip_lines.append("<i>🔄 Scrollen: Tab wechseln</i>")
@@ -165,7 +223,7 @@ def get_status_json():
     out = {
         "text": text,
         "alt": "grouped",
-        "tooltip": "\n".join(tooltip_lines),
+        "tooltip": "\n".join(tooltip_lines).strip(),
         "class": "grouped"
     }
     return json.dumps(out)
@@ -239,25 +297,38 @@ def cmd_menu():
         pass
 
     current_ws = get_current_workspace_id()
-    active, grouped, clients = get_group_for_workspace(current_ws)
-    if not active or not grouped or len(grouped) < 2:
+    groups, active_addr, clients = get_workspace_groups(current_ws)
+    if not groups:
         return
 
-    active_addr = active.get("address", "")
-    lines = []
-    addr_by_idx = {}
+    menu_lines = []
+    entry_map = {}
+    entry_num = 1
+    multiple_groups = len(groups) > 1
 
-    for i, addr in enumerate(grouped, 1):
-        c = clients.get(addr, {})
-        t = clean_title(c.get("title", ""), c.get("class", ""))
-        cls = c.get("class", "")
-        icon = get_icon_for_class(cls)
-        active_mark = "  ●" if addr == active_addr else ""
-        entry = f"{i}. {icon}  {t}{active_mark}"
-        lines.append(entry)
-        addr_by_idx[i] = addr
+    for g_idx, g in enumerate(groups, 1):
+        if multiple_groups:
+            focus_str = " (im Fokus)" if g["is_focused"] else ""
+            menu_lines.append(f"── Gruppe {g_idx} ({g['total']} Tabs){focus_str} ──")
 
-    menu_input = "\n".join(lines) + "\n"
+        for local_tab_idx, addr in enumerate(g["grouped"], 1):
+            c = clients.get(addr, {})
+            t = clean_title(c.get("title", ""), c.get("class", ""))
+            cls = c.get("class", "")
+            icon = get_icon_for_class(cls)
+            active_mark = "  ●" if addr == g["active_addr"] else ""
+
+            menu_lines.append(f"{entry_num}. {icon}  {t}{active_mark}")
+            entry_map[entry_num] = {
+                "target_addr": addr,
+                "target_tab_idx": local_tab_idx,
+                "visible_addr": g["active_addr"],
+                "current_tab_idx": g["active_tab_idx"],
+                "total": g["total"]
+            }
+            entry_num += 1
+
+    menu_input = "\n".join(menu_lines) + "\n"
     selected = None
 
     launcher = os.environ.get("WAYBAR_GROUP_TABS_MENU", "wofi")
@@ -265,13 +336,15 @@ def cmd_menu():
     wofi_conf = os.path.join(config_dir, "wofi-tabs.conf")
     wofi_css = os.path.join(config_dir, "wofi-tabs.css")
 
+    total_selectable_lines = len(menu_lines)
+
     if launcher == "wofi" and shutil.which("wofi"):
-        cmd = ["wofi", "--dmenu", "--prompt", "Tabs in Gruppe:"]
+        cmd = ["wofi", "--dmenu", "--prompt", "Tabs:"]
         if os.path.exists(wofi_conf):
             cmd.extend(["--conf", wofi_conf])
         if os.path.exists(wofi_css):
             cmd.extend(["--style", wofi_css])
-        cmd.extend(["--lines", str(len(grouped))])
+        cmd.extend(["--lines", str(min(15, total_selectable_lines))])
 
         try:
             proc = subprocess.run(cmd, input=menu_input, text=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
@@ -280,7 +353,7 @@ def cmd_menu():
         except Exception:
             selected = None
     elif shutil.which("walker"):
-        cmd = ["walker", "--dmenu", "-n", "-p", "Tabs in Gruppe:"]
+        cmd = ["walker", "--dmenu", "-n", "-p", "Tabs:"]
         try:
             proc = subprocess.run(cmd, input=menu_input, text=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
             if proc.returncode == 0 and proc.stdout.strip():
@@ -291,10 +364,32 @@ def cmd_menu():
     if selected:
         m = re.match(r"^(\d+)\.", selected)
         if m:
-            chosen_idx = int(m.group(1))
-            target_addr = addr_by_idx.get(chosen_idx)
-            if target_addr:
+            chosen_num = int(m.group(1))
+            entry = entry_map.get(chosen_num)
+            if entry:
+                target_addr = entry["target_addr"]
+                target_tab_idx = entry["target_tab_idx"]
+                visible_addr = entry["visible_addr"]
+                current_tab_idx = entry["current_tab_idx"]
+                total = entry["total"]
+
+                # Step 1: Focus the target group container by focusing its visible window
+                if visible_addr:
+                    subprocess.run(["hyprctl", "dispatch", "focuswindow", f"address:{visible_addr}"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                    subprocess.run(["hyprctl", "eval", f"hl.focus({{ window = 'address:{visible_addr}' }})"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+                # Step 2: Set the active tab in this group via Lua setGroupActive
+                subprocess.run(["hyprctl", "eval", f"hl.group.active({{ index = {target_tab_idx} }})"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                subprocess.run(["hyprctl", "eval", f"hl.group.active({{ index = {target_tab_idx}, window = 'address:{target_addr}' }})"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+                # Step 3: Cycle forward/backward steps if needed as a guarantee
+                steps = get_steps(current_tab_idx, target_tab_idx, total)
+                for step in steps:
+                    subprocess.run(["hyprctl", "dispatch", "changegroupactive", step], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+                # Step 4: Final focus on the selected window
                 subprocess.run(["hyprctl", "dispatch", "focuswindow", f"address:{target_addr}"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                subprocess.run(["hyprctl", "eval", f"hl.focus({{ window = 'address:{target_addr}' }})"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 def cmd_next():
     subprocess.run(["hyprctl", "dispatch", "changegroupactive", "f"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
