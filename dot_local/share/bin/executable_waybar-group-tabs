@@ -189,36 +189,22 @@ def get_status_json():
 
     tooltip_lines = []
     if group_count == 1:
-        g = groups[0]
-        tooltip_lines.append(f"<b>󰓩 Fenster-Gruppe ({g['total']} Tabs)</b>")
-        tooltip_lines.append("────────────────────────────")
-        for i, addr in enumerate(g["grouped"], 1):
-            c = clients.get(addr, {})
-            t = clean_title(c.get("title", ""), c.get("class", ""))
-            cls = c.get("class", "")
-            icon = get_icon_for_class(cls)
-            if addr == g["active_addr"]:
-                tooltip_lines.append(f"• <b>Tab {i}:</b> {icon} {t} <i>(aktiv)</i>")
-            else:
-                tooltip_lines.append(f"• <b>Tab {i}:</b> {icon} {t}")
+        tooltip_lines.append(f"<b>󰓩 Tab-Gruppe ({groups[0]['total']} Tabs)</b>")
     else:
-        tooltip_lines.append(f"<b>󰓩 Workspace (Mehrere Gruppen)</b>")
-        tooltip_lines.append("────────────────────────────")
-        for g_idx, g in enumerate(groups, 1):
-            focus_tag = " <i>(im Fokus)</i>" if g["is_focused"] else ""
-            tooltip_lines.append(f"\n<b>Gruppe {g_idx} ({g['total']} Tabs){focus_tag}</b>")
-            for i, addr in enumerate(g["grouped"], 1):
-                c = clients.get(addr, {})
-                t = clean_title(c.get("title", ""), c.get("class", ""))
-                cls = c.get("class", "")
-                icon = get_icon_for_class(cls)
-                if addr == g["active_addr"]:
-                    tooltip_lines.append(f"• <b>Tab {i}:</b> {icon} {t} <i>(aktiv)</i>")
-                else:
-                    tooltip_lines.append(f"• <b>Tab {i}:</b> {icon} {t}")
+        tooltip_lines.append(f"<b>󰓩 {group_count} Tab-Gruppen auf Workspace</b>")
 
-    tooltip_lines.append("\n<i>👆 Tippen: Dropdown-Menü öffnen</i>")
-    tooltip_lines.append("<i>🔄 Scrollen: Tab wechseln</i>")
+    tooltip_lines.append("────────────────────────────")
+    tooltip_lines.append("<b>Navigation:</b>")
+    tooltip_lines.append("• <b>SUPER + Tab:</b> Nächster Tab")
+    tooltip_lines.append("• <b>SUPER + SHIFT + Tab:</b> Vorheriger Tab")
+    tooltip_lines.append("• <b>Scrollen / Rechtsklick:</b> Tab weiterschalten")
+    tooltip_lines.append("• <b>Tippen / Linksklick:</b> Dropdown-Menü öffnen")
+    tooltip_lines.append("")
+    tooltip_lines.append("<b>Verwaltung:</b>")
+    tooltip_lines.append("• <b>SUPER + W:</b> Gruppe erstellen / auflösen")
+    tooltip_lines.append("• <b>SUPER + SHIFT + W:</b> Tab als Einzelfenster lösen")
+    tooltip_lines.append("• <b>SUPER + ALT + Pfeiltasten:</b> In Nachbargruppe schieben")
+    tooltip_lines.append("• <b>SUPER + , / . :</b> Tab nach links / rechts ordnen")
 
     out = {
         "text": text,
