@@ -4,7 +4,7 @@
   "position": "top",
   "spacing": 0,
   "height": 26,
-  "modules-left": ["ext/workspaces"],
+  "modules-left": ["ext/workspaces", "custom/group-tabs"],
   "modules-center": ["clock", "custom/update"],
   "modules-right": [
     "group/tray-expander",
@@ -16,6 +16,18 @@
     "battery#0",
     "battery#1"
   ],
+
+  "custom/group-tabs": {
+    "exec": "/home/dock/.local/share/bin/waybar-group-tabs status",
+    "return-type": "json",
+    "interval": 1,
+    "exec-on-event": true,
+    "on-click": "/home/dock/.local/share/bin/waybar-group-tabs menu",
+    "on-click-right": "hyprctl dispatch changegroupactive f",
+    "on-scroll-up": "hyprctl dispatch changegroupactive f",
+    "on-scroll-down": "hyprctl dispatch changegroupactive b",
+    "tooltip": true
+  },
 
   // temp. Switches from hyprland/workspaces to ext/workspaces to bypass the IPC dispatch issue caused by Hyprland's Lua configuration in the stable Waybar release.
   "ext/workspaces": {

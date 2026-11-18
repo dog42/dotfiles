@@ -40,6 +40,20 @@ window#waybar {
   opacity: 0.5;
 }
 
+#custom-group-tabs {
+  background-color: @surface;
+  color: @foreground;
+  padding: 0 8px;
+  margin: 2px 4px;
+  border-radius: 4px;
+  border: 1px solid @border_inactive;
+  font-size: 11px;
+}
+
+#custom-group-tabs:hover {
+  border-color: @accent;
+}
+
 #custom-update,
 #tray,
 #bluetooth,
