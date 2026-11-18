@@ -4,7 +4,7 @@
   "position": "top",
   "spacing": 0,
   "height": 26,
-  "modules-left": ["ext/workspaces", "custom/group-tabs"],
+  "modules-left": ["custom/group-tabs", "ext/workspaces"],
   "modules-center": ["clock", "custom/update"],
   "modules-right": [
     "group/tray-expander",

@@ -52,7 +52,7 @@ window#waybar {
   background-color: @surface;
   color: @foreground;
   padding: 0 7px;
-  margin: 2px 2px 2px 3px;
+  margin: 2px 4px 2px 0px;
   border-radius: 4px;
   border: 1px solid @border_inactive;
   font-size: 11px;

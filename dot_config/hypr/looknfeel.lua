@@ -81,8 +81,8 @@ hl.config({
             render_titles = true,
             height = 20,
             rounding = 3,
-            indicator_gap = 2,
-            gaps_in = 2,
+            indicator_height = 0,
+            indicator_gap = 0,
             col = {
                 active = colors.active_border,
                 inactive = colors.inactive_border,
