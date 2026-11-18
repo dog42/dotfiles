@@ -60,14 +60,6 @@ window#waybar {
   font-size: 11px;
 }
 
-#custom-group-tabs.empty {
-  display: none;
-  margin: 0;
-  padding: 0;
-  border: none;
-  min-width: 0;
-}
-
 #custom-group-tabs:hover {
   border-color: @accent;
   color: #ffffff;
