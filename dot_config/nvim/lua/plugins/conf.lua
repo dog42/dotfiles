@@ -64,12 +64,12 @@ return {
         },
       }
 
-      -- Setzt den PDF-Modus auf 4 (LuaLaTeX)
+      -- Set PDF mode to 4 (LuaLaTeX)
       vim.g.vimtex_compiler_latexmk = vim.tbl_extend("force", vim.g.vimtex_compiler_latexmk, {
-        pdf_mode = 4, -- 4 entspricht LuaLaTeX
+        pdf_mode = 4, -- 4 corresponds to LuaLaTeX
       })
 
-      -- 3. Automatisches Öffnen des Viewers nach dem ersten Kompilieren
+      -- 3. Automatically open viewer after first compilation
       vim.g.vimtex_view_forward_search_on_start = true
       -- 4. ignore some warnings
       vim.g.vimtex_quickfix_ignore_filters = {

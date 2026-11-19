@@ -7,7 +7,7 @@ foreground            {{ .colors.fg }}
 selection_background   {{ .colors.bg_alt }}
 selection_foreground   {{ .colors.fg }}
 
-# Cursor & Links (Warmes Glutrot / Textfarbe)
+# Cursor & Links
 cursor                {{ .colors.fg }}
 cursor_text_color     {{ .colors.bg }}
 url_color             {{ .colors.accent_glow }}
@@ -24,19 +24,19 @@ inactive_tab_background {{ .colors.bg_surface }}
 tab_bar_background      {{ .colors.bg }}
 
 # 16-Color Terminal ANSI Palette
-color0  {{ .colors.ansi.black }}          # Black (Anthrazit - Hintergrundnahe CLI-Elemente)
-color1  {{ .colors.ansi.red }}            # Red (Glutrot dunkel - Fehler, Git dirty)
-color2  {{ .colors.ansi.green }}          # Green (Moosgrün - Git clean)
-color3  {{ .colors.ansi.yellow }}         # Yellow (Bernstein - Warnungen, Zahlen)
-color4  {{ .colors.ansi.blue }}           # Blue (Warmes Glutrot/Scharlach - Klickbare Links in agy/CLI-Tools)
-color5  {{ .colors.ansi.magenta }}        # Magenta (Rubinrot gedämpft - CLI Symbole)
-color6  {{ .colors.ansi.cyan }}           # Cyan (Warmes Glutrot/Scharlach - Pfade & Verweise)
-color7  {{ .colors.ansi.white }}          # White (Helles Aschgrau - Standardtext)
-color8  {{ .colors.ansi.bright_black }}   # Bright Black (Graphitgrau - Inaktiv/Kommentare)
-color9  {{ .colors.ansi.bright_red }}     # Bright Red (Leuchtendes Glutrot - Git ahead/behind)
-color10 {{ .colors.ansi.bright_green }}   # Bright Green (Frühlingsgrün - Git Clean Häkchen '✔')
-color11 {{ .colors.ansi.bright_yellow }}  # Bright Yellow (Helles Bernstein - Flags/Parameter)
-color12 {{ .colors.ansi.bright_blue }}    # Bright Blue (Helles Scharlachrot - Aktive Links)
-color13 {{ .colors.ansi.bright_magenta }} # Bright Magenta (Korallenrot - Treffer/Konstanten)
-color14 {{ .colors.ansi.bright_cyan }}    # Bright Cyan (Helles Scharlachrot - Klickbare URLs)
-color15 {{ .colors.ansi.bright_white }}   # Bright White (Reines Weiß - Hervorhebungen/Branch)
+color0  {{ .colors.ansi.black }}          # Black (charcoal - background CLI elements)
+color1  {{ .colors.ansi.red }}            # Red (dark ember red - errors, git dirty)
+color2  {{ .colors.ansi.green }}          # Green (moss green - git clean)
+color3  {{ .colors.ansi.yellow }}         # Yellow (amber - warnings, numbers)
+color4  {{ .colors.ansi.blue }}           # Blue (warm ember red / scarlet - links in CLI tools)
+color5  {{ .colors.ansi.magenta }}        # Magenta (muted ruby red - CLI symbols)
+color6  {{ .colors.ansi.cyan }}           # Cyan (warm ember red / scarlet - paths & references)
+color7  {{ .colors.ansi.white }}          # White (light ash gray - standard text)
+color8  {{ .colors.ansi.bright_black }}   # Bright Black (graphite gray - dim/comments)
+color9  {{ .colors.ansi.bright_red }}     # Bright Red (bright ember red - git ahead/behind)
+color10 {{ .colors.ansi.bright_green }}   # Bright Green (spring green - git clean checkmark '✔')
+color11 {{ .colors.ansi.bright_yellow }}  # Bright Yellow (bright amber - flags/parameters)
+color12 {{ .colors.ansi.bright_blue }}    # Bright Blue (light scarlet - active links)
+color13 {{ .colors.ansi.bright_magenta }} # Bright Magenta (coral red - matches/constants)
+color14 {{ .colors.ansi.bright_cyan }}    # Bright Cyan (light scarlet - clickable URLs)
+color15 {{ .colors.ansi.bright_white }}   # Bright White (pure white - bold text, git branch)
