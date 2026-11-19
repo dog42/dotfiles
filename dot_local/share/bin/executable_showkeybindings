@@ -1,15 +1,12 @@
 #!/bin/bash
 
-# Display Hyprland keybindings defined in your configuration using walker for an interactive search menu.
+# Display keybindings for Hyprland, Neovim, Zathura and custom cheatsheets using walker.
 
 declare -A KEYCODE_SYM_MAP
 
 build_keymap_cache() {
   local keymap
-  keymap="$(xkbcli compile-keymap)" || {
-    echo "Failed to compile keymap" >&2
-    return 1
-  }
+  keymap="$(xkbcli compile-keymap 2>/dev/null)" || return 1
 
   while IFS=, read -r code sym; do
     [[ -z "$code" || -z "$sym" ]] && continue
@@ -46,7 +43,7 @@ parse_keycodes() {
   while IFS= read -r line; do
     if [[ "$line" =~ code:([0-9]+) ]]; then
       code="${BASH_REMATCH[1]}"
-      symbol=$(lookup_keycode_cached "$code" "$XKB_KEYMAP_CACHE")
+      symbol=$(lookup_keycode_cached "$code")
       echo "${line/code:${code}/$symbol}"
     elif [[ "$line" =~ mouse:([0-9]+) ]]; then
       code="${BASH_REMATCH[1]}"
@@ -66,7 +63,6 @@ parse_keycodes() {
 
   if [[ "$DEBUG" == "1" ]]; then
     end=$(date +%s.%N)
-    # fall back to awk if bc is missing
     if command -v bc >/dev/null 2>&1; then
       elapsed=$(echo "$end - $start" | bc)
     else
@@ -76,16 +72,13 @@ parse_keycodes() {
   fi
 }
 
-# Fetch dynamic keybindings from Hyprland
-#
-# Also do some pre-processing:
-# - Remove standard Omarchy bin path prefix
-# - Remove uwsm prefix
-# - Map numeric modifier key mask to a textual rendition
-# - Output comma-separated values that the parser can understand
 dynamic_bindings() {
-  hyprctl -j binds |
-    jq -r '.[] | {modmask, key, keycode, description, dispatcher, arg} | "\(.modmask),\(.key)@\(.keycode),\(.description),\(.dispatcher),\(.arg)"' |
+  local binds
+  binds=$(hyprctl -j binds 2>/dev/null) || return 0
+  [[ -z "$binds" || "$binds" == "null" ]] && return 0
+
+  echo "$binds" |
+    jq -r '.[] | {modmask, key, keycode, description, dispatcher, arg} | "\(.modmask),\(.key)@\(.keycode),\(.description),\(.dispatcher),\(.arg)"' 2>/dev/null |
     sed -r \
       -e 's/null//' \
       -e 's,~/.local/share/omarchy/bin/,,' \
@@ -111,44 +104,27 @@ dynamic_bindings() {
       -e 's/^77,/SUPER SHIFT CTRL ALT,/'
 }
 
-# Hardcoded bindings, like the copy-url extension and such
 static_bindings() {
   echo "SHIFT ALT,L,Copy URL from Web App,extension,copy-url"
 }
 
-# Parse and format keybindings
-#
-# `awk` does the heavy lifting:
-# - Set the field separator to a comma ','.
-# - Joins the key combination (e.g., "SUPER + Q").
-# - Joins the command that the key executes.
-# - Prints everything in a nicely aligned format.
 parse_bindings() {
   awk -F, '
 {
-    # Combine the modifier and key (first two fields)
     key_combo = $1 " + " $2;
-
-    # Clean up: strip leading "+" if present, trim spaces
     gsub(/^[ \t]*\+?[ \t]*/, "", key_combo);
     gsub(/[ \t]+$/, "", key_combo);
 
-    # Use description, if set
     action = $3;
-
     if (action == "") {
-        # Reconstruct the command from the remaining fields
         for (i = 4; i <= NF; i++) {
             action = action $i (i < NF ? "," : "");
         }
-
-        # Clean up trailing commas, remove leading "exec, ", and trim
         sub(/,$/, "", action);
         gsub(/(^|,)[[:space:]]*exec[[:space:]]*,?/, "", action);
         gsub(/^[ \t]+|[ \t]+$/, "", action);
-        gsub(/[ \t]+/, " ", key_combo);  # Collapse multiple spaces to one
+        gsub(/[ \t]+/, " ", key_combo);
 
-        # Escape XML entities
         gsub(/&/, "\\&amp;", action);
         gsub(/</, "\\&lt;", action);
         gsub(/>/, "\\&gt;", action);
@@ -157,88 +133,257 @@ parse_bindings() {
     }
 
     if (action != "") {
-        printf "%-35s → %s\n", key_combo, action;
+        printf "[%-14s] %-26s → %s\n", "Hyprland", key_combo, action;
     }
 }'
 }
 
+# Parse pipe-separated files and streams with \| escape support
+parse_pipe_data() {
+  awk -F'|' '
+  {
+    line = $0
+    if (line ~ /^[[:space:]]*#/ || line ~ /^[[:space:]]*$/) next
+
+    # Replace escaped \| with placeholder \x01
+    gsub(/\\\|/, "\x01", line)
+    n = split(line, arr, "|")
+    if (n >= 3) {
+      cat = arr[1]
+      key = arr[2]
+      desc = arr[3]
+      for (i = 4; i <= n; i++) desc = desc "|" arr[i]
+
+      # Restore escaped pipe
+      gsub(/\x01/, "|", key)
+      gsub(/\x01/, "|", desc)
+
+      gsub(/^[[:space:]]+|[[:space:]]+$/, "", cat)
+      gsub(/^[[:space:]]+|[[:space:]]+$/, "", key)
+      gsub(/^[[:space:]]+|[[:space:]]+$/, "", desc)
+
+      printf "[%-14s] %-26s → %s\n", cat, key, desc
+    }
+  }
+  '
+}
+
+# Automatically parse user keymaps with desc from Neovim keymaps.lua
+parse_nvim_user_keymaps() {
+  local keymaps_file="$HOME/.config/nvim/lua/config/keymaps.lua"
+  [[ -f "$keymaps_file" ]] || return 0
+
+  python3 -c '
+import re, sys
+
+try:
+    with open(sys.argv[1], "r", encoding="utf-8") as f:
+        clean_lines = [l for l in f if not l.strip().startswith("--")]
+    clean_content = "\n".join(clean_lines)
+
+    pattern = r"vim\.keymap\.set\s*\(\s*(?:\{[^}]+\}|[\"\x27][^\"\x27]+[\"\x27])\s*,\s*[\"\x27]([^\"\x27]+)[\"\x27].*?desc\s*=\s*[\"\x27]([^\"\x27]+)[\"\x27]"
+    for m in re.finditer(pattern, clean_content, re.DOTALL):
+        key, desc = m.group(1), m.group(2)
+        print(f"Neovim (User)|{key}|{desc}")
+except Exception:
+    pass
+' "$keymaps_file" 2>/dev/null | parse_pipe_data
+}
+
+# Load static/curated files from ~/.config/keybindings/
+parse_custom_cheatsheets() {
+  local kb_dir="$HOME/.config/keybindings"
+  local files=(
+    "$kb_dir/nvim.txt"
+    "$kb_dir/cheatsheet.txt"
+    "$kb_dir/zathura.txt"
+  )
+
+  for file in "${files[@]}"; do
+    if [[ -f "$file" ]]; then
+      cat "$file" | parse_pipe_data
+    fi
+  done
+}
+
+# Detect active window context (nvim, zathura, or default hyprland)
+detect_context() {
+  local win_class win_title
+  if command -v hyprctl >/dev/null 2>&1; then
+    win_class=$(hyprctl activewindow -j 2>/dev/null | jq -r '.class // empty' 2>/dev/null | tr '[:upper:]' '[:lower:]')
+    win_title=$(hyprctl activewindow -j 2>/dev/null | jq -r '.title // empty' 2>/dev/null | tr '[:upper:]' '[:lower:]')
+  fi
+
+  if [[ "$win_class" =~ zathura ]]; then
+    echo "zathura"
+  elif [[ "$win_class" =~ nvim || "$win_title" =~ nvim || ("$win_class" =~ (kitty|alacritty|wezterm|ghostty) && "$win_title" =~ (nvim|vim)) ]]; then
+    echo "nvim"
+  else
+    echo "hyprland"
+  fi
+}
+
 prioritize_entries() {
-  awk '
+  local ctx="$1"
+  awk -v ctx="$ctx" '
   {
     line = $0
     prio = 50
-    if (match(line, /Terminal/)) prio = 0
-    if (match(line, /Browser/) && !match(line, /Browser[[:space:]]*\(/)) prio = 1
-    if (match(line, /File manager/))  prio = 2
-    if (match(line, /Launch apps/))  prio = 3
-    if (match(line, /Omarchy menu/))  prio = 4
-    if (match(line, /System menu/))  prio = 5
-    if (match(line, /Theme menu/))  prio = 6
-    if (match(line, /Full screen/))  prio = 7
-    if (match(line, /Full width/))  prio = 8
-    if (match(line, /Close window/))  prio = 9
-    if (match(line, /Close all windows/))  prio = 10
-    if (match(line, /Lock system/))  prio = 11
-    if (match(line, /Toggle window floating/))  prio = 12
-    if (match(line, /Toggle window split/))  prio = 13
-    if (match(line, /Pop window/))  prio = 14
-    if (match(line, /Universal/))  prio = 15
-    if (match(line, /Clipboard/))  prio = 16
-    if (match(line, /Audio controls/))  prio = 17
-    if (match(line, /Bluetooth controls/))  prio = 18
-    if (match(line, /Wifi controls/))  prio = 19
-    if (match(line, /Emoji picker/))  prio = 20
-    if (match(line, /Color picker/))  prio = 21
-    if (match(line, /Screenshot/))  prio = 22
-    if (match(line, /Screenrecording/))  prio = 23
-    if (match(line, /(Switch|Next|Former|Previous).*workspace/))  prio = 24
-    if (match(line, /Move window to workspace/))  prio = 25
-    if (match(line, /Move window silently to workspace/))  prio = 26
-    if (match(line, /Swap window/))  prio = 27
-    if (match(line, /Move window focus/))  prio = 28
-    if (match(line, /Move window$/))  prio = 29
-    if (match(line, /Resize window/))  prio = 30
-    if (match(line, /Expand window/))  prio = 31
-    if (match(line, /Shrink window/))  prio = 32
-    if (match(line, /scratchpad/))  prio = 33
-    if (match(line, /notification/))  prio = 34
-    if (match(line, /Toggle window transparency/))  prio = 35
-    if (match(line, /Toggle workspace gaps/))  prio = 36
-    if (match(line, /Toggle nightlight/))  prio = 37
-    if (match(line, /Toggle locking/))  prio = 38
-    if (match(line, /group/))  prio = 94
-    if (match(line, /Scroll active workspace/))  prio = 95
-    if (match(line, /Cycle to/))  prio = 96
-    if (match(line, /Reveal active/))  prio = 97
-    if (match(line, /Apple Display/))  prio = 98
-    if (match(line, /XF86/))  prio = 99
 
-    # print "priority<TAB>line"
-    printf "%d\t%s\n", prio, line
+    if (line ~ /^\[Hyprland/) {
+      prio = 30
+      if (match(line, /Terminal/)) prio = 0
+      if (match(line, /Browser/) && !match(line, /Browser[[:space:]]*\(/)) prio = 1
+      if (match(line, /File manager/))  prio = 2
+      if (match(line, /Launch apps/))  prio = 3
+      if (match(line, /Omarchy menu/))  prio = 4
+      if (match(line, /System menu/))  prio = 5
+      if (match(line, /Theme menu/))  prio = 6
+      if (match(line, /Full screen/))  prio = 7
+      if (match(line, /Full width/))  prio = 8
+      if (match(line, /Close window/))  prio = 9
+      if (match(line, /Close all windows/))  prio = 10
+      if (match(line, /Lock system/))  prio = 11
+      if (match(line, /Toggle window floating/))  prio = 12
+      if (match(line, /Toggle window split/))  prio = 13
+      if (match(line, /Pop window/))  prio = 14
+      if (match(line, /Universal/))  prio = 15
+      if (match(line, /Clipboard/))  prio = 16
+      if (match(line, /Audio controls/))  prio = 17
+      if (match(line, /Bluetooth controls/))  prio = 18
+      if (match(line, /Wifi controls/))  prio = 19
+      if (match(line, /Emoji picker/))  prio = 20
+      if (match(line, /Color picker/))  prio = 21
+      if (match(line, /Screenshot/))  prio = 22
+      if (match(line, /Screenrecording/))  prio = 23
+      if (match(line, /(Switch|Next|Former|Previous).*workspace/))  prio = 24
+      if (match(line, /Move window to workspace/))  prio = 25
+      if (match(line, /Move window silently to workspace/))  prio = 26
+      if (match(line, /Swap window/))  prio = 27
+      if (match(line, /Move window focus/))  prio = 28
+      if (match(line, /Move window$/))  prio = 29
+      if (match(line, /Resize window/))  prio = 30
+      if (match(line, /Expand window/))  prio = 31
+      if (match(line, /Shrink window/))  prio = 32
+      if (match(line, /scratchpad/))  prio = 33
+      if (match(line, /notification/))  prio = 34
+      if (match(line, /Toggle window transparency/))  prio = 35
+      if (match(line, /Toggle workspace gaps/))  prio = 36
+      if (match(line, /Toggle nightlight/))  prio = 37
+      if (match(line, /Toggle locking/))  prio = 38
+      if (match(line, /group/))  prio = 40
+      if (match(line, /Scroll active workspace/))  prio = 41
+      if (match(line, /Cycle to/))  prio = 42
+      if (match(line, /Reveal active/))  prio = 43
+      if (match(line, /Apple Display/))  prio = 44
+      if (match(line, /XF86/))  prio = 45
+
+      if (ctx == "nvim" || ctx == "zathura") {
+        prio += 50
+      }
+    } else if (line ~ /^\[Neovim \(User\)/) {
+      prio = (ctx == "nvim") ? 1 : 52
+    } else if (line ~ /^\[Vim Trick/) {
+      prio = (ctx == "nvim") ? 2 : 54
+    } else if (line ~ /^\[Neovim/) {
+      prio = (ctx == "nvim") ? 3 : 56
+    } else if (line ~ /^\[Zathura/) {
+      prio = (ctx == "zathura") ? 1 : 60
+    }
+
+    printf "%03d\t%s\n", prio, line
   }' |
     sort -k1,1n -k2,2 |
     cut -f2-
 }
 
-output_keybindings() {
-  build_keymap_cache
+all_bindings() {
+  local context="$1"
+
+  build_keymap_cache 2>/dev/null || true
 
   {
-    dynamic_bindings
-    static_bindings
+    # Hyprland bindings
+    {
+      dynamic_bindings
+      static_bindings
+    } |
+      sort -u |
+      parse_keycodes |
+      parse_bindings
+
+    # Custom & Neovim bindings
+    parse_nvim_user_keymaps
+    parse_custom_cheatsheets
   } |
-    sort -u |
-    parse_keycodes |
-    parse_bindings |
-    prioritize_entries
+    prioritize_entries "$context"
 }
 
-if [[ "$1" == "--print" || "$1" == "-p" ]]; then
-  output_keybindings
-else
-  monitor_height=$(hyprctl monitors -j | jq -r '.[] | select(.focused == true) | .height')
-  menu_height=$((monitor_height * 40 / 100))
+# CLI Argument parsing
+MODE="walker"
+FILTER=""
 
-  output_keybindings |
-    walker --dmenu -p 'Keybindings' --width 800 --height "$menu_height"
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -p|--print)
+      MODE="print"
+      shift
+      ;;
+    --nvim)
+      FILTER="Neovim"
+      shift
+      ;;
+    --zathura)
+      FILTER="Zathura"
+      shift
+      ;;
+    --hypr|--hyprland)
+      FILTER="Hyprland"
+      shift
+      ;;
+    --cheats|--tricks)
+      FILTER="Vim Trick"
+      shift
+      ;;
+    -h|--help)
+      echo "Verwendung: showkeybindings [OPTIONEN]"
+      echo ""
+      echo "Optionen:"
+      echo "  -p, --print        Gibt die Bindings im Terminal aus"
+      echo "  --nvim             Filtert nur Neovim & Vim-Tricks"
+      echo "  --zathura          Filtert nur Zathura"
+      echo "  --hypr             Filtert nur Hyprland"
+      echo "  --cheats           Filtert nur persönliche Vim-Tricks"
+      echo "  -h, --help         Zeigt diese Hilfe an"
+      exit 0
+      ;;
+    *)
+      shift
+      ;;
+  esac
+done
+
+ACTIVE_CONTEXT=$(detect_context)
+
+if [[ "$MODE" == "print" ]]; then
+  if [[ -n "$FILTER" ]]; then
+    all_bindings "$ACTIVE_CONTEXT" | grep -F "[$FILTER"
+  else
+    all_bindings "$ACTIVE_CONTEXT"
+  fi
+else
+  monitor_height=$(hyprctl monitors -j 2>/dev/null | jq -r '.[] | select(.focused == true) | .height' 2>/dev/null)
+  if [[ -z "$monitor_height" || "$monitor_height" -le 0 ]]; then
+    monitor_height=1080
+  fi
+  menu_height=$((monitor_height * 45 / 100))
+
+  if [[ -n "$FILTER" ]]; then
+    all_bindings "$ACTIVE_CONTEXT" |
+      grep -F "[$FILTER" |
+      walker --dmenu -p 'Keybindings' --width 900 --height "$menu_height"
+  else
+    all_bindings "$ACTIVE_CONTEXT" |
+      walker --dmenu -p 'Keybindings' --width 900 --height "$menu_height"
+  fi
 fi

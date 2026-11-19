@@ -1,0 +1,20 @@
+# Zathura PDF Viewer Shortcuts
+# Format: Kategorie | Tastenkombination | Beschreibung
+# Falls ein '|' in der Taste vorkommt, mit '\|' escapen.
+
+Zathura | Ctrl + r | Recolor / Dark Mode umschalten
+Zathura | d | Zwischen 1- und 2-Seiten-Ansicht umschalten
+Zathura | r | Dokument um 90° im Uhrzeigersinn drehen
+Zathura | R | Dokument um 90° gegen den Uhrzeigersinn drehen
+Zathura | a / s | An Seitenbreite anpassen / An Fenster anpassen
+Zathura | f | Links im Dokument folgen (Link-Nummer eingeben)
+Zathura | F5 | Präsentationsmodus starten
+Zathura | Tab | Inhaltsverzeichnis (Index) ein- / ausblenden
+Zathura | / | Im Dokument suchen
+Zathura | n / N | Nächstes / vorheriges Suchergebnis
+Zathura | gg / G | Zur ersten / letzten Seite springen
+Zathura | [Zahl]G | Direkt zu Seite [Zahl] springen
+Zathura | J / K | Eine halbe Seite nach unten / oben scrollen
+Zathura | + / - | Vergrößern / Verkleinern (Zoom In / Out)
+Zathura | = | Zoom auf 100% zurücksetzen
+Zathura | q | Zathura beenden

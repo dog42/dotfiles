@@ -1,0 +1,26 @@
+# Persönliche Shortcuts & Vim-Tricks
+# Format: Kategorie | Tastenkombination | Beschreibung
+# Falls ein '|' in der Taste vorkommt, mit '\|' escapen.
+
+Vim Trick | *cgn n. n. | Wort unter Cursor suchen, ändern & mit '.' bei nächsten Treffern wiederholen
+Vim Trick | ci" / ca" | Text innerhalb / inklusive doppelter Anführungszeichen ändern
+Vim Trick | ci' / ca' | Text innerhalb / inklusive einfacher Anführungszeichen ändern
+Vim Trick | ci( / ca( | Text innerhalb / inklusive runder Klammern ändern (auch cib / cab)
+Vim Trick | ci{ / ca{ | Text innerhalb / inklusive geschweifter Klammern ändern (auch ciB / caB)
+Vim Trick | ci[ / ca[ | Text innerhalb / inklusive eckiger Klammern ändern
+Vim Trick | cit / cat | HTML/XML-Tag Inhalt / gesamten Tag ändern
+Vim Trick | di" / da" | Text innerhalb / inklusive Anführungszeichen löschen
+Vim Trick | yi" / ya" | Text innerhalb / inklusive Anführungszeichen kopieren (yank)
+Vim Trick | <C-a> / <C-x> | Zahl unter Cursor inkrementieren / dekrementieren
+Vim Trick | <C-o> / <C-i> | In der Sprungliste (Jump List) zurück / vorwärts springen
+Vim Trick | gv | Letzte visuelle Markierung wiederherstellen
+Vim Trick | vip / vap | Ganzen Absatz markieren (innen / außen)
+Vim Trick | :%s/alt/neu/g | Suchen und Ersetzen in der gesamten Datei
+Vim Trick | :%s/alt/neu/gc | Suchen und Ersetzen mit Bestätigung für jeden Treffer
+Vim Trick | zz / zt / zb | Cursor zentrieren / oben / unten im Fenster platzieren
+Vim Trick | H / M / L | Cursor an den oberen / mittleren / unteren Bildschirmrand bewegen
+Vim Trick | . | Letzte Änderung wiederholen
+Vim Trick | f{char} / t{char} | Springe vorwärts zu / vor Zeichen {char} in der Zeile (; = wiederholen)
+Vim Trick | F{char} / T{char} | Springe rückwärts zu / vor Zeichen {char} in der Zeile
+Vim Trick | gcc | Aktuelle Zeile auskommentieren / einkommentieren
+Vim Trick | gc{motion} | Bereich auskommentieren (z. B. gcip für ganzen Absatz)
