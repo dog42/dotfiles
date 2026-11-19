@@ -10,6 +10,10 @@ prompt() {
 
 prompt "LET'S GO..."
 
+prompt "UPDATE SYSTEM PKGs"
+sudo pacman -Syu
+
+
 pkg="arandr bat brave btop cmake curl dunst fastfetch fzf git jq kitty localsend npm nvim playerctl python3 sshfs tmux udiskie wl-clipboard wofi yazi zathura zathura-pdf-poppler zoxide zsh"
 
 arch_pkg="battop bluetui downgrade elephant elephant-calc elephant-clipboard elephant-desktopapplications elephant-files elephant-providerlist elephant-runner elephant-symbols elephant-websearch hypridle hyprland hyprlock hyprmoncfg-bin hyprpaper hyprshot hyprshutdown impala qrencode seafile-client ttf-jetbrains-mono-nerd walker waybar wiremix xdg-desktop-portal-hyprland yay"
@@ -19,7 +23,6 @@ rm_pkg="hyprdynamicmonitors-bin"
 {{ if eq .chezmoi.osRelease.id "arch" "cachyos" -}}
 
 prompt "INSTALL NEW PKGs"
-sudo pacman -Sy
 for app in $arch_pkg $pkg; do
   (sudo pacman -S --noconfirm --needed $app >/dev/null && echo -e "${GREEN}INSTALL DONE PACMAN${NC} install $app") || (yay -S --noconfirm --needed $app >/dev/null && echo -e "${GREEN}INSTALL DONE YAY${NC} install $app") || echo -e "${RED}ERROR${NC} install $app"
 done
