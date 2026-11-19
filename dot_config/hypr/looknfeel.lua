@@ -81,7 +81,12 @@ hl.config({
             gradients = true,
             render_titles = true,
             height = 20,
-            rounding = 3,
+            rounding = 5,
+            rounding_power = 2,
+            gradient_rounding = 5,
+            gradient_rounding_power = 2,
+            round_only_edges = false,
+            gradient_round_only_edges = false,
             indicator_height = 0,
             indicator_gap = 0,
             col = {
