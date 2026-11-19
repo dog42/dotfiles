@@ -10,6 +10,13 @@ vim.keymap.set("n", "<S-Right>", "<cmd>bnext<cr>", { desc = "Next Buffer" })
 -- vim.keymap.set("n", "<cr>", "za", { desc = "toggle fold" })
 vim.keymap.set("n", "<leader>h", Snacks.dashboard.open, { desc = "Dashboard/Open mini starter" })
 
+-- Fenster-Split and close
+vim.keymap.set("n", "<leader>wv", "<C-w>v", { desc = "Split vertikal" })
+vim.keymap.set("n", "<leader>wh", "<C-w>s", { desc = "Split horizontal" })
+vim.keymap.set("n", "<leader>we", "<C-w>=", { desc = "Splits angleichen" })
+vim.keymap.set("n", "<leader>wx", "<cmd>close<CR>", { desc = "Split schließen" })
+vim.keymap.set("n", "<leader>wq", "<cmd>close<CR>", { desc = "Split schließen" })
+
 -- Fensterwechsel mit Space + w + Pfeiltasten
 vim.keymap.set("n", "<Leader>w<Left>", "<C-w>h", { desc = "Fenster links" })
 vim.keymap.set("n", "<Leader>w<Down>", "<C-w>j", { desc = "Fenster unten" })
@@ -50,6 +57,3 @@ end, { desc = "Rechtschreibprüfung Vorschläge (Popup)" })
 vim.keymap.set("n", "<Tab>", function()
   require("neo-tree.command").execute({ toggle = true, dir = LazyVim.root() })
 end, { desc = "Toggle Neo-tree" })
-
-
-

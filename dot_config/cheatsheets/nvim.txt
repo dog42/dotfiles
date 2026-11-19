@@ -2,8 +2,8 @@
 # Format: Kategorie | Tastenkombination | Beschreibung
 # Falls ein '|' in der Taste vorkommt, mit '\|' escapen.
 
-nvim | <leader>ff | Dateien suchen (Find Files - Snacks Picker)
-nvim | <leader><space> | Dateien im Projektverzeichnis suchen
+nvim | <leader>ff | Dateien suchen/öffnen (Find Files - Snacks Picker)
+nvim | <leader><space> | Dateien im Root-Verzeichnis suchen/öffnen
 nvim | <leader>sg | Projektweit nach Text suchen (Live Grep)
 nvim | <leader>sw | Wort unter Cursor im Projekt suchen
 nvim | <leader>, | Offene Buffer durchsuchen / wechseln

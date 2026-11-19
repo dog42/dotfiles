@@ -4,7 +4,6 @@ hl.on("hyprland.start", function()
     -- unlock kwallet
     hl.exec_cmd("sleep 0 && /usr/lib/pam_kwallet_init && sleep 1")
     
-    hl.exec_cmd("hyprdynamicmonitors run")
     hl.exec_cmd("[workspace 2 silent] " .. terminal)
     hl.exec_cmd("hyprpaper")
     hl.exec_cmd("waybar")
