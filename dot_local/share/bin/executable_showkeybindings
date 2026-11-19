@@ -133,7 +133,7 @@ parse_bindings() {
     }
 
     if (action != "") {
-        printf "[%-14s] %-26s → %s\n", "Hyprland", key_combo, action;
+        printf "[%-10s] %-26s → %s\n", "Hyprland", key_combo, action;
     }
 }'
 }
@@ -162,7 +162,7 @@ parse_pipe_data() {
       gsub(/^[[:space:]]+|[[:space:]]+$/, "", key)
       gsub(/^[[:space:]]+|[[:space:]]+$/, "", desc)
 
-      printf "[%-14s] %-26s → %s\n", cat, key, desc
+      printf "[%-10s] %-26s → %s\n", cat, key, desc
     }
   }
   '
@@ -184,7 +184,7 @@ try:
     pattern = r"vim\.keymap\.set\s*\(\s*(?:\{[^}]+\}|[\"\x27][^\"\x27]+[\"\x27])\s*,\s*[\"\x27]([^\"\x27]+)[\"\x27].*?desc\s*=\s*[\"\x27]([^\"\x27]+)[\"\x27]"
     for m in re.finditer(pattern, clean_content, re.DOTALL):
         key, desc = m.group(1), m.group(2)
-        print(f"Neovim (User)|{key}|{desc}")
+        print(f"Neovim (U)|{key}|{desc}")
 except Exception:
     pass
 ' "$keymaps_file" 2>/dev/null | parse_pipe_data
@@ -281,7 +281,7 @@ prioritize_entries() {
       if (ctx == "nvim" || ctx == "zathura") {
         prio += 50
       }
-    } else if (line ~ /^\[Neovim \(User\)/) {
+    } else if (line ~ /^\[Neovim \(U\)/) {
       prio = (ctx == "nvim") ? 1 : 52
     } else if (line ~ /^\[Vim Trick/) {
       prio = (ctx == "nvim") ? 2 : 54
