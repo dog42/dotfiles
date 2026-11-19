@@ -1,4 +1,5 @@
 README.md
 theme-colors.toml
 .local/share/nvim/site/spell/**
+.config/FreeCAD/**
 

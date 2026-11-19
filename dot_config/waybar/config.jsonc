@@ -18,14 +18,14 @@
   ],
 
   "custom/group-tabs": {
-    "exec": "/home/dock/.local/share/bin/waybar-group-tabs listen",
+    "exec": "waybar-group-tabs listen",
     "return-type": "json",
     "restart-interval": 2,
     "hide-empty-text": true,
-    "on-click": "/home/dock/.local/share/bin/waybar-group-tabs menu",
-    "on-click-right": "/home/dock/.local/share/bin/waybar-group-tabs next",
-    "on-scroll-up": "/home/dock/.local/share/bin/waybar-group-tabs next",
-    "on-scroll-down": "/home/dock/.local/share/bin/waybar-group-tabs prev",
+    "on-click": "waybar-group-tabs menu",
+    "on-click-right": "waybar-group-tabs next",
+    "on-scroll-up": "waybar-group-tabs next",
+    "on-scroll-down": "waybar-group-tabs prev",
     "tooltip": true
   },
 
