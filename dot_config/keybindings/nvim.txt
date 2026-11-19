@@ -2,35 +2,35 @@
 # Format: Kategorie | Tastenkombination | Beschreibung
 # Falls ein '|' in der Taste vorkommt, mit '\|' escapen.
 
-Neovim | <leader>ff | Dateien suchen (Find Files - Snacks Picker)
-Neovim | <leader><space> | Dateien im Projektverzeichnis suchen
-Neovim | <leader>sg | Projektweit nach Text suchen (Live Grep)
-Neovim | <leader>sw | Wort unter Cursor im Projekt suchen
-Neovim | <leader>, | Offene Buffer durchsuchen / wechseln
-Neovim | <leader>/ | Im aktuellen Buffer suchen (Grep Buffer)
-Neovim | <leader>e | Explorer / Neo-tree ein- und ausblenden
-Neovim | <leader>bd | Aktuellen Buffer schließen
-Neovim | <leader>bo | Alle anderen Buffer schließen
-Neovim | <leader>cf | Datei formatieren (Conform / LSP Formatter)
-Neovim | <leader>ca | Code Actions anzeigen (LSP)
-Neovim | <leader>cd | Diagnose-Meldung in Floating Window zeigen
-Neovim | <leader>cr | Symbol umbenennen (LSP Rename)
-Neovim | gd | Zur Definition springen (Go to Definition)
-Neovim | gr | Alle Referenzen auflisten (References)
-Neovim | K | Hover-Dokumentation anzeigen
-Neovim | [d / ]d | Vorherige / nächste Diagnose (Warnung/Fehler)
-Neovim | [e / ]e | Vorheriger / nächster Fehler
-Neovim | <leader>gg | Lazygit im Git-Root öffnen
-Neovim | <leader>gl | Git Log anzeigen
-Neovim | <leader>gb | Git Blame der aktuellen Zeile
-Neovim | <leader>ft | Schwebendes Terminal (Floating Terminal) öffnen
-Neovim | <leader>xx | Trouble: Diagnosen aller Dateien anzeigen
-Neovim | <leader>cs | Symbols Outline / Code-Symbole durchsuchen
-Neovim | <leader>- | Fenster horizontal teilen (Split Below)
-Neovim | <leader>\| | Fenster vertikal teilen (Split Right)
-Neovim | <leader>wd | Aktuelles Fenster schließen
-Neovim | <leader>wm | Fenster maximieren / toggeln (Zoom)
-Neovim | <leader>uz | Zen Mode (Ablenkungsfreies Schreiben) toggeln
-Neovim | <leader>qq | Neovim beenden (Quit All)
-Neovim | <S-h> / <S-l> | Vorheriger / nächster Buffer (LazyVim Standard)
-Neovim | [b / ]b | Vorheriger / nächster Buffer
+nvim | <leader>ff | Dateien suchen (Find Files - Snacks Picker)
+nvim | <leader><space> | Dateien im Projektverzeichnis suchen
+nvim | <leader>sg | Projektweit nach Text suchen (Live Grep)
+nvim | <leader>sw | Wort unter Cursor im Projekt suchen
+nvim | <leader>, | Offene Buffer durchsuchen / wechseln
+nvim | <leader>/ | Im aktuellen Buffer suchen (Grep Buffer)
+nvim | <leader>e | Explorer / Neo-tree ein- und ausblenden
+nvim | <leader>bd | Aktuellen Buffer schließen
+nvim | <leader>bo | Alle anderen Buffer schließen
+nvim | <leader>cf | Datei formatieren (Conform / LSP Formatter)
+nvim | <leader>ca | Code Actions anzeigen (LSP)
+nvim | <leader>cd | Diagnose-Meldung in Floating Window zeigen
+nvim | <leader>cr | Symbol umbenennen (LSP Rename)
+nvim | gd | Zur Definition springen (Go to Definition)
+nvim | gr | Alle Referenzen auflisten (References)
+nvim | K | Hover-Dokumentation anzeigen
+nvim | [d / ]d | Vorherige / nächste Diagnose (Warnung/Fehler)
+nvim | [e / ]e | Vorheriger / nächster Fehler
+nvim | <leader>gg | Lazygit im Git-Root öffnen
+nvim | <leader>gl | Git Log anzeigen
+nvim | <leader>gb | Git Blame der aktuellen Zeile
+nvim | <leader>ft | Schwebendes Terminal (Floating Terminal) öffnen
+nvim | <leader>xx | Trouble: Diagnosen aller Dateien anzeigen
+nvim | <leader>cs | Symbols Outline / Code-Symbole durchsuchen
+nvim | <leader>- | Fenster horizontal teilen (Split Below)
+nvim | <leader>\| | Fenster vertikal teilen (Split Right)
+nvim | <leader>wd | Aktuelles Fenster schließen
+nvim | <leader>wm | Fenster maximieren / toggeln (Zoom)
+nvim | <leader>uz | Zen Mode (Ablenkungsfreies Schreiben) toggeln
+nvim | <leader>qq | Neovim beenden (Quit All)
+nvim | <S-h> / <S-l> | Vorheriger / nächster Buffer (LazyVim Standard)
+nvim | [b / ]b | Vorheriger / nächster Buffer

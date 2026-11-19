@@ -133,7 +133,7 @@ parse_bindings() {
     }
 
     if (action != "") {
-        printf "[%-10s] %-26s → %s\n", "Hyprland", key_combo, action;
+        printf "[%-8s] %-26s → %s\n", "hypr", key_combo, action;
     }
 }'
 }
@@ -162,7 +162,7 @@ parse_pipe_data() {
       gsub(/^[[:space:]]+|[[:space:]]+$/, "", key)
       gsub(/^[[:space:]]+|[[:space:]]+$/, "", desc)
 
-      printf "[%-10s] %-26s → %s\n", cat, key, desc
+      printf "[%-8s] %-26s → %s\n", cat, key, desc
     }
   }
   '
@@ -184,7 +184,7 @@ try:
     pattern = r"vim\.keymap\.set\s*\(\s*(?:\{[^}]+\}|[\"\x27][^\"\x27]+[\"\x27])\s*,\s*[\"\x27]([^\"\x27]+)[\"\x27].*?desc\s*=\s*[\"\x27]([^\"\x27]+)[\"\x27]"
     for m in re.finditer(pattern, clean_content, re.DOTALL):
         key, desc = m.group(1), m.group(2)
-        print(f"Neovim (U)|{key}|{desc}")
+        print(f"nvim (U)|{key}|{desc}")
 except Exception:
     pass
 ' "$keymaps_file" 2>/dev/null | parse_pipe_data
@@ -230,7 +230,7 @@ prioritize_entries() {
     line = $0
     prio = 50
 
-    if (line ~ /^\[Hyprland/) {
+    if (line ~ /^\[hypr/) {
       prio = 30
       if (match(line, /Terminal/)) prio = 0
       if (match(line, /Browser/) && !match(line, /Browser[[:space:]]*\(/)) prio = 1
@@ -281,11 +281,11 @@ prioritize_entries() {
       if (ctx == "nvim" || ctx == "zathura") {
         prio += 50
       }
-    } else if (line ~ /^\[Neovim \(U\)/) {
+    } else if (line ~ /^\[nvim \(U\)/) {
       prio = (ctx == "nvim") ? 1 : 52
-    } else if (line ~ /^\[Vim Trick/) {
+    } else if (line ~ /^\[VimTrick/) {
       prio = (ctx == "nvim") ? 2 : 54
-    } else if (line ~ /^\[Neovim/) {
+    } else if (line ~ /^\[nvim/) {
       prio = (ctx == "nvim") ? 3 : 56
     } else if (line ~ /^\[Zathura/) {
       prio = (ctx == "zathura") ? 1 : 60
@@ -330,7 +330,7 @@ while [[ $# -gt 0 ]]; do
       shift
       ;;
     --nvim)
-      FILTER="Neovim"
+      FILTER="nvim"
       shift
       ;;
     --zathura)
@@ -338,11 +338,11 @@ while [[ $# -gt 0 ]]; do
       shift
       ;;
     --hypr|--hyprland)
-      FILTER="Hyprland"
+      FILTER="hypr"
       shift
       ;;
     --cheats|--tricks)
-      FILTER="Vim Trick"
+      FILTER="VimTrick"
       shift
       ;;
     -h|--help)
@@ -350,10 +350,10 @@ while [[ $# -gt 0 ]]; do
       echo ""
       echo "Optionen:"
       echo "  -p, --print        Gibt die Bindings im Terminal aus"
-      echo "  --nvim             Filtert nur Neovim & Vim-Tricks"
+      echo "  --nvim             Filtert nur nvim & VimTrick"
       echo "  --zathura          Filtert nur Zathura"
-      echo "  --hypr             Filtert nur Hyprland"
-      echo "  --cheats           Filtert nur persönliche Vim-Tricks"
+      echo "  --hypr             Filtert nur hypr"
+      echo "  --cheats           Filtert nur persönliche VimTricks"
       echo "  -h, --help         Zeigt diese Hilfe an"
       exit 0
       ;;
