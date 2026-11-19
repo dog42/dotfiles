@@ -190,13 +190,38 @@ except Exception:
 ' "$keymaps_file" 2>/dev/null | parse_pipe_data
 }
 
-# Load static/curated files from ~/.config/keybindings/
+# Automatically parse user keymaps with desc from Yazi keymap.toml
+parse_yazi_user_keymaps() {
+  local keymap_file="$HOME/.config/yazi/keymap.toml"
+  [[ -f "$keymap_file" ]] || return 0
+
+  python3 -c '
+import tomllib, sys
+
+try:
+    with open(sys.argv[1], "rb") as f:
+        data = tomllib.load(f)
+    for section in ["mgr", "input", "select"]:
+        for km in data.get(section, {}).get("prepend_keymap", []) + data.get(section, {}).get("keymap", []):
+            on = km.get("on")
+            desc = km.get("desc", "")
+            if isinstance(on, list):
+                on = " ".join(on)
+            if on and desc:
+                print(f"yazi (U)|{on}|{desc}")
+except Exception:
+    pass
+' "$keymap_file" 2>/dev/null | parse_pipe_data
+}
+
+# Load static/curated files from ~/.config/cheatsheets/
 parse_custom_cheatsheets() {
-  local kb_dir="$HOME/.config/keybindings"
+  local cs_dir="$HOME/.config/cheatsheets"
   local files=(
-    "$kb_dir/nvim.txt"
-    "$kb_dir/cheatsheet.txt"
-    "$kb_dir/zathura.txt"
+    "$cs_dir/nvim.txt"
+    "$cs_dir/yazi.txt"
+    "$cs_dir/cheatsheet.txt"
+    "$cs_dir/zathura.txt"
   )
 
   for file in "${files[@]}"; do
@@ -206,7 +231,7 @@ parse_custom_cheatsheets() {
   done
 }
 
-# Detect active window context (nvim, zathura, or default hyprland)
+# Detect active window context (nvim, zathura, yazi, or default hyprland)
 detect_context() {
   local win_class win_title
   if command -v hyprctl >/dev/null 2>&1; then
@@ -216,6 +241,8 @@ detect_context() {
 
   if [[ "$win_class" =~ zathura ]]; then
     echo "zathura"
+  elif [[ "$win_title" =~ (yazi) || "$win_class" =~ yazi ]]; then
+    echo "yazi"
   elif [[ "$win_class" =~ nvim || "$win_title" =~ nvim || ("$win_class" =~ (kitty|alacritty|wezterm|ghostty) && "$win_title" =~ (nvim|vim)) ]]; then
     echo "nvim"
   else
@@ -278,13 +305,17 @@ prioritize_entries() {
       if (match(line, /Apple Display/))  prio = 44
       if (match(line, /XF86/))  prio = 45
 
-      if (ctx == "nvim" || ctx == "zathura") {
+      if (ctx == "nvim" || ctx == "zathura" || ctx == "yazi") {
         prio += 50
       }
     } else if (line ~ /^\[nvim \(U\)/) {
       prio = (ctx == "nvim") ? 1 : 52
+    } else if (line ~ /^\[yazi \(U\)/) {
+      prio = (ctx == "yazi") ? 1 : 53
     } else if (line ~ /^\[VimTrick/) {
       prio = (ctx == "nvim") ? 2 : 54
+    } else if (line ~ /^\[yazi/) {
+      prio = (ctx == "yazi") ? 2 : 55
     } else if (line ~ /^\[nvim/) {
       prio = (ctx == "nvim") ? 3 : 56
     } else if (line ~ /^\[Zathura/) {
@@ -312,8 +343,9 @@ all_bindings() {
       parse_keycodes |
       parse_bindings
 
-    # Custom & Neovim bindings
+    # Custom, Neovim and Yazi bindings
     parse_nvim_user_keymaps
+    parse_yazi_user_keymaps
     parse_custom_cheatsheets
   } |
     prioritize_entries "$context"
@@ -331,6 +363,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --nvim)
       FILTER="nvim"
+      shift
+      ;;
+    --yazi)
+      FILTER="yazi"
       shift
       ;;
     --zathura)
@@ -351,6 +387,7 @@ while [[ $# -gt 0 ]]; do
       echo "Optionen:"
       echo "  -p, --print        Gibt die Bindings im Terminal aus"
       echo "  --nvim             Filtert nur nvim & VimTrick"
+      echo "  --yazi             Filtert nur yazi"
       echo "  --zathura          Filtert nur Zathura"
       echo "  --hypr             Filtert nur hypr"
       echo "  --cheats           Filtert nur persönliche VimTricks"

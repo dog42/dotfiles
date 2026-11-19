@@ -1,0 +1,35 @@
+# Wichtige Yazi Shortcuts (Terminal File Manager)
+# Format: Kategorie | Tastenkombination | Beschreibung
+# Falls ein '|' in der Taste vorkommt, mit '\|' escapen.
+
+yazi | h / l | Ein Verzeichnis hoch / Ordner bzw. Datei öffnen
+yazi | j / k | Nach unten / nach oben bewegen
+yazi | J / K | 5 Zeilen nach unten / oben springen
+yazi | gg / G | Zum Anfang / zum Ende des Verzeichnisses springen
+yazi | <C-u> / <C-d> | Halbe Seite nach oben / unten scrollen
+yazi | H / L | Im Verlauf zurück / vorwärts springen
+yazi | <Space> | Datei selektieren / deselektieren
+yazi | v / V | Visuelle Mehrfachauswahl starten / abwählen
+yazi | <C-a> | Alle Dateien im Ordner auswählen
+yazi | <C-r> | Auswahl invertieren (umkehren)
+yazi | o | Datei mit System-Standardprogramm öffnen
+yazi | a | Neue Datei bzw. Ordner erstellen (Ordner mit / beenden)
+yazi | r | Datei umbenennen
+yazi | d | Datei in den Papierkorb verschieben
+yazi | D | Datei unwiderruflich löschen
+yazi | p | Kopierte Dateien hier einfügen
+yazi | . | Versteckte Dateien ein- / ausblenden
+yazi | / | Dateien im Verzeichnis filtern
+yazi | f | Datei per Direktsuche anspringen
+yazi | z | Verzeichnis-Sprung mit zoxide
+yazi | Z | Verzeichnis-Sprung mit fzf
+yazi | t t | Neuen Tab im aktuellen Ordner öffnen (2x 't')
+yazi | t r | Aktuellen Tab umbenennen
+yazi | 1..9 | Zu Tab 1..9 wechseln
+yazi | [ / ] | Vorheriger / nächster Tab
+yazi | { / } | Tab mit vorigem / nächstem Tab vertauschen
+yazi | <C-c> | Aktuellen Tab schließen (oder Yazi beenden)
+yazi | w | Task-Manager anzeigen / schließen
+yazi | s | Shell im aktuellen Verzeichnis öffnen
+yazi | ~ | Yazi Hilfe-Menü anzeigen
+yazi | q | Yazi beenden
