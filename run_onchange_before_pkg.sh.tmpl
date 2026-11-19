@@ -5,7 +5,7 @@ GREEN='\033[0;32m'
 NC='\033[0m' # No Color
 
 prompt() {
-  echo -e "\n$RED>>>$NC $*"
+  echo -e "\n$RED>>>$NC $*\n"
 }
 
 prompt "LET'S GO..."
@@ -24,12 +24,12 @@ rm_pkg="hyprdynamicmonitors-bin"
 
 prompt "INSTALL NEW PKGs"
 for app in $arch_pkg $pkg; do
-  (sudo pacman -S --noconfirm --needed $app >/dev/null && echo -e "${GREEN}INSTALL DONE PACMAN${NC} install $app") || (yay -S --noconfirm --needed $app >/dev/null && echo -e "${GREEN}INSTALL DONE YAY${NC} install $app") || echo -e "${RED}ERROR${NC} install $app"
+  (sudo pacman -S --noconfirm --needed $app &> /dev/null && echo -e "${GREEN}DONE PACMAN${NC} install $app") || (yay -S --noconfirm --needed $app &>/dev/null && echo -e "${GREEN}DONE YAY${NC} install $app") || echo -e "${RED}ERROR${NC} install $app"
 done
 
 prompt "REMOVE OLD PKGs"
 for app in $rm_pkg; do
-  (sudo pacman -Rns --noconfirm $app >/dev/null && echo -e "${GREEN}REMOVE DONE PACMAN${NC} remove $app") || (yay -Rns --noconfirm $app >/dev/null && echo -e "${GREEN}REMOVE DONE YAY${NC} remove $app") || echo -e "${RED}ERROR${NC} $app not installed"
+  (sudo pacman -Rns --noconfirm $app &> /dev/null && echo -e "${GREEN}REMOVE DONE PACMAN${NC} remove $app") || (yay -Rns --noconfirm $app &>/dev/null && echo -e "${GREEN}REMOVE DONE YAY${NC} remove $app") || echo -e "${RED}ERROR${NC} $app not installed"
 done
 
 {{ end -}}
