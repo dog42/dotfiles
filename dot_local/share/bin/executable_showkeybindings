@@ -382,16 +382,16 @@ while [[ $# -gt 0 ]]; do
       shift
       ;;
     -h|--help)
-      echo "Verwendung: showkeybindings [OPTIONEN]"
+      echo "Usage: showkeybindings [OPTIONS]"
       echo ""
-      echo "Optionen:"
-      echo "  -p, --print        Gibt die Bindings im Terminal aus"
-      echo "  --nvim             Filtert nur nvim & VimTrick"
-      echo "  --yazi             Filtert nur yazi"
-      echo "  --zathura          Filtert nur Zathura"
-      echo "  --hypr             Filtert nur hypr"
-      echo "  --cheats           Filtert nur persönliche VimTricks"
-      echo "  -h, --help         Zeigt diese Hilfe an"
+      echo "Options:"
+      echo "  -p, --print        Print keybindings in terminal"
+      echo "  --nvim             Filter only nvim & VimTrick"
+      echo "  --yazi             Filter only yazi"
+      echo "  --zathura          Filter only zathura"
+      echo "  --hypr             Filter only hypr"
+      echo "  --cheats           Filter only personal VimTricks"
+      echo "  -h, --help         Show this help message"
       exit 0
       ;;
     *)

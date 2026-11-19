@@ -1,36 +1,36 @@
-# Wichtige LazyVim Shortcuts (Standard-Navigation & Plugins)
-# Format: Kategorie | Tastenkombination | Beschreibung
-# Falls ein '|' in der Taste vorkommt, mit '\|' escapen.
+# Common LazyVim Shortcuts (Standard Navigation & Plugins)
+# Format: Category | Key combination | Description
+# If '|' occurs in the key, escape it with '\|'.
 
-nvim | <leader>ff | Dateien suchen/öffnen (Find Files - Snacks Picker)
-nvim | <leader><space> | Dateien im Root-Verzeichnis suchen/öffnen
-nvim | <leader>sg | Projektweit nach Text suchen (Live Grep)
-nvim | <leader>sw | Wort unter Cursor im Projekt suchen
-nvim | <leader>, | Offene Buffer durchsuchen / wechseln
-nvim | <leader>/ | Im aktuellen Buffer suchen (Grep Buffer)
-nvim | <leader>e | Explorer / Neo-tree ein- und ausblenden
-nvim | <leader>bd | Aktuellen Buffer schließen
-nvim | <leader>bo | Alle anderen Buffer schließen
-nvim | <leader>cf | Datei formatieren (Conform / LSP Formatter)
-nvim | <leader>ca | Code Actions anzeigen (LSP)
-nvim | <leader>cd | Diagnose-Meldung in Floating Window zeigen
-nvim | <leader>cr | Symbol umbenennen (LSP Rename)
-nvim | gd | Zur Definition springen (Go to Definition)
-nvim | gr | Alle Referenzen auflisten (References)
-nvim | K | Hover-Dokumentation anzeigen
-nvim | [d / ]d | Vorherige / nächste Diagnose (Warnung/Fehler)
-nvim | [e / ]e | Vorheriger / nächster Fehler
-nvim | <leader>gg | Lazygit im Git-Root öffnen
-nvim | <leader>gl | Git Log anzeigen
-nvim | <leader>gb | Git Blame der aktuellen Zeile
-nvim | <leader>ft | Schwebendes Terminal (Floating Terminal) öffnen
-nvim | <leader>xx | Trouble: Diagnosen aller Dateien anzeigen
-nvim | <leader>cs | Symbols Outline / Code-Symbole durchsuchen
-nvim | <leader>- | Fenster horizontal teilen (Split Below)
-nvim | <leader>\| | Fenster vertikal teilen (Split Right)
-nvim | <leader>wd | Aktuelles Fenster schließen
-nvim | <leader>wm | Fenster maximieren / toggeln (Zoom)
-nvim | <leader>uz | Zen Mode (Ablenkungsfreies Schreiben) toggeln
-nvim | <leader>qq | Neovim beenden (Quit All)
-nvim | <S-h> / <S-l> | Vorheriger / nächster Buffer (LazyVim Standard)
-nvim | [b / ]b | Vorheriger / nächster Buffer
+nvim | <leader>ff | Find / open files (Snacks picker)
+nvim | <leader><space> | Find / open files in project root
+nvim | <leader>sg | Live grep across project
+nvim | <leader>sw | Search word under cursor across project
+nvim | <leader>, | Switch / search open buffers
+nvim | <leader>/ | Grep in current buffer
+nvim | <leader>e | Toggle explorer / Neo-tree
+nvim | <leader>bd | Close current buffer
+nvim | <leader>bo | Close other buffers
+nvim | <leader>cf | Format file (Conform / LSP)
+nvim | <leader>ca | Show code actions (LSP)
+nvim | <leader>cd | Show line diagnostics in floating window
+nvim | <leader>cr | Rename symbol (LSP)
+nvim | gd | Go to definition
+nvim | gr | List references
+nvim | K | Show hover documentation
+nvim | [d / ]d | Previous / next diagnostic (warning/error)
+nvim | [e / ]e | Previous / next error
+nvim | <leader>gg | Open Lazygit in git root
+nvim | <leader>gl | Show git log
+nvim | <leader>gb | Git blame current line
+nvim | <leader>ft | Open floating terminal
+nvim | <leader>xx | Trouble: show workspace diagnostics
+nvim | <leader>cs | Symbols outline / document symbols
+nvim | <leader>- | Split window horizontally (Split below)
+nvim | <leader>\| | Split window vertically (Split right)
+nvim | <leader>wd | Close current window
+nvim | <leader>wm | Toggle maximize window (Zoom)
+nvim | <leader>uz | Toggle Zen mode
+nvim | <leader>qq | Quit Neovim (Quit all)
+nvim | <S-h> / <S-l> | Previous / next buffer (LazyVim standard)
+nvim | [b / ]b | Previous / next buffer

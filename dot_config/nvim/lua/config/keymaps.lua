@@ -10,29 +10,29 @@ vim.keymap.set("n", "<S-Right>", "<cmd>bnext<cr>", { desc = "Next Buffer" })
 -- vim.keymap.set("n", "<cr>", "za", { desc = "toggle fold" })
 vim.keymap.set("n", "<leader>h", Snacks.dashboard.open, { desc = "Dashboard/Open mini starter" })
 
--- Fenster-Split and close
-vim.keymap.set("n", "<leader>wv", "<C-w>v", { desc = "Split vertikal" })
+-- Window splits and close
+vim.keymap.set("n", "<leader>wv", "<C-w>v", { desc = "Split vertical" })
 vim.keymap.set("n", "<leader>wh", "<C-w>s", { desc = "Split horizontal" })
-vim.keymap.set("n", "<leader>we", "<C-w>=", { desc = "Splits angleichen" })
-vim.keymap.set("n", "<leader>wx", "<cmd>close<CR>", { desc = "Split schließen" })
-vim.keymap.set("n", "<leader>wq", "<cmd>close<CR>", { desc = "Split schließen" })
+vim.keymap.set("n", "<leader>we", "<C-w>=", { desc = "Balance window splits" })
+vim.keymap.set("n", "<leader>wx", "<cmd>close<CR>", { desc = "Close window split" })
+vim.keymap.set("n", "<leader>wq", "<cmd>close<CR>", { desc = "Close window split" })
 
--- Fensterwechsel mit Space + w + Pfeiltasten
-vim.keymap.set("n", "<Leader>w<Left>", "<C-w>h", { desc = "Fenster links" })
-vim.keymap.set("n", "<Leader>w<Down>", "<C-w>j", { desc = "Fenster unten" })
-vim.keymap.set("n", "<Leader>w<Up>", "<C-w>k", { desc = "Fenster oben" })
-vim.keymap.set("n", "<Leader>w<Right>", "<C-w>l", { desc = "Fenster rechts" })
+-- Window navigation with Space + w + arrow keys
+vim.keymap.set("n", "<Leader>w<Left>", "<C-w>h", { desc = "Focus window left" })
+vim.keymap.set("n", "<Leader>w<Down>", "<C-w>j", { desc = "Focus window down" })
+vim.keymap.set("n", "<Leader>w<Up>", "<C-w>k", { desc = "Focus window up" })
+vim.keymap.set("n", "<Leader>w<Right>", "<C-w>l", { desc = "Focus window right" })
 
--- Zusätzlich die Buchstaben-Variante (h,j,k,l) - falls du sie mal brauchst
-vim.keymap.set("n", "<Leader>wh", "<C-w>h", { desc = "Fenster links" })
-vim.keymap.set("n", "<Leader>wj", "<C-w>j", { desc = "Fenster unten" })
-vim.keymap.set("n", "<Leader>wk", "<C-w>k", { desc = "Fenster oben" })
-vim.keymap.set("n", "<Leader>wl", "<C-w>l", { desc = "Fenster rechts" })
+-- Directional navigation (h, j, k, l)
+vim.keymap.set("n", "<Leader>wh", "<C-w>h", { desc = "Focus window left" })
+vim.keymap.set("n", "<Leader>wj", "<C-w>j", { desc = "Focus window down" })
+vim.keymap.set("n", "<Leader>wk", "<C-w>k", { desc = "Focus window up" })
+vim.keymap.set("n", "<Leader>wl", "<C-w>l", { desc = "Focus window right" })
 
--- Das generische Wechseln mit Space + w + w
-vim.keymap.set("n", "<Leader>ww", "<C-w>w", { desc = "Nächstes Fenster" })
+-- Generic window cycling with Space + w + w
+vim.keymap.set("n", "<Leader>ww", "<C-w>w", { desc = "Next window" })
 
--- Rechtschreibprüfung Korrekturvorschläge auf 'zz' legen (Nutzt vim.ui.select Popup-Menü von LazyVim)
+-- Spelling correction suggestions on 'zz' (uses LazyVim vim.ui.select popup)
 vim.keymap.set("n", "zz", function()
   local badword = vim.fn.spellbadword()[1]
   local word = badword ~= "" and badword or vim.fn.expand("<cword>")
@@ -41,19 +41,19 @@ vim.keymap.set("n", "zz", function()
   end
   local suggestions = vim.fn.spellsuggest(word)
   if #suggestions == 0 then
-    vim.notify("Keine Vorschläge für '" .. word .. "'", vim.log.levels.INFO)
+    vim.notify("No suggestions found for '" .. word .. "'", vim.log.levels.INFO)
     return
   end
   vim.ui.select(suggestions, {
-    prompt = "Korrekturvorschläge für '" .. word .. "':",
+    prompt = "Spelling suggestions for '" .. word .. "':",
   }, function(selected, idx)
     if selected and idx then
       vim.cmd("normal! " .. idx .. "z=")
     end
   end)
-end, { desc = "Rechtschreibprüfung Vorschläge (Popup)" })
+end, { desc = "Spelling suggestions (popup)" })
 
--- Neo-tree / Dateibaum mit TAB toggeln
+-- Toggle Neo-tree with TAB
 vim.keymap.set("n", "<Tab>", function()
   require("neo-tree.command").execute({ toggle = true, dir = LazyVim.root() })
 end, { desc = "Toggle Neo-tree" })

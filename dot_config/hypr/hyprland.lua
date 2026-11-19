@@ -38,8 +38,8 @@ hl.window_rule({
 })
 
 -- Group Zathura PDF windows together into tabs
--- HINWEIS: Zum Deaktivieren der automatischen Tab-Gruppierung einfach die nachfolgende
--- hl.window_rule Regel auskommentieren (-- davor setzen). Manuelles Gruppieren mit SUPER + W bleibt möglich.
+-- NOTE: To disable automatic tab grouping, simply comment out the following
+-- hl.window_rule rule (prefix with --). Manual grouping with SUPER + W remains available.
 hl.window_rule({
 	group = "set",
 	match = { class = "org\\.pwmt\\.zathura" },

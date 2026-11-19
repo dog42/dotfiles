@@ -1,4 +1,4 @@
-# allgemein nuetzliche aliase
+# General useful aliases
 
 alias reboot='echo "Better Shutdown and Restart!"'
 alias i='fastfetch --logo ~/.config/logo.txt --logo-color-1 red --color red'
@@ -7,14 +7,14 @@ alias sudo='sudo -E '
 
 alias qr='qrencode -t utf8 <<<'
 
-# listen
+# Directory listing
 alias ls='ls --color=auto --group-directories-first'
 alias lla='ls -la'
 alias ll='ls -l'
 alias la='ls -a'
 alias l='ls -CF'
 
-# taegliche nutzung
+# Daily usage
 alias v='nvim'
 alias n='nvim'
 alias vim='nvim'
@@ -41,61 +41,61 @@ function y() {
   rm -f -- "$tmp"
 }
 
-# tailscale funnel + QR-Code
+# tailscale funnel + QR code
 function tsqr() {
   local port="${1:-8080}"
   local tmp_file="/tmp/ts_output"
   clear
   # 1. Checks
   if ! systemctl is-active --quiet tailscaled; then
-    echo -e "\033[31m[!] tailscaled läuft nicht.\033[0m"
-    # Bash-kompatibler Read
-    echo -n "Soll der Dienst gestartet werden? (j/n): "
+    echo -e "\033[31m[!] tailscaled is not running.\033[0m"
+    # Bash-compatible read
+    echo -n "Start service? (y/n): "
     read start_daemon
-    [[ "$start_daemon" =~ ^[JjYy] ]] && sudo systemctl start tailscaled || return 1
+    [[ "$start_daemon" =~ ^[YyJj] ]] && sudo systemctl start tailscaled || return 1
   fi
 
   if ! tailscale status --peers=false >/dev/null 2>&1; then
-    echo -e "\033[31m[!] Tailscale ist offline.\033[0m"
-    echo -n "Soll 'tailscale up' ausgeführt werden? (j/n): "
+    echo -e "\033[31m[!] Tailscale is offline.\033[0m"
+    echo -n "Run 'tailscale up'? (y/n): "
     read do_up
-    [[ "$do_up" =~ ^[JjYy] ]] && sudo tailscale up || return 1
+    [[ "$do_up" =~ ^[YyJj] ]] && sudo tailscale up || return 1
   fi
 
-  echo "[✔] Starte Funnel auf Port $port..."
+  echo "[✔] Starting funnel on port $port..."
 
-  # Der "Universal-Trick" für die Bash:
-  # Wir starten den Prozess in einer Subshell und leiten den Output komplett um.
-  # 'disown' nach dem Start verhindert die Job-Meldung beim Beenden.
+  # Universal bash subshell pattern:
+  # Starts the process in a subshell and redirects output completely.
+  # 'disown' after start prevents job notification on termination.
   sudo tailscale funnel "$port" >"$tmp_file" 2>&1 &
   local ts_pid=$!
   disown $ts_pid 2>/dev/null
 
   cleanup() {
     trap - INT
-    # Wir unterdrücken die Fehlermeldung, falls der Prozess schon weg ist
+    # Suppress error message if process has already terminated
     sudo kill "$ts_pid" 2>/dev/null
 
     sleep 0.2
     rm -f "$tmp_file"
     clear
-    echo -e "\033[32m[✔] Tunnel deaktiviert\033[0m"
-    echo -n "Tailscale wieder deaktivieren (tailscale down)? (j/n): "
+    echo -e "\033[32m[✔] Tunnel stopped\033[0m"
+    echo -n "Disable Tailscale (tailscale down)? (y/n): "
     read do_down
-    if [[ "$do_down" =~ ^[JjYy] ]]; then
+    if [[ "$do_down" =~ ^[YyJj] ]]; then
       sudo tailscale down
-      echo "\n\033[1;32m[✔] Tailscale ist jetzt offline.\033[0m"
+      echo -e "\n\033[1;32m[✔] Tailscale is now offline.\033[0m"
     fi
     return 0
   }
 
   trap cleanup INT
 
-  # Warten auf URL
+  # Wait for URL
   while ! grep -q "https://" "$tmp_file" 2>/dev/null; do
     sleep 0.5
     if ! kill -0 $ts_pid 2>/dev/null; then
-      echo -e "\033[31m[!] Fehler beim Starten des Funnels.\033[0m"
+      echo -e "\033[31m[!] Error starting funnel.\033[0m"
       sudo cat "$tmp_file"
       return 1
     fi
@@ -105,8 +105,8 @@ function tsqr() {
 
   clear
   qrencode -t ansiutf8 "$url"
-  echo -e "\n\033[1;32m[✔] Tunnel aktiv: $url\033[0m"
-  echo "Drücke STRG+C zum Beenden."
+  echo -e "\n\033[1;32m[✔] Tunnel active: $url\033[0m"
+  echo "Press CTRL+C to stop."
 
   tail -f "$tmp_file" 2>/dev/null
 }

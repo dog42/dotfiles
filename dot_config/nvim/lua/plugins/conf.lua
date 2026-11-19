@@ -45,12 +45,12 @@ return {
   },
   {
     "lervag/vimtex",
-    lazy = false, -- VimTeX muss beim Start für .tex Dateien geladen sein
+    lazy = false, -- VimTeX must be loaded on startup for .tex files
     init = function()
-      -- 1. PDF-Viewer auf Zathura setzen
+      -- 1. Set PDF viewer to Zathura
       vim.g.vimtex_view_method = "zathura"
 
-      -- 2. Compiler auf LuaLaTeX umstellen
+      -- 2. Switch compiler to LuaLaTeX
       vim.g.vimtex_compiler_method = "latexmk"
       vim.g.vimtex_compiler_latexmk = {
         executable = "latexmk",

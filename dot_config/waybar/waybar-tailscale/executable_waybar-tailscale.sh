@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-MENU_CMD="walker --dmenu -p Menue" # Change to rofi/fuzzel/dmenu as needed
+MENU_CMD="walker --dmenu -p Menu" # Change to rofi/fuzzel/dmenu as needed
 TERM_CMD="kitty"                   # Change to your preferred terminal emulator
 
 toggle_status() {
@@ -150,7 +150,7 @@ get_node() {
     elif command -v xclip &>/dev/null; then
       echo -n "$target" | xclip -selection clipboard
     else
-      echo "Kopiert (Fallback): $target"
+      echo "Copied (fallback): $target"
       exit 0
     fi
   elif [[ $selected_option == "ssh" ]]; then
@@ -160,7 +160,7 @@ get_node() {
 
 _menue() {
   local selected
-  selected=$(declare -F | sed -e 's/declare -f //' -e '/^_/d' | $MENU_CMD) || exit 0 # Blendet alle internen Funktionen aus (die mit "_" starten)
+  selected=$(declare -F | sed -e 's/declare -f //' -e '/^_/d' | $MENU_CMD) || exit 0 # Hide all internal functions (starting with "_")
   $selected
 }
 

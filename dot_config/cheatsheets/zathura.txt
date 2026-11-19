@@ -1,20 +1,20 @@
 # Zathura PDF Viewer Shortcuts
-# Format: Kategorie | Tastenkombination | Beschreibung
-# Falls ein '|' in der Taste vorkommt, mit '\|' escapen.
+# Format: Category | Key combination | Description
+# If '|' occurs in the key, escape it with '\|'.
 
-Zathura | Ctrl + r | Recolor / Dark Mode umschalten
-Zathura | d | Zwischen 1- und 2-Seiten-Ansicht umschalten
-Zathura | r | Dokument um 90° im Uhrzeigersinn drehen
-Zathura | R | Dokument um 90° gegen den Uhrzeigersinn drehen
-Zathura | a / s | An Seitenbreite anpassen / An Fenster anpassen
-Zathura | f | Links im Dokument folgen (Link-Nummer eingeben)
-Zathura | F5 | Präsentationsmodus starten
-Zathura | Tab | Inhaltsverzeichnis (Index) ein- / ausblenden
-Zathura | / | Im Dokument suchen
-Zathura | n / N | Nächstes / vorheriges Suchergebnis
-Zathura | gg / G | Zur ersten / letzten Seite springen
-Zathura | [Zahl]G | Direkt zu Seite [Zahl] springen
-Zathura | J / K | Eine halbe Seite nach unten / oben scrollen
-Zathura | + / - | Vergrößern / Verkleinern (Zoom In / Out)
-Zathura | = | Zoom auf 100% zurücksetzen
-Zathura | q | Zathura beenden
+Zathura | Ctrl + r | Toggle recolor / dark mode
+Zathura | d | Toggle dual / single page view
+Zathura | r | Rotate document 90° clockwise
+Zathura | R | Rotate document 90° counterclockwise
+Zathura | a / s | Fit to page width / fit to window
+Zathura | f | Follow links in document (enter link number)
+Zathura | F5 | Start presentation mode
+Zathura | Tab | Toggle table of contents (index)
+Zathura | / | Search in document
+Zathura | n / N | Next / previous search result
+Zathura | gg / G | Jump to first / last page
+Zathura | [Number]G | Jump directly to page [Number]
+Zathura | J / K | Scroll half page down / up
+Zathura | + / - | Zoom in / out
+Zathura | = | Reset zoom to 100%
+Zathura | q | Quit Zathura

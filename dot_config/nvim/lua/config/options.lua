@@ -4,7 +4,7 @@
 vim.g.root_spec = { "cwd" }
 vim.opt.clipboard = "unnamedplus"
 
--- Rechtschreibprüfung für Deutsch und Englisch aktivieren
+-- Enable spellchecking for German and English
 vim.opt.spelllang = { "de", "en" }
 vim.opt.spell = true
 

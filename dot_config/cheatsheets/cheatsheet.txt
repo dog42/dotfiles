@@ -1,26 +1,26 @@
-# Persönliche Shortcuts & Vim-Tricks
-# Format: Kategorie | Tastenkombination | Beschreibung
-# Falls ein '|' in der Taste vorkommt, mit '\|' escapen.
+# Personal Shortcuts & Vim Tricks
+# Format: Category | Key combination | Description
+# If '|' occurs in the key, escape it with '\|'.
 
-VimTrick | *cgn n. n. | Wort unter Cursor suchen, ändern & mit '.' bei nächsten Treffern wiederholen
-VimTrick | ci" / ca" | Text innerhalb / inklusive doppelter Anführungszeichen ändern
-VimTrick | ci' / ca' | Text innerhalb / inklusive einfacher Anführungszeichen ändern
-VimTrick | ci( / ca( | Text innerhalb / inklusive runder Klammern ändern (auch cib / cab)
-VimTrick | ci{ / ca{ | Text innerhalb / inklusive geschweifter Klammern ändern (auch ciB / caB)
-VimTrick | ci[ / ca[ | Text innerhalb / inklusive eckiger Klammern ändern
-VimTrick | cit / cat | HTML/XML-Tag Inhalt / gesamten Tag ändern
-VimTrick | di" / da" | Text innerhalb / inklusive Anführungszeichen löschen
-VimTrick | yi" / ya" | Text innerhalb / inklusive Anführungszeichen kopieren (yank)
-VimTrick | <C-a> / <C-x> | Zahl unter Cursor inkrementieren / dekrementieren
-VimTrick | <C-o> / <C-i> | In der Sprungliste (Jump List) zurück / vorwärts springen
-VimTrick | gv | Letzte visuelle Markierung wiederherstellen
-VimTrick | vip / vap | Ganzen Absatz markieren (innen / außen)
-VimTrick | :%s/alt/neu/g | Suchen und Ersetzen in der gesamten Datei
-VimTrick | :%s/alt/neu/gc | Suchen und Ersetzen mit Bestätigung für jeden Treffer
-VimTrick | zz / zt / zb | Cursor zentrieren / oben / unten im Fenster platzieren
-VimTrick | H / M / L | Cursor an den oberen / mittleren / unteren Bildschirmrand bewegen
-VimTrick | . | Letzte Änderung wiederholen
-VimTrick | f{char} / t{char} | Springe vorwärts zu / vor Zeichen {char} in der Zeile (; = wiederholen)
-VimTrick | F{char} / T{char} | Springe rückwärts zu / vor Zeichen {char} in der Zeile
-VimTrick | gcc | Aktuelle Zeile auskommentieren / einkommentieren
-VimTrick | gc{motion} | Bereich auskommentieren (z. B. gcip für ganzen Absatz)
+VimTrick | *cgn n. n. | Search word under cursor, change & repeat with '.' on next matches
+VimTrick | ci" / ca" | Change text inside / around double quotes
+VimTrick | ci' / ca' | Change text inside / around single quotes
+VimTrick | ci( / ca( | Change text inside / around parentheses (also cib / cab)
+VimTrick | ci{ / ca{ | Change text inside / around curly braces (also ciB / caB)
+VimTrick | ci[ / ca[ | Change text inside / around square brackets
+VimTrick | cit / cat | Change HTML/XML tag content / entire tag
+VimTrick | di" / da" | Delete text inside / around quotes
+VimTrick | yi" / ya" | Copy (yank) text inside / around quotes
+VimTrick | <C-a> / <C-x> | Increment / decrement number under cursor
+VimTrick | <C-o> / <C-i> | Jump backward / forward in jump list
+VimTrick | gv | Restore last visual selection
+VimTrick | vip / vap | Select entire paragraph (inner / outer)
+VimTrick | :%s/old/new/g | Search and replace in entire file
+VimTrick | :%s/old/new/gc | Search and replace with confirmation for each match
+VimTrick | zz / zt / zb | Center cursor / scroll top / bottom in window
+VimTrick | H / M / L | Move cursor to top / middle / bottom of screen
+VimTrick | . | Repeat last change
+VimTrick | f{char} / t{char} | Jump forward to / before character {char} in line (; = repeat)
+VimTrick | F{char} / T{char} | Jump backward to / before character {char} in line
+VimTrick | gcc | Comment / uncomment current line
+VimTrick | gc{motion} | Comment / uncomment range (e.g. gcip for paragraph)

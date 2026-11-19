@@ -1,35 +1,35 @@
-# Wichtige Yazi Shortcuts (Terminal File Manager)
-# Format: Kategorie | Tastenkombination | Beschreibung
-# Falls ein '|' in der Taste vorkommt, mit '\|' escapen.
+# Common Yazi Shortcuts (Terminal File Manager)
+# Format: Category | Key combination | Description
+# If '|' occurs in the key, escape it with '\|'.
 
-yazi | h / l | Ein Verzeichnis hoch / Ordner bzw. Datei öffnen
-yazi | j / k | Nach unten / nach oben bewegen
-yazi | J / K | 5 Zeilen nach unten / oben springen
-yazi | gg / G | Zum Anfang / zum Ende des Verzeichnisses springen
-yazi | <C-u> / <C-d> | Halbe Seite nach oben / unten scrollen
-yazi | H / L | Im Verlauf zurück / vorwärts springen
-yazi | <Space> | Datei selektieren / deselektieren
-yazi | v / V | Visuelle Mehrfachauswahl starten / abwählen
-yazi | <C-a> | Alle Dateien im Ordner auswählen
-yazi | <C-r> | Auswahl invertieren (umkehren)
-yazi | o | Datei mit System-Standardprogramm öffnen
-yazi | a | Neue Datei bzw. Ordner erstellen (Ordner mit / beenden)
-yazi | r | Datei umbenennen
-yazi | d | Datei in den Papierkorb verschieben
-yazi | D | Datei unwiderruflich löschen
-yazi | p | Kopierte Dateien hier einfügen
-yazi | . | Versteckte Dateien ein- / ausblenden
-yazi | / | Dateien im Verzeichnis filtern
-yazi | f | Datei per Direktsuche anspringen
-yazi | z | Verzeichnis-Sprung mit zoxide
-yazi | Z | Verzeichnis-Sprung mit fzf
-yazi | t t | Neuen Tab im aktuellen Ordner öffnen (2x 't')
-yazi | t r | Aktuellen Tab umbenennen
-yazi | 1..9 | Zu Tab 1..9 wechseln
-yazi | [ / ] | Vorheriger / nächster Tab
-yazi | { / } | Tab mit vorigem / nächstem Tab vertauschen
-yazi | <C-c> | Aktuellen Tab schließen (oder Yazi beenden)
-yazi | w | Task-Manager anzeigen / schließen
-yazi | s | Shell im aktuellen Verzeichnis öffnen
-yazi | ~ | Yazi Hilfe-Menü anzeigen
-yazi | q | Yazi beenden
+yazi | h / l | Go up directory / open file or folder
+yazi | j / k | Move down / up
+yazi | J / K | Jump 5 lines down / up
+yazi | gg / G | Jump to top / bottom of directory
+yazi | <C-u> / <C-d> | Scroll half page up / down
+yazi | H / L | Jump backward / forward in history
+yazi | <Space> | Select / deselect file
+yazi | v / V | Start visual selection / unselect
+yazi | <C-a> | Select all files in directory
+yazi | <C-r> | Invert selection
+yazi | o | Open file with system default application
+yazi | a | Create new file or directory (end with / for directory)
+yazi | r | Rename file or directory
+yazi | d | Move file to trash
+yazi | D | Permanently delete file
+yazi | p | Paste copied files here
+yazi | . | Toggle hidden files
+yazi | / | Filter files in directory
+yazi | f | Find file by typing (interactive search)
+yazi | z | Jump directory with zoxide
+yazi | Z | Jump directory with fzf
+yazi | t t | Open new tab in current folder (press 't' twice)
+yazi | t r | Rename current tab
+yazi | 1..9 | Switch to tab 1..9
+yazi | [ / ] | Previous / next tab
+yazi | { / } | Swap tab with previous / next tab
+yazi | <C-c> | Close current tab (or quit Yazi)
+yazi | w | Show / close task manager
+yazi | s | Open shell in current directory
+yazi | ~ | Show Yazi help menu
+yazi | q | Quit Yazi

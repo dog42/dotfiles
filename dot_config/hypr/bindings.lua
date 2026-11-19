@@ -24,12 +24,12 @@ hl.bind("SUPER + M", hl.dsp.exec_cmd(terminal .. " -e hyprmoncfg"), { descriptio
 hl.bind(
 	"SUPER + T",
 	hl.dsp.exec_cmd((os.getenv("HOME") or "") .. "/.config/waybar/waybar-tailscale/waybar-tailscale.sh --menue"),
-	{ description = "tailscale-waybar-menue" }
+	{ description = "Tailscale Waybar menu" }
 )
 hl.bind(
 	"SUPER + G",
 	hl.dsp.exec_cmd("type agy && " .. terminal .. " -e agy || antigravity-ide"),
-	{ description = "gemeni/antigravity-cli" }
+	{ description = "gemini/antigravity-cli" }
 )
 
 -- Window Groups / Tabs
@@ -54,17 +54,17 @@ hl.bind("SUPER + period", hl.dsp.group.move_window("r"), { description = "move t
 hl.bind(
 	"SHIFT + PRINT",
 	hl.dsp.exec_cmd("hyprshot -m window -o " .. (os.getenv("HOME") or "") .. "/Bilder/screenshot"),
-	{ description = "Screenshot" }
+	{ description = "Screenshot window" }
 )
 hl.bind(
 	"CTRL + PRINT",
 	hl.dsp.exec_cmd("hyprshot -m region -o " .. (os.getenv("HOME") or "") .. "/Bilder/screenshot"),
-	{ description = "Screenshot" }
+	{ description = "Screenshot region" }
 )
 hl.bind(
 	"PRINT",
 	hl.dsp.exec_cmd("hyprshot -m output -m active -o " .. (os.getenv("HOME") or "") .. "/Bilder/screenshot"),
-	{ description = "Screenshot" }
+	{ description = "Screenshot active screen" }
 )
 
 -- Move focus with mainMod + arrow keys

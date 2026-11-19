@@ -52,7 +52,7 @@ def get_current_workspace_id():
 
 def clean_title(title, win_class=""):
     if not title:
-        return win_class or "Fenster"
+        return win_class or "Window"
     if "/" in title:
         title = os.path.basename(title)
     for suffix in [
@@ -64,7 +64,7 @@ def clean_title(title, win_class=""):
     ]:
         if title.endswith(suffix):
             title = title[:-len(suffix)]
-    return title.strip() or (win_class or "Fenster")
+    return title.strip() or (win_class or "Window")
 
 def get_icon_for_class(win_class):
     c = win_class.lower()
@@ -189,22 +189,22 @@ def get_status_json():
 
     tooltip_lines = []
     if group_count == 1:
-        tooltip_lines.append(f"<b>󰓩 Tab-Gruppe ({groups[0]['total']} Tabs)</b>")
+        tooltip_lines.append(f"<b>󰓩 Tab Group ({groups[0]['total']} tabs)</b>")
     else:
-        tooltip_lines.append(f"<b>󰓩 {group_count} Tab-Gruppen auf Workspace</b>")
+        tooltip_lines.append(f"<b>󰓩 {group_count} Tab Groups on workspace</b>")
 
     tooltip_lines.append("────────────────────────────")
     tooltip_lines.append("<b>Navigation:</b>")
-    tooltip_lines.append("• <b>SUPER + Tab:</b> Nächster Tab")
-    tooltip_lines.append("• <b>SUPER + SHIFT + Tab:</b> Vorheriger Tab")
-    tooltip_lines.append("• <b>Scrollen / Rechtsklick:</b> Tab weiterschalten")
-    tooltip_lines.append("• <b>Tippen / Linksklick:</b> Dropdown-Menü öffnen")
+    tooltip_lines.append("• <b>SUPER + Tab:</b> Next tab")
+    tooltip_lines.append("• <b>SUPER + SHIFT + Tab:</b> Previous tab")
+    tooltip_lines.append("• <b>Scroll / Right click:</b> Cycle tabs")
+    tooltip_lines.append("• <b>Tap / Left click:</b> Open dropdown menu")
     tooltip_lines.append("")
-    tooltip_lines.append("<b>Verwaltung:</b>")
-    tooltip_lines.append("• <b>SUPER + W:</b> Gruppe erstellen / auflösen")
-    tooltip_lines.append("• <b>SUPER + SHIFT + W:</b> Tab als Einzelfenster lösen")
-    tooltip_lines.append("• <b>SUPER + ALT + Pfeiltasten:</b> In Nachbargruppe schieben")
-    tooltip_lines.append("• <b>SUPER + , / . :</b> Tab nach links / rechts ordnen")
+    tooltip_lines.append("<b>Management:</b>")
+    tooltip_lines.append("• <b>SUPER + W:</b> Toggle group")
+    tooltip_lines.append("• <b>SUPER + SHIFT + W:</b> Move tab out of group")
+    tooltip_lines.append("• <b>SUPER + ALT + Arrow keys:</b> Move into neighbor group")
+    tooltip_lines.append("• <b>SUPER + , / . :</b> Move tab left / right")
 
     out = {
         "text": text,
@@ -294,8 +294,8 @@ def cmd_menu():
 
     for g_idx, g in enumerate(groups, 1):
         if multiple_groups:
-            focus_str = " (im Fokus)" if g["is_focused"] else ""
-            menu_lines.append(f"── Gruppe {g_idx} ({g['total']} Tabs){focus_str} ──")
+            focus_str = " (focused)" if g["is_focused"] else ""
+            menu_lines.append(f"── Group {g_idx} ({g['total']} tabs){focus_str} ──")
 
         for local_tab_idx, addr in enumerate(g["grouped"], 1):
             c = clients.get(addr, {})
