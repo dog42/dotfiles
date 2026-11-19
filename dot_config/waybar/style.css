@@ -14,7 +14,8 @@ window#waybar {
   border-radius: 0;
   min-height: 0;
   font-family: 'JetBrainsMono Nerd Font', monospace;
-  font-size: 14px;
+  font-size: 12px;
+  font-weight: bold;
 }
 
 .modules-left {
@@ -74,7 +75,7 @@ window#waybar {
 #battery {
   min-width: 12px;
   margin: 0 7.5px;
-  font-size: 18px;
+  font-size: 14px;
 }
 
 #battery.warning:not(.charging) {
@@ -87,7 +88,7 @@ window#waybar {
 
 #custom-expand-icon {
   margin-right: 7px;
-  font-size: 18px;
+  font-size: 14px;
 }
 
 tooltip {
