@@ -46,5 +46,10 @@ vim.keymap.set("n", "zz", function()
   end)
 end, { desc = "Rechtschreibprüfung Vorschläge (Popup)" })
 
+-- Neo-tree / Dateibaum mit TAB toggeln
+vim.keymap.set("n", "<Tab>", function()
+  require("neo-tree.command").execute({ toggle = true, dir = LazyVim.root() })
+end, { desc = "Toggle Neo-tree" })
+
 
 
