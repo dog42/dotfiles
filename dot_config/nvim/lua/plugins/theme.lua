@@ -45,21 +45,18 @@ return {
           -- { section = "startup" },
         },
         preset = {
-          header = [[
-                                  |\_/|                                               
-                                  | 0 0                                               
-                                  |   <>              _                               
-                                  |  _/\------____   | |                              
-                                  |               `--' |                              
-                              ____|_       ___|   |___.'                              
-                             /_/_____/____/_______|                                   
-            ██╗      █████╗ ███████╗██╗   ██╗██████╗  ██████╗  ██████╗              
-            ██║     ██╔══██╗╚══███╔╝╚██╗ ██╔╝██╔══██╗██╔═══██╗██╔════╝              
-            ██║     ███████║  ███╔╝  ╚████╔╝ ██║  ██║██║   ██║██║  ███╗             
-            ██║     ██╔══██║ ███╔╝    ╚██╔╝  ██║  ██║██║   ██║██║   ██║             
-            ███████╗██║  ██║███████╗   ██║   ██████╔╝╚██████╔╝╚██████╔╝             
-            ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚═════╝  ╚═════╝  ╚═════╝              
-         ]],
+          header = (function()
+            math.randomseed(os.time())
+            local logos = { "~/.config/logo1.txt", "~/.config/logo2.txt" }
+            local chosen = logos[math.random(#logos)]
+            local f = io.open(vim.fn.expand(chosen), "r")
+            if f then
+              local content = f:read("*a")
+              f:close()
+              return content
+            end
+            return "LAZYDOG"
+          end)(),
         },
       },
     },
