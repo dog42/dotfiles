@@ -324,7 +324,7 @@ _print_status() {
     exitnode=$(jq -r '.Peer[]? | select(.ExitNode == true).DNSName | split(".")[0]' <<<"$status_json")
 
     jq -nc --arg txt " exit-node: ${exitnode:-none}" \
-      --arg tip "<tt>Tailnet: ""$tailnet""${exitnode:+$'\n'"Exit-Node: $exitnode"}"$'\n\n'"$self"$'\n\n'"$peers"${services:+$'\n\n'"Services:"$'\n'"$services"}"</tt>" \
+      --arg tip "<tt>Tailnet: ""$tailnet""${exitnode:+$'\n'"Exit-Node: $exitnode"}"$'\n\n'"$self"$'\n\n'"$peers"${services:+$'\n\n'"$services"}"</tt>" \
       '{"text": $txt, "class": "connected", "alt": "connected", "tooltip": $tip}'
   else
     echo "{\"text\":\"\",\"class\":\"stopped\",\"alt\":\"stopped\", \"tooltip\": \"The VPN is not active.\"}"
